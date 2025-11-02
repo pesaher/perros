@@ -16,6 +16,9 @@
     #botones {
       text-align: center;
       margin-bottom: 1.5em;
+      display: flex;
+      justify-content: center;
+      gap: 1em;
     }
     button {
       background: #4CAF50;
@@ -98,7 +101,8 @@
 <body>
   <h1>Cheniles 🐾</h1>
   <div id="botones">
-    <button id="descargar">Descargar JSON actualizado</button>
+    <button id="actualizar">Actualizar en GitHub</button>
+    <button id="descargar">Descargar JSON</button>
   </div>
   <div id="contenedor"></div>
 
@@ -118,7 +122,7 @@
       pintar();
     }
 
-    // Color pastel por nombre
+    // Colores pastel agradables basados en el nombre
     function colorPastel(nombre) {
       let hash = 0;
       for (let i = 0; i < nombre.length; i++) {
@@ -130,6 +134,7 @@
       return `hsl(${h}, ${s}%, ${l}%)`;
     }
 
+    // Formatear nombres de chenil (mayúscula inicial + espacio antes del número)
     function formatearNombreChenil(nombre) {
       return nombre.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
         letras.charAt(0).toUpperCase() + letras.slice(1).toLowerCase() + ' ' + num
@@ -223,7 +228,22 @@
       enlace.click();
     }
 
+    async function pushToGithub() {
+      const resp = await fetch('/.netlify/functions/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+      const result = await resp.json();
+      if (resp.ok && result.ok) {
+        alert('✅ Archivo actualizado en GitHub:\n' + result.commit);
+      } else {
+        alert('❌ Error: ' + (result.error || 'Desconocido'));
+      }
+    }
+
     document.getElementById('descargar').addEventListener('click', descargarJSON);
+    document.getElementById('actualizar').addEventListener('click', pushToGithub);
 
     cargar();
   </script>
