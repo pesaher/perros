@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@octokit/rest": "^21.0.0"
+    "@octokit/core": "^6.1.2"
   }
 }
