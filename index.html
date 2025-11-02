@@ -5,13 +5,13 @@
   <title>Cheniles 🐾</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #fafafa;
+      font-family: system-ui, sans-serif;
+      background: #f7f7f7;
       margin: 2em;
     }
     h1 {
       text-align: center;
-      margin-bottom: 1em;
+      margin-bottom: 1.5em;
     }
     #botones {
       text-align: center;
@@ -37,19 +37,26 @@
     }
     .chenil {
       background: white;
-      border-radius: 8px;
+      border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 220px;
+      width: 230px;
       padding: 1em;
       display: flex;
       flex-direction: column;
       align-items: stretch;
+      transition: 0.2s;
+    }
+    .chenil:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
     .titulo {
-      font-weight: bold;
+      font-weight: 700;
       text-align: center;
-      margin-bottom: 0.5em;
+      margin-bottom: 0.7em;
       font-size: 1.1em;
+      color: #333;
+      text-transform: capitalize;
     }
     .contenedor-marcos {
       display: flex;
@@ -57,17 +64,31 @@
       gap: 0.5em;
       min-height: 2em;
       border: 2px dashed #ddd;
-      border-radius: 6px;
-      padding: 0.5em;
+      border-radius: 8px;
+      padding: 0.6em;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .contenedor-marcos.vacio {
+      background: #eee;
+    }
+    .mensaje-vacio {
+      color: #888;
+      font-style: italic;
+      text-align: center;
+      font-size: 0.9em;
+      pointer-events: none;
     }
     .marco {
-      background: #2196F3;
-      color: white;
-      padding: 0.4em 0.6em;
-      border-radius: 5px;
+      padding: 0.5em 0.6em;
+      border-radius: 6px;
       cursor: grab;
       text-align: center;
       user-select: none;
+      font-weight: bold;
+      font-size: 1.05em;
+      text-transform: uppercase;
+      color: #333;
     }
     .marco:active {
       cursor: grabbing;
@@ -91,11 +112,28 @@
       const resp = await fetch(URL_JSON);
       datos = await resp.json();
 
-      // Si hay versión guardada localmente, la usamos
       const guardado = localStorage.getItem('chenilesDrag');
       if (guardado) datos = JSON.parse(guardado);
 
       pintar();
+    }
+
+    // Color pastel por nombre
+    function colorPastel(nombre) {
+      let hash = 0;
+      for (let i = 0; i < nombre.length; i++) {
+        hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const h = hash % 360;
+      const s = 65 + (hash % 10);
+      const l = 85;
+      return `hsl(${h}, ${s}%, ${l}%)`;
+    }
+
+    function formatearNombreChenil(nombre) {
+      return nombre.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
+        letras.charAt(0).toUpperCase() + letras.slice(1).toLowerCase() + ' ' + num
+      );
     }
 
     function pintar() {
@@ -108,31 +146,61 @@
 
         const titulo = document.createElement('div');
         titulo.className = 'titulo';
-        titulo.textContent = chenil;
+        titulo.textContent = formatearNombreChenil(chenil);
         caja.appendChild(titulo);
 
         const zona = document.createElement('div');
         zona.className = 'contenedor-marcos';
         zona.dataset.chenil = chenil;
 
-        perros.forEach(nombre => {
-          if (nombre && nombre.trim() !== '') {
-            const marco = document.createElement('div');
-            marco.className = 'marco';
-            marco.textContent = nombre;
-            zona.appendChild(marco);
-          }
-        });
+        if (perros.length === 0 || perros.every(n => !n.trim())) {
+          zona.classList.add('vacio');
+          const vacio = document.createElement('div');
+          vacio.className = 'mensaje-vacio';
+          vacio.textContent = '(vacío)';
+          zona.appendChild(vacio);
+        } else {
+          perros.forEach(nombre => {
+            if (nombre && nombre.trim() !== '') {
+              const marco = document.createElement('div');
+              marco.className = 'marco';
+              marco.textContent = nombre;
+              marco.style.backgroundColor = colorPastel(nombre);
+              zona.appendChild(marco);
+            }
+          });
+        }
 
         caja.appendChild(zona);
         contenedor.appendChild(caja);
 
-        // Hacemos que cada zona sea un contenedor Sortable compartido
         new Sortable(zona, {
           group: 'cheniles',
           animation: 150,
-          onEnd: actualizarDatos
+          onEnd: () => {
+            limpiarVacios();
+            actualizarDatos();
+          }
         });
+      });
+    }
+
+    function limpiarVacios() {
+      document.querySelectorAll('.contenedor-marcos').forEach(zona => {
+        const marcos = zona.querySelectorAll('.marco');
+        const vacio = zona.querySelector('.mensaje-vacio');
+        if (marcos.length === 0) {
+          if (!vacio) {
+            zona.classList.add('vacio');
+            const nuevo = document.createElement('div');
+            nuevo.className = 'mensaje-vacio';
+            nuevo.textContent = '(vacío)';
+            zona.appendChild(nuevo);
+          }
+        } else {
+          zona.classList.remove('vacio');
+          if (vacio) vacio.remove();
+        }
       });
     }
 
@@ -141,7 +209,7 @@
       document.querySelectorAll('.contenedor-marcos').forEach(zona => {
         const chenil = zona.dataset.chenil;
         const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.textContent);
-        nuevo[chenil] = perros;
+        nuevo[chenil] = perros.length ? perros : [""];
       });
       datos = nuevo;
       localStorage.setItem('chenilesDrag', JSON.stringify(datos));
