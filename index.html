@@ -102,7 +102,6 @@
   <h1>Cheniles 🐾</h1>
   <div id="botones">
     <button id="actualizar">💾</button>
-    <button id="descargar">⬇️</button>
   </div>
   <div id="contenedor"></div>
 
@@ -223,14 +222,6 @@
       localStorage.setItem('chenilesDrag', JSON.stringify(datos));
     }
 
-    function descargarJSON() {
-      const blob = new Blob([JSON.stringify(datos, null, 2)], {type: 'application/json'});
-      const enlace = document.createElement('a');
-      enlace.href = URL.createObjectURL(blob);
-      enlace.download = 'cheniles_actualizado.json';
-      enlace.click();
-    }
-
     async function pushToGithub() {
       const resp = await fetch('/.netlify/functions/save', {
         method: 'POST',
@@ -245,7 +236,6 @@
       }
     }
 
-    document.getElementById('descargar').addEventListener('click', descargarJSON);
     document.getElementById('actualizar').addEventListener('click', pushToGithub);
 
     cargar();
