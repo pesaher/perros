@@ -39,12 +39,6 @@
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       padding: 1em;
-      cursor: grab;
-      transition: transform 0.1s ease;
-    }
-    .fila:active {
-      cursor: grabbing;
-      transform: scale(1.02);
     }
     .titulo {
       font-weight: bold;
@@ -55,19 +49,24 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.5em;
+      min-height: 2em;
+      border: 2px dashed #ddd;
+      border-radius: 6px;
+      padding: 0.5em;
     }
     .marco {
       padding: 0.5em 0.8em;
       border-radius: 5px;
       color: white;
       font-size: 0.9em;
+      cursor: grab;
     }
   </style>
 </head>
 <body>
   <h1>Cheniles 🐾</h1>
   <div id="botones">
-    <button id="descargar">Descargar JSON reordenado</button>
+    <button id="descargar">Descargar JSON actualizado</button>
   </div>
   <div id="contenedor"></div>
 
@@ -77,85 +76,98 @@
   <script>
     const URL_JSON = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json';
     const colores = ['#2196F3', '#4CAF50', '#FF9800', '#E91E63', '#9C27B0', '#009688'];
-
-    let datosOriginales = {};
+    let datos = {};
 
     async function cargar() {
       const resp = await fetch(URL_JSON);
-      datosOriginales = await resp.json();
+      datos = await resp.json();
 
-      // Si hay un orden guardado, reordena las claves
-      const ordenGuardado = JSON.parse(localStorage.getItem('ordenCheniles') || '[]');
-      const claves = Object.keys(datosOriginales);
-      const clavesOrdenadas = ordenGuardado.length
-        ? ordenGuardado.filter(k => claves.includes(k)).concat(claves.filter(k => !ordenGuardado.includes(k)))
-        : claves;
+      // Si hay datos guardados en localStorage, usarlos
+      const guardado = localStorage.getItem('chenilesEditados');
+      if (guardado) datos = JSON.parse(guardado);
 
+      pintar();
+    }
+
+    function pintar() {
       const contenedor = document.getElementById('contenedor');
       contenedor.innerHTML = '';
 
-      clavesOrdenadas.forEach((nombre, i) => {
-        const valores = datosOriginales[nombre];
+      Object.entries(datos).forEach(([nombre, valores], i) => {
         const fila = document.createElement('div');
         fila.className = 'fila';
-        fila.setAttribute('data-nombre', nombre);
 
         const titulo = document.createElement('div');
         titulo.className = 'titulo';
         titulo.textContent = nombre;
         fila.appendChild(titulo);
 
-        const contMarcos = document.createElement('div');
-        contMarcos.className = 'contenedor-marcos';
-
+        // Para cada campo que sea array, creamos un contenedor de marcos
         Object.entries(valores).forEach(([clave, arr], j) => {
-          const color = colores[j % colores.length];
-          const marco = document.createElement('div');
-          marco.className = 'marco';
-          marco.style.backgroundColor = color;
-
           if (Array.isArray(arr)) {
-            marco.innerHTML = `<strong>${clave}:</strong> ${arr.join(', ')}`;
-          } else {
-            marco.innerHTML = `<strong>${clave}:</strong> ${arr}`;
-          }
+            const contMarcos = document.createElement('div');
+            contMarcos.className = 'contenedor-marcos';
+            contMarcos.setAttribute('data-chenil', nombre);
+            contMarcos.setAttribute('data-campo', clave);
 
-          contMarcos.appendChild(marco);
+            // Cada elemento del array será un “marco” arrastrable
+            arr.forEach((valor, k) => {
+              const marco = document.createElement('div');
+              marco.className = 'marco';
+              marco.style.backgroundColor = colores[j % colores.length];
+              marco.textContent = valor;
+              contMarcos.appendChild(marco);
+            });
+
+            const etiqueta = document.createElement('div');
+            etiqueta.style.fontWeight = 'bold';
+            etiqueta.style.marginTop = '0.5em';
+            etiqueta.textContent = clave + ':';
+            fila.appendChild(etiqueta);
+            fila.appendChild(contMarcos);
+
+            // Activar Sortable para poder mover entre cheniles
+            new Sortable(contMarcos, {
+              group: 'compartido',
+              animation: 150,
+              ghostClass: 'sortable-ghost',
+              onEnd: actualizarDatos
+            });
+          }
         });
 
-        fila.appendChild(contMarcos);
         contenedor.appendChild(fila);
-      });
-
-      // Activar reordenado con guardado
-      new Sortable(contenedor, {
-        animation: 150,
-        ghostClass: 'sortable-ghost',
-        onEnd: guardarOrden
       });
     }
 
-    function guardarOrden() {
-      const orden = Array.from(document.querySelectorAll('.fila')).map(f => f.dataset.nombre);
-      localStorage.setItem('ordenCheniles', JSON.stringify(orden));
+    function actualizarDatos() {
+      const nuevo = {};
+
+      document.querySelectorAll('.fila').forEach(fila => {
+        const nombre = fila.querySelector('.titulo').textContent;
+        nuevo[nombre] = {};
+
+        // Recorremos todos los contenedores de arrays dentro del chenil
+        fila.querySelectorAll('.contenedor-marcos').forEach(div => {
+          const campo = div.getAttribute('data-campo');
+          const valores = Array.from(div.querySelectorAll('.marco')).map(m => m.textContent);
+          nuevo[nombre][campo] = valores;
+        });
+      });
+
+      datos = nuevo;
+      localStorage.setItem('chenilesEditados', JSON.stringify(datos));
     }
 
     function descargarJSON() {
-      const filas = Array.from(document.querySelectorAll('.fila'));
-      const nuevoOrden = {};
-      filas.forEach(f => {
-        const nombre = f.dataset.nombre;
-        nuevoOrden[nombre] = datosOriginales[nombre];
-      });
-      const blob = new Blob([JSON.stringify(nuevoOrden, null, 2)], {type: 'application/json'});
+      const blob = new Blob([JSON.stringify(datos, null, 2)], {type: 'application/json'});
       const enlace = document.createElement('a');
       enlace.href = URL.createObjectURL(blob);
-      enlace.download = 'cheniles_reordenado.json';
+      enlace.download = 'cheniles_actualizado.json';
       enlace.click();
     }
 
     document.getElementById('descargar').addEventListener('click', descargarJSON);
-
     cargar();
   </script>
 </body>
