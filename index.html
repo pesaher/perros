@@ -110,7 +110,7 @@
   <script>
     function urlSinCache() {
       const base = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json';
-      return base + '?v=' + Date.now(); // fuerza a saltar la caché
+      return base + '?token=' + GITHUB_TOKEN + '&v=' + Date.now(); // fuerza a saltar la caché
     }
     let datos = {};
 
