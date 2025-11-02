@@ -1,0 +1,11 @@
+{
+  "nombre": "Pezuelo",
+  "nacimiento": "2022",
+  "reservado": true,
+  "color": "Marrón",
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "proteccionDeRecursos": false,
+  "protocoloParticular": ""
+}
