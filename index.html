@@ -109,11 +109,14 @@
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
   <script>
-    const URL_JSON = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json';
+    function urlSinCache() {
+      const base = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json';
+      return base + '?v=' + Date.now(); // fuerza a saltar la caché
+    }
     let datos = {};
 
     async function cargar() {
-      const resp = await fetch(URL_JSON);
+      const resp = await fetch(urlSinCache());
       datos = await resp.json();
 
       const guardado = localStorage.getItem('chenilesDrag');
