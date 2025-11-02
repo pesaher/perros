@@ -101,8 +101,8 @@
 <body>
   <h1>Cheniles 🐾</h1>
   <div id="botones">
-    <button id="actualizar">Actualizar en GitHub</button>
-    <button id="descargar">Descargar JSON</button>
+    <button id="actualizar">💾</button>
+    <button id="descargar">⬇️</button>
   </div>
   <div id="contenedor"></div>
 
@@ -239,7 +239,7 @@
       });
       const result = await resp.json();
       if (resp.ok && result.ok) {
-        alert('✅ Archivo actualizado en GitHub:\n' + result.commit);
+        alert('✅ Guardado correctamente);
       } else {
         alert('❌ Error: ' + (result.error || 'Desconocido'));
       }
