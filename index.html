@@ -31,23 +31,29 @@
     }
     #contenedor {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: 1em;
+      justify-content: center;
     }
-    .fila {
+    .chenil {
       background: white;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 220px;
       padding: 1em;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
     .titulo {
       font-weight: bold;
+      text-align: center;
       margin-bottom: 0.5em;
       font-size: 1.1em;
     }
     .contenedor-marcos {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 0.5em;
       min-height: 2em;
       border: 2px dashed #ddd;
@@ -55,11 +61,16 @@
       padding: 0.5em;
     }
     .marco {
-      padding: 0.5em 0.8em;
-      border-radius: 5px;
+      background: #2196F3;
       color: white;
-      font-size: 0.9em;
+      padding: 0.4em 0.6em;
+      border-radius: 5px;
       cursor: grab;
+      text-align: center;
+      user-select: none;
+    }
+    .marco:active {
+      cursor: grabbing;
     }
   </style>
 </head>
@@ -70,20 +81,18 @@
   </div>
   <div id="contenedor"></div>
 
-  <!-- Librería Sortable -->
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
   <script>
     const URL_JSON = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json';
-    const colores = ['#2196F3', '#4CAF50', '#FF9800', '#E91E63', '#9C27B0', '#009688'];
     let datos = {};
 
     async function cargar() {
       const resp = await fetch(URL_JSON);
       datos = await resp.json();
 
-      // Si hay datos guardados en localStorage, usarlos
-      const guardado = localStorage.getItem('chenilesEditados');
+      // Si hay versión guardada localmente, la usamos
+      const guardado = localStorage.getItem('chenilesDrag');
       if (guardado) datos = JSON.parse(guardado);
 
       pintar();
@@ -93,70 +102,49 @@
       const contenedor = document.getElementById('contenedor');
       contenedor.innerHTML = '';
 
-      Object.entries(datos).forEach(([nombre, valores], i) => {
-        const fila = document.createElement('div');
-        fila.className = 'fila';
+      Object.entries(datos).forEach(([chenil, perros]) => {
+        const caja = document.createElement('div');
+        caja.className = 'chenil';
 
         const titulo = document.createElement('div');
         titulo.className = 'titulo';
-        titulo.textContent = nombre;
-        fila.appendChild(titulo);
+        titulo.textContent = chenil;
+        caja.appendChild(titulo);
 
-        // Para cada campo que sea array, creamos un contenedor de marcos
-        Object.entries(valores).forEach(([clave, arr], j) => {
-          if (Array.isArray(arr)) {
-            const contMarcos = document.createElement('div');
-            contMarcos.className = 'contenedor-marcos';
-            contMarcos.setAttribute('data-chenil', nombre);
-            contMarcos.setAttribute('data-campo', clave);
+        const zona = document.createElement('div');
+        zona.className = 'contenedor-marcos';
+        zona.dataset.chenil = chenil;
 
-            // Cada elemento del array será un “marco” arrastrable
-            arr.forEach((valor, k) => {
-              const marco = document.createElement('div');
-              marco.className = 'marco';
-              marco.style.backgroundColor = colores[j % colores.length];
-              marco.textContent = valor;
-              contMarcos.appendChild(marco);
-            });
-
-            const etiqueta = document.createElement('div');
-            etiqueta.style.fontWeight = 'bold';
-            etiqueta.style.marginTop = '0.5em';
-            etiqueta.textContent = clave + ':';
-            fila.appendChild(etiqueta);
-            fila.appendChild(contMarcos);
-
-            // Activar Sortable para poder mover entre cheniles
-            new Sortable(contMarcos, {
-              group: 'compartido',
-              animation: 150,
-              ghostClass: 'sortable-ghost',
-              onEnd: actualizarDatos
-            });
+        perros.forEach(nombre => {
+          if (nombre && nombre.trim() !== '') {
+            const marco = document.createElement('div');
+            marco.className = 'marco';
+            marco.textContent = nombre;
+            zona.appendChild(marco);
           }
         });
 
-        contenedor.appendChild(fila);
+        caja.appendChild(zona);
+        contenedor.appendChild(caja);
+
+        // Hacemos que cada zona sea un contenedor Sortable compartido
+        new Sortable(zona, {
+          group: 'cheniles',
+          animation: 150,
+          onEnd: actualizarDatos
+        });
       });
     }
 
     function actualizarDatos() {
       const nuevo = {};
-
-      document.querySelectorAll('.fila').forEach(fila => {
-        const nombre = fila.querySelector('.titulo').textContent;
-        nuevo[nombre] = {};
-
-        // Recorremos todos los contenedores de arrays dentro del chenil
-        fila.querySelectorAll('.contenedor-marcos').forEach(div => {
-          const campo = div.getAttribute('data-campo');
-          const valores = Array.from(div.querySelectorAll('.marco')).map(m => m.textContent);
-          nuevo[nombre][campo] = valores;
-        });
+      document.querySelectorAll('.contenedor-marcos').forEach(zona => {
+        const chenil = zona.dataset.chenil;
+        const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.textContent);
+        nuevo[chenil] = perros;
       });
-
       datos = nuevo;
-      localStorage.setItem('chenilesEditados', JSON.stringify(datos));
+      localStorage.setItem('chenilesDrag', JSON.stringify(datos));
     }
 
     function descargarJSON() {
@@ -168,6 +156,7 @@
     }
 
     document.getElementById('descargar').addEventListener('click', descargarJSON);
+
     cargar();
   </script>
 </body>
