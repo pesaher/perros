@@ -1,7 +1,9 @@
 {
   "nombre": "Bandeira Dina",
   "nacimiento": "2016-09-01",
+  "macho": false,
   "peso": 24,
+  "altura": 60,
   "reservado": false,
   "paseo": 0,
   "sociableConPerros": 0,
