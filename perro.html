@@ -384,12 +384,12 @@
       `;
       
       // Mostrar protocolo particular solo si tiene contenido
-      if (datos.protocoloParticular && datos.protocoloParticular.trim() !== '') {
+      if (datos.protocoloParticular !== undefined && datos.protocoloParticular !== null && datos.protocoloParticular.toString().trim() !== '') {
         html += `
-          <div class="campo">
-            <div class="etiqueta">Protocolo Particular</div>
-            <div class="valor protocolo-particular">${datos.protocoloParticular}</div>
-          </div>
+        <div class="campo">
+        <div class="etiqueta">Protocolo Particular</div>
+        <div class="valor protocolo-particular">${datos.protocoloParticular}</div>
+        </div>
         `;
       }
       
