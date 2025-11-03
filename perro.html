@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ficha del Perro 🐾</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f7f7f7;
+      margin: 2em;
+      color: #333;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1a1a;
+        color: #e0e0e0;
+      }
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5em;
+    }
+    
+    .contenedor-perro {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 2em;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .contenedor-perro {
+        background: #2d2d2d;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      }
+    }
+    
+    .campo {
+      margin-bottom: 1.5em;
+    }
+    
+    .etiqueta {
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      color: #333;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .etiqueta {
+        color: #e0e0e0;
+      }
+    }
+    
+    .valor {
+      padding: 0.8em;
+      background: #f9f9f9;
+      border-radius: 6px;
+      border-left: 4px solid #4CAF50;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .valor {
+        background: #3a3a3a;
+      }
+    }
+    
+    .boton-volver {
+      display: inline-block;
+      background: #2196F3;
+      color: white;
+      text-decoration: none;
+      padding: 0.6em 1.2em;
+      border-radius: 5px;
+      margin-top: 1em;
+    }
+    
+    .boton-volver:hover {
+      background: #1976D2;
+    }
+    
+    .nombre-perro {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ficha del Perro 🐾</h1>
+  
+  <div class="contenedor-perro">
+    <div id="contenido-perro">
+      <!-- Aquí se cargarán los datos dinámicamente -->
+    </div>
+    
+    <a href="javascript:history.back()" class="boton-volver">← Volver a Cheniles</a>
+  </div>
+
+  <script>
+    // Obtener el nombre del perro de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const nombrePerro = urlParams.get('nombre');
+    
+    if (!nombrePerro) {
+      document.getElementById('contenido-perro').innerHTML = '<p>Error: No se especificó el nombre del perro</p>';
+    } else {
+      // Cargar los datos del perro
+      cargarDatosPerro(nombrePerro);
+    }
+
+    async function cargarDatosPerro(nombre) {
+      try {
+        // URL del JSON específico del perro (ajusta la ruta según tu estructura)
+        const url = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre.toLowerCase())}.json`;
+        
+        const respuesta = await fetch(url);
+        
+        if (!respuesta.ok) {
+          throw new Error('Perro no encontrado');
+        }
+        
+        const datosPerro = await respuesta.json();
+        mostrarDatosPerro(nombre, datosPerro);
+        
+      } catch (error) {
+        document.getElementById('contenido-perro').innerHTML = `
+          <p>Error al cargar los datos de ${nombre}: ${error.message}</p>
+        `;
+      }
+    }
+
+    function mostrarDatosPerro(nombre, datos) {
+      const contenedor = document.getElementById('contenido-perro');
+      
+      let html = `
+        <div class="campo">
+          <div class="etiqueta">Nombre</div>
+          <div class="valor nombre-perro" style="background-color: ${colorPastel(nombre)}">${nombre}</div>
+        </div>
+      `;
+      
+      // Generar campos dinámicamente para cada propiedad del JSON
+      Object.entries(datos).forEach(([clave, valor]) => {
+        // Saltar propiedades vacías o null
+        if (valor && valor !== '' && valor !== null) {
+          html += `
+            <div class="campo">
+              <div class="etiqueta">${formatearEtiqueta(clave)}</div>
+              <div class="valor">${valor}</div>
+            </div>
+          `;
+        }
+      });
+      
+      contenedor.innerHTML = html;
+    }
+
+    // Función para formatear las etiquetas (ej: "fecha_nacimiento" -> "Fecha Nacimiento")
+    function formatearEtiqueta(texto) {
+      return texto
+        .split('_')
+        .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+        .join(' ');
+    }
+
+    // La misma función de color pastel para consistencia
+    function colorPastel(nombre) {
+      let hash = 0;
+      for (let i = 0; i < nombre.length; i++) {
+        hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const h = hash % 360;
+      const s = 65 + (hash % 10);
+      const l = 85;
+      return `hsl(${h}, ${s}%, ${l}%)`;
+    }
+  </script>
+</body>
+</html>
