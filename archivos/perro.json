@@ -1,7 +1,9 @@
 {
   "nombre": "",
   "nacimiento": "",
+  "macho": true,
   "peso": null,
+  "altura": null,
   "reservado": false,
   "paseo": null,
   "sociableConPerros": null,
