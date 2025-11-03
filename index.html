@@ -2,18 +2,32 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cheniles 🐾</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
       background: #f7f7f7;
-      margin: 2em;
+      margin: 1em;
       color: #333;
+      font-size: 16px;
     }
     @media (prefers-color-scheme: dark) {
       body {
         background: #1a1a1a;
         color: #e0e0e0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        margin: 0.5em;
+        font-size: 14px;
+      }
+      
+      h1 {
+        font-size: 1.5em;
+        margin-bottom: 1em;
       }
     }
     
@@ -67,6 +81,21 @@
       .chenil {
         background: #2d2d2d;
         box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .chenil {
+        width: calc(50% - 1em);
+        min-width: 140px;
+        padding: 0.8em;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .chenil {
+        width: 100%;
+        min-width: auto;
       }
     }
     
@@ -152,6 +181,13 @@
       color: #000 !important;
     }
     
+    @media (max-width: 768px) {
+      .marco {
+        padding: 0.4em 0.5em;
+        font-size: 0.95em;
+      }
+    }
+    
     .marco:active {
       cursor: grabbing;
     }
@@ -170,12 +206,19 @@
     /* Botones flotantes */
     .botones-flotantes {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 10px;
+      right: 10px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       z-index: 1000;
+    }
+    
+    @media (max-width: 768px) {
+      .botones-flotantes {
+        top: 5px;
+        right: 5px;
+      }
     }
     
     .boton-flotante {
@@ -193,6 +236,14 @@
       /* Forzar colores específicos que no cambien con el modo oscuro */
       background: #2196F3 !important;
       color: white !important;
+    }
+    
+    @media (max-width: 768px) {
+      .boton-flotante {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1em;
+      }
     }
     
     .boton-flotante:hover {
