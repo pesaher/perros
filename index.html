@@ -297,17 +297,24 @@
           vacio.textContent = '(vacío)';
           zona.appendChild(vacio);
         } else {
-          perros.forEach(nombre => {
-            if (nombre && nombre.trim() !== '') {
+          perros.forEach(nombreOriginal => {
+            if (nombreOriginal && nombreOriginal.trim() !== '') {
               const marco = document.createElement('div');
               marco.className = 'marco clickable';
-              marco.textContent = nombre;
-              marco.style.backgroundColor = colorPastel(nombre);
-
+              
+              // Guardar el nombre original en un atributo data
+              marco.dataset.nombreOriginal = nombreOriginal;
+              
+              // Mostrar en uppercase
+              marco.textContent = nombreOriginal.toUpperCase();
+              
+              marco.style.backgroundColor = colorPastel(nombreOriginal);
+              
               // Agregar evento de click para los nombres
               marco.addEventListener('click', () => {
                 if (!modoReordenar) {
-                  window.location.href = `perro.html?nombre=${encodeURIComponent(nombre)}`;
+                  // Usar el nombre original (camelCase) para la redirección
+                  window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}`;
                 }
               });
               
@@ -400,7 +407,7 @@
       // Volver a pintar con los datos originales
       pintar();
       
-      // Desactivar modo reordenar
+      // Desactivar modo reordenar sin guardar
       desactivarModoReordenar(false);
     }
 
@@ -427,7 +434,7 @@
       const nuevo = {};
       document.querySelectorAll('.contenedor-marcos').forEach(zona => {
         const chenil = zona.dataset.chenil;
-        const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.textContent);
+        const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.dataset.nombreOriginal);
         nuevo[chenil] = perros.length ? perros : [""];
       });
       datos = nuevo;
