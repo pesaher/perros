@@ -85,6 +85,58 @@
       text-transform: uppercase;
       font-weight: bold;
       color: #000;
+      text-align: center;
+      font-size: 1.3em;
+    }
+    
+    .estado-reservado {
+      display: inline-block;
+      padding: 0.3em 0.8em;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+    
+    .reservado-si {
+      background: #ffeb3b;
+      color: #000;
+    }
+    
+    .reservado-no {
+      background: #4CAF50;
+      color: white;
+    }
+    
+    .nivel {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .barra-nivel {
+      flex-grow: 1;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .relleno-nivel {
+      height: 100%;
+      background: #4CAF50;
+      border-radius: 4px;
+    }
+    
+    .protocolo-particular {
+      background: #fff3cd !important;
+      border-left-color: #ffc107 !important;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .protocolo-particular {
+        background: #5d4200 !important;
+        border-left-color: #ffc107 !important;
+      }
     }
   </style>
 </head>
@@ -113,7 +165,7 @@
 
     async function cargarDatosPerro(nombre) {
       try {
-        // URL del JSON específico del perro (ajusta la ruta según tu estructura)
+        // URL del JSON específico del perro
         const url = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre.toLowerCase())}.json`;
         
         const respuesta = await fetch(url);
@@ -137,33 +189,95 @@
       
       let html = `
         <div class="campo">
-          <div class="etiqueta">Nombre</div>
           <div class="valor nombre-perro" style="background-color: ${colorPastel(nombre)}">${nombre}</div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Nacimiento</div>
+          <div class="valor">${datos.nacimiento || 'No especificado'}</div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Estado</div>
+          <div class="valor">
+            <span class="estado-reservado ${datos.reservado ? 'reservado-si' : 'reservado-no'}">
+              ${datos.reservado ? '🔒 RESERVADO' : '🔓 DISPONIBLE'}
+            </span>
+          </div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Nivel de Paseo</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.paseo}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.paseo / 5) * 100}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Sociable con Perros</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.sociableConPerros}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.sociableConPerros / 5) * 100}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Sociable con Personas</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.sociableConPersonas}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.sociableConPersonas / 5) * 100}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Sociable con Gatos</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.sociableConGatos}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.sociableConGatos / 5) * 100}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Protección de Recursos</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.proteccionDeRecursos}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.proteccionDeRecursos / 5) * 100}%"></div>
+              </div>
+            </div>
+          </div>
         </div>
       `;
       
-      // Generar campos dinámicamente para cada propiedad del JSON
-      Object.entries(datos).forEach(([clave, valor]) => {
-        // Saltar propiedades vacías o null
-        if (valor && valor !== '' && valor !== null) {
-          html += `
-            <div class="campo">
-              <div class="etiqueta">${formatearEtiqueta(clave)}</div>
-              <div class="valor">${valor}</div>
-            </div>
-          `;
-        }
-      });
+      // Mostrar protocolo particular solo si tiene contenido
+      if (datos.protocoloParticular && datos.protocoloParticular.trim() !== '') {
+        html += `
+          <div class="campo">
+            <div class="etiqueta">Protocolo Particular</div>
+            <div class="valor protocolo-particular">${datos.protocoloParticular}</div>
+          </div>
+        `;
+      }
       
       contenedor.innerHTML = html;
-    }
-
-    // Función para formatear las etiquetas (ej: "fecha_nacimiento" -> "Fecha Nacimiento")
-    function formatearEtiqueta(texto) {
-      return texto
-        .split('_')
-        .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1))
-        .join(' ');
     }
 
     // La misma función de color pastel para consistencia
