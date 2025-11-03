@@ -360,11 +360,11 @@
       `;
       
       // Agregar eventos a los nuevos botones
-      document.getElementById('btnGuardar').addEventListener('click', desactivarModoReordenar);
+      document.getElementById('btnGuardar').addEventListener('click', () => desactivarModoReordenar(true));
       document.getElementById('btnCancelar').addEventListener('click', cancelarReordenar);
     }
 
-    function desactivarModoReordenar() {
+    function desactivarModoReordenar(guardarEnGitHub = false) {
       modoReordenar = false;
       
       // Desactivar todas las instancias de Sortable
@@ -380,17 +380,17 @@
       
       // Actualizar botones flotantes
       const botonesFlotantes = document.getElementById('botonesFlotantes');
-      botonesFlotantes.innerHTML = `
-        <button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>
-      `;
+      botonesFlotantes.innerHTML = `<button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>`;
       
       // Agregar evento al botón de reordenar
       document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
-
-      // Guardar cambios en GitHub
-      pushToGithub();
+      
+      // Guardar cambios en GitHub solo si se especifica
+      if (guardarEnGitHub) {
+        pushToGithub();
+      }
     }
-
+    
     function cancelarReordenar() {
       // Restaurar datos originales
       datos = JSON.parse(JSON.stringify(datosOriginales));
