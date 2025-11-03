@@ -184,17 +184,75 @@
       }
     }
 
+    function calcularEdad(nacimiento) {
+      if (!nacimiento) return 'No especificado';
+      
+      const hoy = new Date();
+      let fechaNacimiento;
+      
+      // Detectar el formato de la fecha
+      if (nacimiento.match(/^\d{4}$/)) {
+        // Formato YYYY
+        fechaNacimiento = new Date(parseInt(nacimiento), 0, 1); // 1 de enero del año
+        const años = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        return `Unos ${años} años`;
+        
+      } else if (nacimiento.match(/^\d{4}-\d{2}$/)) {
+        // Formato YYYY-MM
+        const [año, mes] = nacimiento.split('-');
+        fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
+        const diffMeses = (hoy.getFullYear() - fechaNacimiento.getFullYear()) * 12 + (hoy.getMonth() - fechaNacimiento.getMonth());
+        const años = Math.floor(diffMeses / 12);
+        const meses = diffMeses % 12;
+        
+        if (meses === 0) {
+          return `${años} años`;
+        } else if (años === 0) {
+          return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+        } else {
+          return `${años} ${años === 1 ? 'año' : 'años'} y ${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+        }
+        
+      } else if (nacimiento.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        // Formato YYYY-MM-DD
+        fechaNacimiento = new Date(nacimiento);
+        const diffTiempo = hoy - fechaNacimiento;
+        const diffDias = Math.floor(diffTiempo / (1000 * 60 * 60 * 24));
+        const años = Math.floor(diffDias / 365);
+        const meses = Math.floor((diffDias % 365) / 30);
+        
+        if (años === 0 && meses === 0) {
+          const semanas = Math.floor(diffDias / 7);
+          if (semanas === 0) {
+            return `${diffDias} ${diffDias === 1 ? 'día' : 'días'}`;
+          } else {
+            return `${semanas} ${semanas === 1 ? 'semana' : 'semanas'}`;
+          }
+        } else if (años === 0) {
+          return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+        } else if (meses === 0) {
+          return `${años} ${años === 1 ? 'año' : 'años'}`;
+        } else {
+          return `${años} ${años === 1 ? 'año' : 'años'} y ${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+        }
+        
+      } else {
+        // Formato no reconocido
+        return nacimiento;
+      }
+    }
+
     function mostrarDatosPerro(nombre, datos) {
       const contenedor = document.getElementById('contenido-perro');
       
       let html = `
         <div class="campo">
-          <div class="valor nombre-perro" style="background-color: ${colorPastel(nombre)}">${nombre}</div>
+          <div class="valor nombre-perro" style="background-color: ${colorPastel(nombre)}">${nombre.toUpperCase()}</div>
         </div>
         
         <div class="campo">
-          <div class="etiqueta">Nacimiento</div>
-          <div class="valor">${datos.nacimiento || 'No especificado'}</div>
+          <div class="etiqueta">Edad</div>
+          <div class="valor">${calcularEdad(datos.nacimiento)}</div>
         </div>
         
         <div class="campo">
