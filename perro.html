@@ -159,26 +159,6 @@
       color: white;
     }
     
-    .nivel {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .barra-nivel {
-      flex-grow: 1;
-      height: 8px;
-      background: #e0e0e0;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    
-    .relleno-nivel {
-      height: 100%;
-      background: #4CAF50;
-      border-radius: 4px;
-    }
-    
     .protocolo-particular {
       background: #fff3cd !important;
       border-left-color: #ffc107 !important;
@@ -302,33 +282,72 @@
     function mostrarDatosPerro(nombre, datos) {
       const contenedor = document.getElementById('contenido-perro');
       
-      // Mapeo de niveles de paseo a texto descriptivo
+      // Valores por defecto y formateo
+      const nombreMostrar = datos.nombre && datos.nombre.trim() !== '' ? datos.nombre.toUpperCase() : 'JOHN DOGE';
+      const edadMostrar = datos.nacimiento ? calcularEdad(datos.nacimiento) : '???';
+      const pesoMostrar = datos.peso !== null && datos.peso !== undefined ? `${datos.peso} kg` : '???';
+      
+      // Mapeo de niveles de paseo
       const nivelesPaseo = {
         0: "Pasea bien",
         1: "Miedo (gestionable)",
-        2: "Miedo (bloqueo)",
+        2: "Miedo (bloqueo)", 
         3: "Reactivo",
         4: "Tira"
       };
+      const textoPaseo = nivelesPaseo.hasOwnProperty(datos.paseo) ? nivelesPaseo[datos.paseo] : '???';
       
-      const textoPaseo = nivelesPaseo[datos.paseo] || "No especificado";
+      // Mapeo de sociable con perros
+      const sociablePerros = {
+        0: "Sí",
+        1: "Selectivo", 
+        2: "No"
+      };
+      const textoSociablePerros = sociablePerros.hasOwnProperty(datos.sociableConPerros) ? sociablePerros[datos.sociableConPerros] : '???';
+      
+      // Mapeo de sociable con personas
+      const sociablePersonas = {
+        0: "Sí",
+        1: "Selectivo",
+        2: "Mal con hombres",
+        3: "No"
+      };
+      const textoSociablePersonas = sociablePersonas.hasOwnProperty(datos.sociableConPersonas) ? sociablePersonas[datos.sociableConPersonas] : '???';
+      
+      // Estados booleanos
+      const getEstadoBooleano = (valor, textoTrue, textoFalse) => {
+        if (valor === true) return textoTrue;
+        if (valor === false) return textoFalse;
+        return '???';
+      };
+      
+      const textoReservado = getEstadoBooleano(datos.reservado, '🔒 RESERVADO', '🔓 DISPONIBLE');
+      const claseReservado = datos.reservado === true ? 'reservado-si' : 
+                            datos.reservado === false ? 'reservado-no' : '';
+      
+      const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
+      const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
+      const textoLeishmania = getEstadoBooleano(datos.leishmania, 'Sí', 'No');
       
       let html = `
         <div class="campo">
-          <div class="valor nombre-perro" style="background-color: ${colorPastel(nombre)}">${nombre.toUpperCase()}</div>
+          <div class="valor nombre-perro" style="background-color: ${colorPastel(nombreMostrar)}">${nombreMostrar}</div>
         </div>
         
         <div class="campo">
           <div class="etiqueta">Edad</div>
-          <div class="valor">${calcularEdad(datos.nacimiento)}</div>
+          <div class="valor">${edadMostrar}</div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Peso</div>
+          <div class="valor">${pesoMostrar}</div>
         </div>
         
         <div class="campo">
           <div class="etiqueta">Estado</div>
           <div class="valor">
-            <span class="estado-reservado ${datos.reservado ? 'reservado-si' : 'reservado-no'}">
-              ${datos.reservado ? '🔒 RESERVADO' : '🔓 DISPONIBLE'}
-            </span>
+            <span class="estado-reservado ${claseReservado}">${textoReservado}</span>
           </div>
         </div>
         
@@ -341,60 +360,38 @@
         
         <div class="campo">
           <div class="etiqueta">Sociable con Perros</div>
-          <div class="valor">
-            <div class="nivel">
-              <span>${datos.sociableConPerros}/5</span>
-              <div class="barra-nivel">
-                <div class="relleno-nivel" style="width: ${(datos.sociableConPerros / 5) * 100}%"></div>
-              </div>
-            </div>
-          </div>
+          <div class="valor">${textoSociablePerros}</div>
         </div>
         
         <div class="campo">
           <div class="etiqueta">Sociable con Personas</div>
-          <div class="valor">
-            <div class="nivel">
-              <span>${datos.sociableConPersonas}/5</span>
-              <div class="barra-nivel">
-                <div class="relleno-nivel" style="width: ${(datos.sociableConPersonas / 5) * 100}%"></div>
-              </div>
-            </div>
-          </div>
+          <div class="valor">${textoSociablePersonas}</div>
         </div>
         
         <div class="campo">
           <div class="etiqueta">Sociable con Gatos</div>
-          <div class="valor">
-            <div class="nivel">
-              <span>${datos.sociableConGatos}/5</span>
-              <div class="barra-nivel">
-                <div class="relleno-nivel" style="width: ${(datos.sociableConGatos / 5) * 100}%"></div>
-              </div>
-            </div>
-          </div>
+          <div class="valor">${textoSociableGatos}</div>
         </div>
         
         <div class="campo">
           <div class="etiqueta">Protección de Recursos</div>
-          <div class="valor">
-            <div class="nivel">
-              <span>${datos.proteccionDeRecursos}/5</span>
-              <div class="barra-nivel">
-                <div class="relleno-nivel" style="width: ${(datos.proteccionDeRecursos / 5) * 100}%"></div>
-              </div>
-            </div>
-          </div>
+          <div class="valor">${textoProteccionRecursos}</div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Leishmania</div>
+          <div class="valor">${textoLeishmania}</div>
         </div>
       `;
       
       // Mostrar protocolo particular solo si tiene contenido
-      if (datos.protocoloParticular !== undefined && datos.protocoloParticular !== null && datos.protocoloParticular.toString().trim() !== '') {
+      if (datos.protocoloParticular && datos.protocoloParticular.toString().trim() !== '') {
+        const protocoloFormateado = datos.protocoloParticular.replace(/\n/g, '<br>');
         html += `
-        <div class="campo">
-        <div class="etiqueta">Protocolo Particular</div>
-        <div class="valor protocolo-particular">${datos.protocoloParticular}</div>
-        </div>
+          <div class="campo">
+            <div class="etiqueta">Protocolo Particular</div>
+            <div class="valor protocolo-particular">${protocoloFormateado}</div>
+          </div>
         `;
       }
       
