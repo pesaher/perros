@@ -59,12 +59,31 @@
       }
     }
     
+    .campos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em;
+      margin-bottom: 1.5em;
+    }
+    
+    @media (max-width: 480px) {
+      .campos-grid {
+        grid-template-columns: 1fr;
+        gap: 1em;
+      }
+    }
+    
     .campo {
+      margin-bottom: 0;
+    }
+    
+    .campo-completo {
+      grid-column: 1 / -1;
       margin-bottom: 1.2em;
     }
     
     @media (max-width: 768px) {
-      .campo {
+      .campo-completo {
         margin-bottom: 1em;
       }
     }
@@ -73,6 +92,7 @@
       font-weight: bold;
       margin-bottom: 0.5em;
       color: #333;
+      font-size: 0.9em;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -87,6 +107,9 @@
       border-radius: 6px;
       border-left: 4px solid #4CAF50;
       font-size: 0.95em;
+      min-height: 2.5em;
+      display: flex;
+      align-items: center;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -99,6 +122,7 @@
       .valor {
         padding: 0.6em;
         font-size: 0.9em;
+        min-height: 2.2em;
       }
     }
     
@@ -133,6 +157,7 @@
       color: #000;
       text-align: center;
       font-size: 1.3em;
+      justify-content: center;
     }
     
     @media (max-width: 768px) {
@@ -330,65 +355,67 @@
       const textoLeishmania = getEstadoBooleano(datos.leishmania, 'Sí', 'No');
       
       let html = `
-        <div class="campo">
-          <div class="valor nombre-perro" style="background-color: ${colorPastel(nombreMostrar)}">${nombreMostrar}</div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Edad</div>
-          <div class="valor">${edadMostrar}</div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Peso</div>
-          <div class="valor">${pesoMostrar}</div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Estado</div>
-          <div class="valor">
-            <span class="estado-reservado ${claseReservado}">${textoReservado}</span>
+        <div class="campos-grid">
+          <!-- Nombre ocupa toda la fila -->
+          <div class="campo-completo">
+            <div class="valor nombre-perro" style="background-color: ${colorPastel(nombreMostrar)}">${nombreMostrar}</div>
           </div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Nivel de Paseo</div>
-          <div class="valor">
-            <strong>${textoPaseo}</strong>
+          
+          <!-- Campos en dos columnas -->
+          <div class="campo">
+            <div class="etiqueta">Edad</div>
+            <div class="valor">${edadMostrar}</div>
           </div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Sociable con Perros</div>
-          <div class="valor">${textoSociablePerros}</div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Sociable con Personas</div>
-          <div class="valor">${textoSociablePersonas}</div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Sociable con Gatos</div>
-          <div class="valor">${textoSociableGatos}</div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Protección de Recursos</div>
-          <div class="valor">${textoProteccionRecursos}</div>
-        </div>
-        
-        <div class="campo">
-          <div class="etiqueta">Leishmania</div>
-          <div class="valor">${textoLeishmania}</div>
+          
+          <div class="campo">
+            <div class="etiqueta">Peso</div>
+            <div class="valor">${pesoMostrar}</div>
+          </div>
+          
+          <div class="campo">
+            <div class="etiqueta">Estado</div>
+            <div class="valor">
+              <span class="estado-reservado ${claseReservado}">${textoReservado}</span>
+            </div>
+          </div>
+          
+          <div class="campo">
+            <div class="etiqueta">Nivel de Paseo</div>
+            <div class="valor"><strong>${textoPaseo}</strong></div>
+          </div>
+          
+          <div class="campo">
+            <div class="etiqueta">Sociable con Perros</div>
+            <div class="valor">${textoSociablePerros}</div>
+          </div>
+          
+          <div class="campo">
+            <div class="etiqueta">Sociable con Personas</div>
+            <div class="valor">${textoSociablePersonas}</div>
+          </div>
+          
+          <div class="campo">
+            <div class="etiqueta">Sociable con Gatos</div>
+            <div class="valor">${textoSociableGatos}</div>
+          </div>
+          
+          <div class="campo">
+            <div class="etiqueta">Protección de Recursos</div>
+            <div class="valor">${textoProteccionRecursos}</div>
+          </div>
+          
+          <div class="campo">
+            <div class="etiqueta">Leishmania</div>
+            <div class="valor">${textoLeishmania}</div>
+          </div>
         </div>
       `;
       
-      // Mostrar protocolo particular solo si tiene contenido
+      // Mostrar protocolo particular solo si tiene contenido (ocupa toda la fila)
       if (datos.protocoloParticular && datos.protocoloParticular.toString().trim() !== '') {
         const protocoloFormateado = datos.protocoloParticular.replace(/\n/g, '<br>');
         html += `
-          <div class="campo">
+          <div class="campo-completo">
             <div class="etiqueta">Protocolo Particular</div>
             <div class="valor protocolo-particular">${protocoloFormateado}</div>
           </div>
