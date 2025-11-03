@@ -1,0 +1,13 @@
+{
+  "nombre": "",
+  "nacimiento": "",
+  "peso": null,
+  "reservado": false,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "protocoloParticular": "",
+  "leishmania": null,
+}
