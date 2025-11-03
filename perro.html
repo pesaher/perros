@@ -214,11 +214,16 @@
       // Cargar los datos del perro
       cargarDatosPerro(nombrePerro);
     }
+    
+    function urlSinCache() {
+      const base = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`;
+      return base + '?v=' + Date.now(); // fuerza a saltar la caché
+    }
 
     async function cargarDatosPerro(nombre) {
       try {
         // URL del JSON específico del perro
-        const url = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`;
+        const url = urlSinCache();
         
         const respuesta = await fetch(url);
         
