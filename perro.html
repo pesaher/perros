@@ -464,19 +464,21 @@
             </div>
           </div>
           
-          <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-            <div class="etiqueta">Macho</div>
-            <div class="valor">
-              ${modoEdicion ? crearSelectorBooleano('macho', datos.macho) : (datos.macho === true ? 'Sí' : datos.macho === false ? 'No' : '???')}
+          ${modoEdicion ? `
+            <div class="campo campo-editable">
+              <div class="etiqueta">Sexo</div>
+              <div class="valor">
+                ${crearSelectorSexo(datos.macho)}
+              </div>
             </div>
-          </div>
-          
-          <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-            <div class="etiqueta">Reservado</div>
-            <div class="valor">
-              ${modoEdicion ? crearSelectorReservado(datos.reservado) : ''}
+            
+            <div class="campo campo-editable">
+              <div class="etiqueta">Estado</div>
+              <div class="valor">
+                ${crearSelectorReservado(datos.reservado)}
+              </div>
             </div>
-          </div>
+          ` : ''}
         </div>
       `;
       
@@ -501,12 +503,12 @@
     // Funciones para crear selectores en modo edición
     function crearSelectorPaseo(valorActual) {
       const opciones = {
-        '': '???',
         '0': 'Pasea bien',
         '1': 'Miedo (gestionable)',
         '2': 'Miedo (bloqueo)',
         '3': 'Reactivo',
-        '4': 'Tira'
+        '4': 'Tira',
+        '': '???'
       };
       
       return crearSelectorGenerico('paseo', opciones, valorActual);
@@ -514,10 +516,10 @@
 
     function crearSelectorSociablePerros(valorActual) {
       const opciones = {
-        '': '???',
         '0': 'Sí',
         '1': 'Selectivo',
-        '2': 'No'
+        '2': 'No',
+        '': '???'
       };
       
       return crearSelectorGenerico('sociableConPerros', opciones, valorActual);
@@ -525,11 +527,11 @@
 
     function crearSelectorSociablePersonas(valorActual) {
       const opciones = {
-        '': '???',
         '0': 'Sí',
         '1': 'Selectivo',
         '2': 'Mal con hombres',
-        '3': 'No'
+        '3': 'No',
+        '': '???'
       };
       
       return crearSelectorGenerico('sociableConPersonas', opciones, valorActual);
@@ -537,19 +539,28 @@
 
     function crearSelectorBooleano(nombre, valorActual) {
       const opciones = {
-        '': '???',
         'true': 'Sí',
-        'false': 'No'
+        'false': 'No',
+        '': '???'
       };
       
       return crearSelectorGenerico(nombre, opciones, valorActual);
     }
 
+    function crearSelectorSexo(valorActual) {
+      const opciones = {
+        'true': 'Macho',
+        'false': 'Hembra'
+      };
+      
+      return crearSelectorGenerico('macho', opciones, valorActual);
+    }
+
     function crearSelectorReservado(valorActual) {
       const opciones = {
         'null': '🔓 Disponible',
-        'false': '🔒 Reservado (azul)',
-        'true': '🔒 Reservado (gris)'
+        'false': '🔒 Adoptado',
+        'true': '🔒 Reservado'
       };
       
       return crearSelectorGenerico('reservado', opciones, valorActual);
