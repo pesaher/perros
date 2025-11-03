@@ -559,8 +559,8 @@
     function crearSelectorReservado(valorActual) {
       const opciones = {
         'null': '🔓 Disponible',
-        'false': '🔒 Adoptado',
-        'true': '🔒 Reservado'
+        'true': '🔒 Reservado',
+        'false': '🔒 Adoptado'
       };
       
       return crearSelectorGenerico('reservado', opciones, valorActual);
@@ -570,7 +570,9 @@
       let html = `<select name="${nombre}">`;
       
       for (const [valor, texto] of Object.entries(opciones)) {
-        const seleccionado = valor === String(valorActual) ? 'selected' : '';
+        // Convertir el valor actual a string para comparar correctamente
+        const valorActualStr = String(valorActual);
+        const seleccionado = valor === valorActualStr ? 'selected' : '';
         html += `<option value="${valor}" ${seleccionado}>${texto}</option>`;
       }
       
