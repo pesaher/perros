@@ -395,11 +395,14 @@
       // Restaurar datos originales
       datos = JSON.parse(JSON.stringify(datosOriginales));
       
+      // Limpiar instancias de Sortable antes de repintar
+      sortableInstances = [];
+      
       // Volver a pintar con los datos originales
       pintar();
       
       // Desactivar modo reordenar
-      desactivarModoReordenar();
+      desactivarModoReordenar(false);
     }
 
     function limpiarVacios() {
