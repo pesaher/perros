@@ -1,0 +1,13 @@
+{
+  "nombre": "Bandeira Dina",
+  "nacimiento": "2016-09-01",
+  "peso": 24,
+  "reservado": false,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "protocoloParticular": "",
+  "leishmania": false
+}
