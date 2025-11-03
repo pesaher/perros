@@ -303,12 +303,11 @@
               marco.className = 'marco clickable';
               marco.textContent = nombre;
               marco.style.backgroundColor = colorPastel(nombre);
-              
+
               // Agregar evento de click para los nombres
               marco.addEventListener('click', () => {
                 if (!modoReordenar) {
-                  alert(`Has hecho click en: ${nombre}`);
-                  // Aquí puedes agregar la funcionalidad que quieras al hacer click
+                  window.location.href = `perro.html?nombre=${encodeURIComponent(nombre)}`;
                 }
               });
               
