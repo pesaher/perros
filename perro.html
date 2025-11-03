@@ -166,7 +166,7 @@
     async function cargarDatosPerro(nombre) {
       try {
         // URL del JSON específico del perro
-        const url = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre.toLowerCase())}.json`;
+        const url = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`;
         
         const respuesta = await fetch(url);
         
