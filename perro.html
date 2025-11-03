@@ -215,7 +215,7 @@
       cargarDatosPerro(nombrePerro);
     }
     
-    function urlSinCache() {
+    function urlSinCache(nombre) {
       const base = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`;
       return base + '?v=' + Date.now(); // fuerza a saltar la caché
     }
@@ -223,7 +223,7 @@
     async function cargarDatosPerro(nombre) {
       try {
         // URL del JSON específico del perro
-        const url = urlSinCache();
+        const url = urlSinCache(nombre);
         
         const respuesta = await fetch(url);
         
