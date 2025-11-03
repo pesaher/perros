@@ -2,18 +2,32 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ficha del Perro 🐾</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
       background: #f7f7f7;
-      margin: 2em;
+      margin: 1em;
       color: #333;
+      font-size: 16px;
     }
     @media (prefers-color-scheme: dark) {
       body {
         background: #1a1a1a;
         color: #e0e0e0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        margin: 0.5em;
+        font-size: 14px;
+      }
+      
+      h1 {
+        font-size: 1.5em;
+        margin-bottom: 1em;
       }
     }
     
@@ -28,7 +42,7 @@
       background: white;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 2em;
+      padding: 1.5em;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -38,8 +52,21 @@
       }
     }
     
+    @media (max-width: 768px) {
+      .contenedor-perro {
+        padding: 1em;
+        margin: 0.5em auto;
+      }
+    }
+    
     .campo {
-      margin-bottom: 1.5em;
+      margin-bottom: 1.2em;
+    }
+    
+    @media (max-width: 768px) {
+      .campo {
+        margin-bottom: 1em;
+      }
     }
     
     .etiqueta {
@@ -55,15 +82,23 @@
     }
     
     .valor {
-      padding: 0.8em;
+      padding: 0.7em;
       background: #f9f9f9;
       border-radius: 6px;
       border-left: 4px solid #4CAF50;
+      font-size: 0.95em;
     }
     
     @media (prefers-color-scheme: dark) {
       .valor {
         background: #3a3a3a;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .valor {
+        padding: 0.6em;
+        font-size: 0.9em;
       }
     }
     
@@ -75,6 +110,17 @@
       padding: 0.6em 1.2em;
       border-radius: 5px;
       margin-top: 1em;
+      font-size: 0.95em;
+    }
+    
+    @media (max-width: 768px) {
+      .boton-volver {
+        padding: 0.5em 1em;
+        font-size: 0.9em;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+      }
     }
     
     .boton-volver:hover {
@@ -87,6 +133,12 @@
       color: #000;
       text-align: center;
       font-size: 1.3em;
+    }
+    
+    @media (max-width: 768px) {
+      .nombre-perro {
+        font-size: 1.1em;
+      }
     }
     
     .estado-reservado {
@@ -243,106 +295,106 @@
     }
 
     function mostrarDatosPerro(nombre, datos) {
-  const contenedor = document.getElementById('contenido-perro');
-  
-  // Mapeo de niveles de paseo a texto descriptivo
-  const nivelesPaseo = {
-    0: "Pasea bien",
-    1: "Miedo (gestionable)",
-    2: "Miedo (bloqueo)",
-    3: "Reactivo",
-    4: "Tira"
-  };
-  
-  const textoPaseo = nivelesPaseo[datos.paseo] || "No especificado";
-  
-  let html = `
-    <div class="campo">
-      <div class="valor nombre-perro" style="background-color: ${colorPastel(nombre)}">${nombre.toUpperCase()}</div>
-    </div>
-    
-    <div class="campo">
-      <div class="etiqueta">Edad</div>
-      <div class="valor">${calcularEdad(datos.nacimiento)}</div>
-    </div>
-    
-    <div class="campo">
-      <div class="etiqueta">Estado</div>
-      <div class="valor">
-        <span class="estado-reservado ${datos.reservado ? 'reservado-si' : 'reservado-no'}">
-          ${datos.reservado ? '🔒 RESERVADO' : '🔓 DISPONIBLE'}
-        </span>
-      </div>
-    </div>
-    
-    <div class="campo">
-      <div class="etiqueta">Nivel de Paseo</div>
-      <div class="valor">
-        <strong>${textoPaseo}</strong>
-      </div>
-    </div>
-    
-    <div class="campo">
-      <div class="etiqueta">Sociable con Perros</div>
-      <div class="valor">
-        <div class="nivel">
-          <span>${datos.sociableConPerros}/5</span>
-          <div class="barra-nivel">
-            <div class="relleno-nivel" style="width: ${(datos.sociableConPerros / 5) * 100}%"></div>
+      const contenedor = document.getElementById('contenido-perro');
+      
+      // Mapeo de niveles de paseo a texto descriptivo
+      const nivelesPaseo = {
+        0: "Pasea bien",
+        1: "Miedo (gestionable)",
+        2: "Miedo (bloqueo)",
+        3: "Reactivo",
+        4: "Tira"
+      };
+      
+      const textoPaseo = nivelesPaseo[datos.paseo] || "No especificado";
+      
+      let html = `
+        <div class="campo">
+          <div class="valor nombre-perro" style="background-color: ${colorPastel(nombre)}">${nombre.toUpperCase()}</div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Edad</div>
+          <div class="valor">${calcularEdad(datos.nacimiento)}</div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Estado</div>
+          <div class="valor">
+            <span class="estado-reservado ${datos.reservado ? 'reservado-si' : 'reservado-no'}">
+              ${datos.reservado ? '🔒 RESERVADO' : '🔓 DISPONIBLE'}
+            </span>
           </div>
         </div>
-      </div>
-    </div>
-    
-    <div class="campo">
-      <div class="etiqueta">Sociable con Personas</div>
-      <div class="valor">
-        <div class="nivel">
-          <span>${datos.sociableConPersonas}/5</span>
-          <div class="barra-nivel">
-            <div class="relleno-nivel" style="width: ${(datos.sociableConPersonas / 5) * 100}%"></div>
+        
+        <div class="campo">
+          <div class="etiqueta">Nivel de Paseo</div>
+          <div class="valor">
+            <strong>${textoPaseo}</strong>
           </div>
         </div>
-      </div>
-    </div>
-    
-    <div class="campo">
-      <div class="etiqueta">Sociable con Gatos</div>
-      <div class="valor">
-        <div class="nivel">
-          <span>${datos.sociableConGatos}/5</span>
-          <div class="barra-nivel">
-            <div class="relleno-nivel" style="width: ${(datos.sociableConGatos / 5) * 100}%"></div>
+        
+        <div class="campo">
+          <div class="etiqueta">Sociable con Perros</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.sociableConPerros}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.sociableConPerros / 5) * 100}%"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    
-    <div class="campo">
-      <div class="etiqueta">Protección de Recursos</div>
-      <div class="valor">
-        <div class="nivel">
-          <span>${datos.proteccionDeRecursos}/5</span>
-          <div class="barra-nivel">
-            <div class="relleno-nivel" style="width: ${(datos.proteccionDeRecursos / 5) * 100}%"></div>
+        
+        <div class="campo">
+          <div class="etiqueta">Sociable con Personas</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.sociableConPersonas}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.sociableConPersonas / 5) * 100}%"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  `;
-  
-  // Mostrar protocolo particular solo si tiene contenido
-  if (datos.protocoloParticular && datos.protocoloParticular.trim() !== '') {
-    html += `
-      <div class="campo">
-        <div class="etiqueta">Protocolo Particular</div>
-        <div class="valor protocolo-particular">${datos.protocoloParticular}</div>
-      </div>
-    `;
-  }
-  
-  contenedor.innerHTML = html;
-}
+        
+        <div class="campo">
+          <div class="etiqueta">Sociable con Gatos</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.sociableConGatos}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.sociableConGatos / 5) * 100}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="campo">
+          <div class="etiqueta">Protección de Recursos</div>
+          <div class="valor">
+            <div class="nivel">
+              <span>${datos.proteccionDeRecursos}/5</span>
+              <div class="barra-nivel">
+                <div class="relleno-nivel" style="width: ${(datos.proteccionDeRecursos / 5) * 100}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Mostrar protocolo particular solo si tiene contenido
+      if (datos.protocoloParticular && datos.protocoloParticular.trim() !== '') {
+        html += `
+          <div class="campo">
+            <div class="etiqueta">Protocolo Particular</div>
+            <div class="valor protocolo-particular">${datos.protocoloParticular}</div>
+          </div>
+        `;
+      }
+      
+      contenedor.innerHTML = html;
+    }
 
     // La misma función de color pastel para consistencia
     function colorPastel(nombre) {
