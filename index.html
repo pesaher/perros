@@ -2,17 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cheniles 🐾</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
       background: #f7f7f7;
-      margin: 2em;
+      margin: 1em;
+      color: #333;
+      font-size: 16px;
     }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1a1a;
+        color: #e0e0e0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        margin: 0.5em;
+        font-size: 14px;
+      }
+      
+      h1 {
+        font-size: 1.5em;
+        margin-bottom: 1em;
+      }
+    }
+    
     h1 {
       text-align: center;
       margin-bottom: 1.5em;
     }
+    
     #botones {
       text-align: center;
       margin-bottom: 1.5em;
@@ -20,6 +43,7 @@
       justify-content: center;
       gap: 1em;
     }
+    
     button {
       background: #4CAF50;
       color: white;
@@ -29,15 +53,18 @@
       cursor: pointer;
       font-size: 1em;
     }
+    
     button:hover {
       background: #43A047;
     }
+    
     #contenedor {
       display: flex;
       flex-wrap: wrap;
       gap: 1em;
       justify-content: center;
     }
+    
     .chenil {
       background: white;
       border-radius: 10px;
@@ -49,10 +76,40 @@
       align-items: stretch;
       transition: 0.2s;
     }
+    
+    @media (prefers-color-scheme: dark) {
+      .chenil {
+        background: #2d2d2d;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .chenil {
+        width: calc(50% - 1em);
+        min-width: 140px;
+        padding: 0.8em;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .chenil {
+        width: 100%;
+        min-width: auto;
+      }
+    }
+    
     .chenil:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
+    
+    @media (prefers-color-scheme: dark) {
+      .chenil:hover {
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      }
+    }
+    
     .titulo {
       font-weight: 700;
       text-align: center;
@@ -61,6 +118,13 @@
       color: #333;
       text-transform: capitalize;
     }
+    
+    @media (prefers-color-scheme: dark) {
+      .titulo {
+        color: #e0e0e0;
+      }
+    }
+    
     .contenedor-marcos {
       display: flex;
       flex-direction: column;
@@ -72,9 +136,23 @@
       position: relative;
       transition: background 0.3s;
     }
+    
+    @media (prefers-color-scheme: dark) {
+      .contenedor-marcos {
+        border-color: #555;
+      }
+    }
+    
     .contenedor-marcos.vacio {
       background: #eee;
     }
+    
+    @media (prefers-color-scheme: dark) {
+      .contenedor-marcos.vacio {
+        background: #3a3a3a;
+      }
+    }
+    
     .mensaje-vacio {
       color: #888;
       font-style: italic;
@@ -82,6 +160,13 @@
       font-size: 0.9em;
       pointer-events: none;
     }
+    
+    @media (prefers-color-scheme: dark) {
+      .mensaje-vacio {
+        color: #aaa;
+      }
+    }
+    
     .marco {
       padding: 0.5em 0.6em;
       border-radius: 6px;
@@ -92,39 +177,135 @@
       font-size: 1.05em;
       text-transform: uppercase;
       color: #333;
+      /* Forzar que el color de texto sea oscuro para buena legibilidad */
+      color: #000 !important;
     }
+    
+    @media (max-width: 768px) {
+      .marco {
+        padding: 0.4em 0.5em;
+        font-size: 0.95em;
+      }
+    }
+    
     .marco:active {
       cursor: grabbing;
+    }
+    
+    /* Estilos para el modo clickable */
+    .marco.clickable {
+      cursor: pointer;
+    }
+    
+    .marco.clickable:hover {
+      opacity: 0.8;
+      transform: scale(1.02);
+      transition: transform 0.2s;
+    }
+    
+    /* Botones flotantes */
+    .botones-flotantes {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1000;
+    }
+    
+    @media (max-width: 768px) {
+      .botones-flotantes {
+        top: 5px;
+        right: 5px;
+      }
+    }
+    
+    .boton-flotante {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+      /* Forzar colores específicos que no cambien con el modo oscuro */
+      background: #2196F3 !important;
+      color: white !important;
+    }
+    
+    @media (max-width: 768px) {
+      .boton-flotante {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1em;
+      }
+    }
+    
+    .boton-flotante:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    
+    .boton-reordenar {
+      background: #2196F3;
+      color: white;
+    }
+    
+    .boton-guardar {
+      background: #4CAF50 !important;
+      color: white !important;
+    }
+    
+    .boton-cancelar {
+      background: #f44336 !important;
+      color: white !important;
+    }
+    
+    /* Estado deshabilitado para sortable */
+    .sortable-disabled .marco {
+      cursor: default !important;
+    }
+    
+    .sortable-disabled .marco:active {
+      cursor: default !important;
     }
   </style>
 </head>
 <body>
   <h1>Cheniles 🐾</h1>
-  <div id="botones">
-    <button id="actualizar">💾</button>
-  </div>
   <div id="contenedor"></div>
+
+  <div class="botones-flotantes" id="botonesFlotantes">
+    <button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
   <script>
+    // Variables globales
+    let datos = {};
+    let sortableInstances = [];
+    let modoReordenar = false;
+    let datosOriginales = {}; // Para guardar el estado original al cancelar
+
     function urlSinCache() {
       const base = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json';
-      return base + '?token=' + GITHUB_TOKEN + '&v=' + Date.now(); // fuerza a saltar la caché
+      return base + '?v=' + Date.now(); // fuerza a saltar la caché
     }
-    let datos = {};
 
     async function cargar() {
       const resp = await fetch(urlSinCache());
       datos = await resp.json();
 
-      const guardado = localStorage.getItem('chenilesDrag');
-      if (guardado) datos = JSON.parse(guardado);
-
       pintar();
     }
 
-    // Colores pastel agradables basados en el nombre
+    // Colores pastel agradables basados en el nombre - MANTENIENDO COLORES ORIGINALES
     function colorPastel(nombre) {
       let hash = 0;
       for (let i = 0; i < nombre.length; i++) {
@@ -167,12 +348,27 @@
           vacio.textContent = '(vacío)';
           zona.appendChild(vacio);
         } else {
-          perros.forEach(nombre => {
-            if (nombre && nombre.trim() !== '') {
+          perros.forEach(nombreOriginal => {
+            if (nombreOriginal && nombreOriginal.trim() !== '') {
               const marco = document.createElement('div');
-              marco.className = 'marco';
-              marco.textContent = nombre;
-              marco.style.backgroundColor = colorPastel(nombre);
+              marco.className = 'marco clickable';
+              
+              // Guardar el nombre original en un atributo data
+              marco.dataset.nombreOriginal = nombreOriginal;
+              
+              // Mostrar en uppercase
+              marco.textContent = nombreOriginal.toUpperCase();
+              
+              marco.style.backgroundColor = colorPastel(nombreOriginal);
+              
+              // Agregar evento de click para los nombres
+              marco.addEventListener('click', () => {
+                if (!modoReordenar) {
+                  // Usar el nombre original (camelCase) para la redirección
+                  window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}`;
+                }
+              });
+              
               zona.appendChild(marco);
             }
           });
@@ -181,15 +377,89 @@
         caja.appendChild(zona);
         contenedor.appendChild(caja);
 
-        new Sortable(zona, {
+        // Crear instancia de Sortable pero deshabilitada inicialmente
+        const sortable = new Sortable(zona, {
           group: 'cheniles',
           animation: 150,
+          disabled: true, // Deshabilitado por defecto
           onEnd: () => {
             limpiarVacios();
             actualizarDatos();
           }
         });
+        
+        sortableInstances.push(sortable);
       });
+    }
+
+    function activarModoReordenar() {
+      modoReordenar = true;
+      
+      // Guardar estado original para posible cancelación
+      datosOriginales = JSON.parse(JSON.stringify(datos));
+      
+      // Activar todas las instancias de Sortable
+      sortableInstances.forEach(sortable => {
+        sortable.option("disabled", false);
+      });
+      
+      // Cambiar cursores y clases
+      document.querySelectorAll('.marco').forEach(marco => {
+        marco.classList.remove('clickable');
+        marco.style.cursor = 'grab';
+      });
+      
+      // Actualizar botones flotantes
+      const botonesFlotantes = document.getElementById('botonesFlotantes');
+      botonesFlotantes.innerHTML = `
+        <button class="boton-flotante boton-guardar" id="btnGuardar">✓</button>
+        <button class="boton-flotante boton-cancelar" id="btnCancelar">✗</button>
+      `;
+      
+      // Agregar eventos a los nuevos botones
+      document.getElementById('btnGuardar').addEventListener('click', () => desactivarModoReordenar(true));
+      document.getElementById('btnCancelar').addEventListener('click', cancelarReordenar);
+    }
+
+    function desactivarModoReordenar(guardarEnGitHub = false) {
+      modoReordenar = false;
+      
+      // Desactivar todas las instancias de Sortable
+      sortableInstances.forEach(sortable => {
+        sortable.option("disabled", true);
+      });
+      
+      // Restaurar cursores y clases
+      document.querySelectorAll('.marco').forEach(marco => {
+        marco.classList.add('clickable');
+        marco.style.cursor = 'pointer';
+      });
+      
+      // Actualizar botones flotantes
+      const botonesFlotantes = document.getElementById('botonesFlotantes');
+      botonesFlotantes.innerHTML = `<button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>`;
+      
+      // Agregar evento al botón de reordenar
+      document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
+      
+      // Guardar cambios en GitHub solo si se especifica
+      if (guardarEnGitHub) {
+        pushToGithub();
+      }
+    }
+    
+    function cancelarReordenar() {
+      // Restaurar datos originales
+      datos = JSON.parse(JSON.stringify(datosOriginales));
+      
+      // Limpiar instancias de Sortable antes de repintar
+      sortableInstances = [];
+      
+      // Volver a pintar con los datos originales
+      pintar();
+      
+      // Desactivar modo reordenar sin guardar
+      desactivarModoReordenar(false);
     }
 
     function limpiarVacios() {
@@ -215,7 +485,7 @@
       const nuevo = {};
       document.querySelectorAll('.contenedor-marcos').forEach(zona => {
         const chenil = zona.dataset.chenil;
-        const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.textContent);
+        const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.dataset.nombreOriginal);
         nuevo[chenil] = perros.length ? perros : [""];
       });
       datos = nuevo;
@@ -236,7 +506,8 @@
       }
     }
 
-    document.getElementById('actualizar').addEventListener('click', pushToGithub);
+    // Inicialización
+    document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
 
     cargar();
   </script>
