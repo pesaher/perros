@@ -254,9 +254,6 @@
       const resp = await fetch(urlSinCache());
       datos = await resp.json();
 
-      const guardado = localStorage.getItem('chenilesDrag');
-      if (guardado) datos = JSON.parse(guardado);
-
       pintar();
     }
 
