@@ -1,7 +1,9 @@
 {
   "nombre": "Pezuelo",
   "nacimiento": "2022",
+  "macho": true,
   "peso": 40,
+  "altura": null,
   "reservado": true,
   "paseo": 0,
   "sociableConPerros": 0,
