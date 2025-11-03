@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ficha del Perro 🐾</title>
+  <title>Perro 🐾</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -24,16 +24,6 @@
         margin: 0.5em;
         font-size: 14px;
       }
-      
-      h1 {
-        font-size: 1.5em;
-        margin-bottom: 1em;
-      }
-    }
-    
-    h1 {
-      text-align: center;
-      margin-bottom: 1.5em;
     }
     
     .contenedor-perro {
@@ -198,8 +188,6 @@
   </style>
 </head>
 <body>
-  <h1>Ficha del Perro 🐾</h1>
-  
   <div class="contenedor-perro">
     <div id="contenido-perro">
       <!-- Aquí se cargarán los datos dinámicamente -->
@@ -237,6 +225,11 @@
         }
         
         const datosPerro = await respuesta.json();
+        
+        // Actualizar el título de la pestaña con el nombre del perro
+        const nombreMostrar = datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE';
+        document.title = `${nombreMostrar} 🐾`;
+        
         mostrarDatosPerro(nombre, datosPerro);
         
       } catch (error) {
