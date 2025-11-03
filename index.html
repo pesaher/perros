@@ -227,9 +227,6 @@
 </head>
 <body>
   <h1>Cheniles 🐾</h1>
-  <div id="botones">
-    <button id="actualizar">💾</button>
-  </div>
   <div id="contenedor"></div>
 
   <div class="botones-flotantes" id="botonesFlotantes">
@@ -389,6 +386,9 @@
       
       // Agregar evento al botón de reordenar
       document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
+
+      // Guardar cambios en GitHub
+      pushToGithub();
     }
 
     function cancelarReordenar() {
@@ -447,7 +447,6 @@
     }
 
     // Inicialización
-    document.getElementById('actualizar').addEventListener('click', pushToGithub);
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
 
     cargar();
