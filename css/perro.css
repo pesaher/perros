@@ -180,43 +180,61 @@
   font-family: inherit;
 }
 
-/* SOLUCIÓN COMPLETA: Forzar display block para TODOS los protocolos y observaciones */
+/* Mejor manejo de listas y contenido inline */
 .protocolo-particular {
     display: block !important;
     align-items: normal !important;
     min-height: auto !important;
     flex-direction: column !important;
     white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
 }
 
-/* Asegurar que todo el contenido interno sea en bloque */
-.protocolo-particular > *,
-.protocolo-particular br,
-.protocolo-particular strong,
-.protocolo-particular em {
+/* Solo elementos de bloque deben ser display: block */
+.protocolo-particular > ul,
+.protocolo-particular > ol,
+.protocolo-particular > p {
     display: block !important;
     width: 100% !important;
-    float: none !important;
+    margin: 0.5em 0 !important;
 }
 
-/* Estilos específicos para listas en protocolos */
+/* Los elementos inline (strong, em, br, texto) mantienen su comportamiento natural */
+.protocolo-particular strong,
+.protocolo-particular em,
+.protocolo-particular br {
+    display: inline !important;
+    width: auto !important;
+}
+
+/* Listas específicas */
 .protocolo-particular ul,
 .protocolo-particular ol {
-    display: block !important;
-    margin: 0.5em 0 !important;
     padding-left: 1.5em !important;
-    width: 100% !important;
 }
 
 .protocolo-particular li {
     display: list-item !important;
     margin-bottom: 0.3em !important;
-    width: 100% !important;
+    width: auto !important;
 }
 
-/* Mantener los textareas en modo edición como bloque pero sin forzar display block */
+/* Elementos de lista con sub-listas */
+.protocolo-particular li ul,
+.protocolo-particular li ol {
+    margin-top: 0.3em !important;
+    margin-bottom: 0.3em !important;
+}
+
+/* Mantener textareas en modo edición */
 .campo-editable .protocolo-particular {
-    display: flex !important; /* Los textareas en edición SÍ necesitan flex */
+    display: flex !important;
+}
+
+.campo-editable .protocolo-particular textarea {
+    display: block !important;
+    width: 100% !important;
 }
 
 .campo-editable .protocolo-particular textarea {
