@@ -180,7 +180,6 @@
   font-family: inherit;
 }
 
-/* Mejor manejo de listas y contenido inline */
 .protocolo-particular {
     display: block !important;
     align-items: normal !important;
@@ -191,24 +190,26 @@
     word-wrap: break-word !important;
 }
 
-/* Solo elementos de bloque deben ser display: block */
-.protocolo-particular > ul,
-.protocolo-particular > ol,
-.protocolo-particular > p {
+/* Reset completo para elementos inline - comportamiento natural */
+.protocolo-particular strong,
+.protocolo-particular em,
+.protocolo-particular br,
+.protocolo-particular span {
+    display: inline !important;
+    width: auto !important;
+    float: none !important;
+}
+
+/* Solo elementos de bloque específicos */
+.protocolo-particular ul,
+.protocolo-particular ol,
+.protocolo-particular p {
     display: block !important;
     width: 100% !important;
     margin: 0.5em 0 !important;
 }
 
-/* Los elementos inline (strong, em, br, texto) mantienen su comportamiento natural */
-.protocolo-particular strong,
-.protocolo-particular em,
-.protocolo-particular br {
-    display: inline !important;
-    width: auto !important;
-}
-
-/* Listas específicas */
+/* Listas y items de lista */
 .protocolo-particular ul,
 .protocolo-particular ol {
     padding-left: 1.5em !important;
@@ -217,24 +218,18 @@
 .protocolo-particular li {
     display: list-item !important;
     margin-bottom: 0.3em !important;
-    width: auto !important;
+    width: 100% !important; /* Los li SÍ deben ocupar ancho completo */
 }
 
-/* Elementos de lista con sub-listas */
-.protocolo-particular li ul,
-.protocolo-particular li ol {
-    margin-top: 0.3em !important;
-    margin-bottom: 0.3em !important;
+/* Texto antes/después de strong en la misma línea */
+.protocolo-particular li strong {
+    display: inline !important;
+    width: auto !important;
 }
 
 /* Mantener textareas en modo edición */
 .campo-editable .protocolo-particular {
     display: flex !important;
-}
-
-.campo-editable .protocolo-particular textarea {
-    display: block !important;
-    width: 100% !important;
 }
 
 .campo-editable .protocolo-particular textarea {
