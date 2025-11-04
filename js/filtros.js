@@ -57,10 +57,12 @@ function aplicarFiltros(nombrePerro) {
                 if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura > valor) return false;
                 break;
             case 'edadMin':
-                if (edadEnAños === null || edadEnAños < valor) return false;
+                if (edadEnAños === null) return false;
+                if (Math.floor(edadEnAños) < valor) return false;
                 break;
             case 'edadMax':
-                if (edadEnAños === null || edadEnAños > valor) return false;
+                if (edadEnAños === null) return false;
+                if (Math.floor(edadEnAños) > valor) return false;
                 break;
         }
     }
