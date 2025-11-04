@@ -214,7 +214,8 @@ function crearSelectorBooleano(nombre, valorActual) {
 function crearSelectorSexo(valorActual) {
     const opciones = {
         'true': 'Macho',
-        'false': 'Hembra'
+        'false': 'Hembra',
+        '': '???'
     };
     
     return crearSelectorGenerico('macho', opciones, valorActual);
@@ -224,12 +225,14 @@ function crearSelectorReservado(valorActual) {
     const opciones = {
         'null': '🔓 Disponible',
         'true': '🔒 Reservado',
-        'false': '🔒 Adoptado'
+        'false': '🔒 Adoptado',
+        '': '???'
     };
     
     return crearSelectorGenerico('reservado', opciones, valorActual);
 }
 
+// Función para crear selector de problemas de salud
 function crearSelectorProblemasSalud(valorActual) {
     // Convertir valorActual a array si es necesario (para compatibilidad con el viejo sistema booleano)
     let problemasArray = [];
