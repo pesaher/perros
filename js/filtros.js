@@ -144,6 +144,7 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('0') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
                     <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('1') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
                     <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('2') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
+                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('3') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="3">No sabe</div>
                 </div>
             </div>
             
