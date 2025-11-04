@@ -11,6 +11,7 @@
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
   "chip": false,
+  "PPP": false,
   "problemasDeSalud": [],
   "observacionesExtra": "",
   "protocoloParticular": ""
