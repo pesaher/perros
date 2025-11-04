@@ -571,7 +571,15 @@
       
       for (const [valor, texto] of Object.entries(opciones)) {
         // Convertir el valor actual a string para comparar correctamente
-        const valorActualStr = String(valorActual);
+        let valorActualStr;
+        
+        if (valorActual === null || valorActual === undefined) {
+          // Si el valor actual es null/undefined, seleccionar la opción "???" (valor vacío)
+          valorActualStr = '';
+        } else {
+          valorActualStr = String(valorActual);
+        }
+        
         const seleccionado = valor === valorActualStr ? 'selected' : '';
         html += `<option value="${valor}" ${seleccionado}>${texto}</option>`;
       }
