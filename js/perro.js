@@ -198,6 +198,26 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 </div>
             </div>
             
+            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+                <div class="etiqueta">Chip</div>
+                <div class="valor">
+                    ${modoEdicion ? 
+                      crearSelectorChip(datos.chip) : 
+                      (datos.chip === true ? '✅ Sí' : datos.chip === false ? '❌ No' : '???')
+                    }
+                </div>
+            </div>
+            
+            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+                <div class="etiqueta">PPP</div>
+                <div class="valor">
+                    ${modoEdicion ? 
+                      crearSelectorPPP(datos.ppp) : 
+                      (datos.ppp === true ? '✅ Sí' : datos.ppp === false ? '❌ No' : '???')
+                    }
+                </div>
+            </div>
+            
             ${modoEdicion ? `
                 <div class="campo campo-editable">
                     <div class="etiqueta">Sexo</div>
@@ -367,6 +387,10 @@ function guardarCambios() {
                                         formData.get('sociableConGatos') === 'false' ? false : null;
     datosActualizados.proteccionDeRecursos = formData.get('proteccionDeRecursos') === 'true' ? true : 
                                             formData.get('proteccionDeRecursos') === 'false' ? false : null;
+    datosActualizados.chip = formData.get('chip') === 'true' ? true : 
+                        formData.get('chip') === 'false' ? false : false; // Por defecto false si no hay valor
+    datosActualizados.ppp = formData.get('ppp') === 'true' ? true : 
+                       formData.get('ppp') === 'false' ? false : null;
     datosActualizados.macho = formData.get('macho') === 'true' ? true : 
                              formData.get('macho') === 'false' ? false : null;
     datosActualizados.reservado = formData.get('reservado') === 'null' ? null : 
