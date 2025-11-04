@@ -81,8 +81,10 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const textoPaseo = nivelesPaseo.hasOwnProperty(datos.paseo) ? nivelesPaseo[datos.paseo] : '???';
     const textoSociablePerros = sociablePerros.hasOwnProperty(datos.sociableConPerros) ? sociablePerros[datos.sociableConPerros] : '???';
     const textoSociablePersonas = sociablePersonas.hasOwnProperty(datos.sociableConPersonas) ? sociablePersonas[datos.sociableConPersonas] : '???';
-    const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
-    const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
+    const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, '✅ Sí', '❌ No');
+    const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, '✅ Sí', '❌ No');
+    const textoChip = getEstadoBooleano(datos.chip, '✅ Sí', '❌ No');
+    const textoPPP = getEstadoBooleano(datos.ppp, '✅ Sí', '❌ No');
     
     // Problemas de salud
     const textoProblemasSalud = Array.isArray(datos.problemasDeSalud) && datos.problemasDeSalud.length > 0 
@@ -201,19 +203,14 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Chip</div>
                 <div class="valor">
-                    ${modoEdicion ? 
-                      crearSelectorChip(datos.chip) : 
-                      (datos.chip === true ? '✅ Sí' : datos.chip === false ? '❌ No' : '???')
-                    }
+                    ${modoEdicion ? crearSelectorBooleano(datos.chip) : textoChip}
                 </div>
             </div>
             
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">PPP</div>
                 <div class="valor">
-                    ${modoEdicion ? 
-                      crearSelectorPPP(datos.ppp) : 
-                      (datos.ppp === true ? '✅ Sí' : datos.ppp === false ? '❌ No' : '???')
+                    ${modoEdicion ? crearSelectorBooleano(datos.ppp) : textoPPP}
                     }
                 </div>
             </div>
