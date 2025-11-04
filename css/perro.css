@@ -179,3 +179,47 @@
   resize: vertical;
   font-family: inherit;
 }
+
+/* SOLUCIÓN COMPLETA: Forzar display block para TODOS los protocolos y observaciones */
+.protocolo-particular {
+    display: block !important;
+    align-items: normal !important;
+    min-height: auto !important;
+    flex-direction: column !important;
+    white-space: normal !important;
+}
+
+/* Asegurar que todo el contenido interno sea en bloque */
+.protocolo-particular > *,
+.protocolo-particular br,
+.protocolo-particular strong,
+.protocolo-particular em {
+    display: block !important;
+    width: 100% !important;
+    float: none !important;
+}
+
+/* Estilos específicos para listas en protocolos */
+.protocolo-particular ul,
+.protocolo-particular ol {
+    display: block !important;
+    margin: 0.5em 0 !important;
+    padding-left: 1.5em !important;
+    width: 100% !important;
+}
+
+.protocolo-particular li {
+    display: list-item !important;
+    margin-bottom: 0.3em !important;
+    width: 100% !important;
+}
+
+/* Mantener los textareas en modo edición como bloque pero sin forzar display block */
+.campo-editable .protocolo-particular {
+    display: flex !important; /* Los textareas en edición SÍ necesitan flex */
+}
+
+.campo-editable .protocolo-particular textarea {
+    display: block !important;
+    width: 100% !important;
+}
