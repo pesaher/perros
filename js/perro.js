@@ -84,17 +84,13 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
     const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
     
-    // Problemas de salud - con compatibilidad para el viejo formato booleano
-    let textoProblemasSalud = 'Ninguno';
-    if (Array.isArray(datos.leishmania) && datos.leishmania.length > 0) {
-        textoProblemasSalud = datos.leishmania.map(id => {
+    // Problemas de salud
+    const textoProblemasSalud = Array.isArray(datos.problemasDeSalud) && datos.problemasDeSalud.length > 0 
+        ? datos.problemasDeSalud.map(id => {
             const problemas = ['Leishmania', 'Erlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
             return problemas[id] || 'Desconocido';
-        }).join(', ');
-    } else if (datos.leishmania === true) {
-        // Compatibilidad con el viejo formato booleano
-        textoProblemasSalud = 'Leishmania';
-    }
+        }).join(', ')
+        : 'Ninguno';
     
     // Valores por defecto y formateo
     const nombreMostrar = datos.nombre && datos.nombre.trim() !== '' ? datos.nombre.toUpperCase() : 'JOHN DOGE';
@@ -224,9 +220,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <div class="etiqueta">Problemas de Salud</div>
             <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
                 ${modoEdicion ? 
-                  (typeof crearSelectorProblemasSalud === 'function' ? 
-                   crearSelectorProblemasSalud(datos.leishmania) : 
-                   'Error: Función no disponible') : 
+                  crearSelectorProblemasSalud(datos.problemasDeSalud) : 
                   textoProblemasSalud
                 }
             </div>
@@ -384,7 +378,7 @@ function guardarCambios() {
     document.querySelectorAll('input[name="problemasSalud"]:checked').forEach(checkbox => {
         problemasSaludSeleccionados.push(parseInt(checkbox.value));
     });
-    datosActualizados.leishmania = problemasSaludSeleccionados;
+    datosActualizados.problemasDeSalud = problemasSaludSeleccionados;
     
     // Actualizar y salir del modo edición
     datosOriginales = datosActualizados;
