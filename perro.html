@@ -482,6 +482,21 @@
         </div>
       `;
       
+      // Observaciones Extra - NUEVO CAMPO
+      if (modoEdicion || (datos.observacionesExtra && datos.observacionesExtra.toString().trim() !== '')) {
+        html += `
+          <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
+            <div class="etiqueta">Observaciones Extra</div>
+            <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
+              ${modoEdicion ? 
+                `<textarea placeholder="Observaciones extra...">${datos.observacionesExtra || ''}</textarea>` : 
+                datos.observacionesExtra.replace(/\n/g, '<br>')
+              }
+            </div>
+          </div>
+        `;
+      }
+
       // Protocolo particular
       if (modoEdicion || (datos.protocoloParticular && datos.protocoloParticular.toString().trim() !== '')) {
         html += `
@@ -631,7 +646,8 @@
         parseInt(document.querySelector('input[placeholder*="Peso"]').value) : null;
       datosActualizados.altura = document.querySelector('input[placeholder*="Altura"]')?.value ? 
         parseInt(document.querySelector('input[placeholder*="Altura"]').value) : null;
-      datosActualizados.protocoloParticular = document.querySelector('textarea')?.value || '';
+      datosActualizados.protocoloParticular = document.querySelector('textarea[placeholder*="Protocolo particular"]')?.value || '';
+      datosActualizados.observacionesExtra = document.querySelector('textarea[placeholder*="Observaciones extra"]')?.value || '';
       
       // Procesar selectores
       datosActualizados.paseo = formData.get('paseo') ? parseInt(formData.get('paseo')) : null;
