@@ -99,9 +99,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Edad (años)</div>
                 <div class="rango-filtro">
-                    <input type="number" class="input-rango" id="edadMin" placeholder="Mín" value="${filtrosActivos.edadMin || ''}" step="0.1" min="0">
+                    <input type="number" class="input-rango" id="edadMin" placeholder="Mín" value="${filtrosActivos.edadMin || ''}" step="1" min="0">
                     <span class="separador-rango">a</span>
-                    <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax || ''}" step="0.1" min="0">
+                    <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax || ''}" step="1" min="0">
                 </div>
             </div>
             
@@ -109,9 +109,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Peso (kg)</div>
                 <div class="rango-filtro">
-                    <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin || ''}" step="0.1" min="0">
+                    <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin || ''}" step="1" min="0">
                     <span class="separador-rango">a</span>
-                    <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax || ''}" step="0.1" min="0">
+                    <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax || ''}" step="1" min="0">
                 </div>
             </div>
             
@@ -119,9 +119,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Altura (cm)</div>
                 <div class="rango-filtro">
-                    <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin || ''}" step="0.1" min="0">
+                    <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin || ''}" step="1" min="0">
                     <span class="separador-rango">a</span>
-                    <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax || ''}" step="0.1" min="0">
+                    <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax || ''}" step="1" min="0">
                 </div>
             </div>
             
