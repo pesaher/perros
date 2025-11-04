@@ -10,6 +10,8 @@
   "sociableConPersonas": null,
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
+  "chip": false,
+  "PPP": null,
   "problemasDeSalud": [],
   "observacionesExtra": "",
   "protocoloParticular": ""
