@@ -261,22 +261,3 @@ function crearSelectorProblemasSalud(valorActual) {
     html += `</div>`;
     return html;
 }
-
-function crearSelectorChip(valorActual) {
-    const opciones = {
-        'true': '✅ Sí',
-        'false': '❌ No'
-    };
-    
-    return crearSelectorGenerico('chip', opciones, valorActual);
-}
-
-function crearSelectorPPP(valorActual) {
-    const opciones = {
-        'true': '✅ Sí',
-        'false': '❌ No',
-        'null': '???'
-    };
-    
-    return crearSelectorGenerico('ppp', opciones, valorActual);
-}
