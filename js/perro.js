@@ -27,8 +27,19 @@ async function cargarDatosPerroDesdeAPI(nombre) {
         document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
         mostrarDatosPerro(nombre, datosPerro, false);
         
+        // Configurar el evento del botón de editar DESPUÉS de cargar los datos
+        configurarEventos();
+        
     } catch (error) {
         document.getElementById('contenido-perro').innerHTML = `<p>Error al cargar los datos de ${nombre}: ${error.message}</p>`;
+    }
+}
+
+// Función para configurar eventos
+function configurarEventos() {
+    const btnEditar = document.getElementById('btnEditar');
+    if (btnEditar) {
+        btnEditar.addEventListener('click', activarModoEdicion);
     }
 }
 
@@ -328,7 +339,9 @@ function restaurarBotonesNormales() {
         <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
         <button class="boton boton-editar" id="btnEditar">✏️ Editar</button>
     `;
-    document.getElementById('btnEditar').addEventListener('click', activarModoEdicion);
+    
+    // Re-configurar el evento del botón de editar
+    configurarEventos();
 }
 
 function guardarCambios() {
@@ -379,6 +392,5 @@ function guardarCambios() {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('btnEditar').addEventListener('click', activarModoEdicion);
     cargarDatosPerro();
 });
