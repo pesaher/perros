@@ -180,6 +180,7 @@
   font-family: inherit;
 }
 
+/* Manejo correcto de listas y contenido largo */
 .protocolo-particular {
     display: block !important;
     align-items: normal !important;
@@ -188,9 +189,14 @@
     white-space: normal !important;
     overflow-wrap: break-word !important;
     word-wrap: break-word !important;
+    box-sizing: border-box !important;
 }
 
-/* Reset completo para elementos inline - comportamiento natural */
+/* Reset total - dejar que el contenido fluya naturalmente */
+.protocolo-particular * {
+    box-sizing: border-box !important;
+}
+
 .protocolo-particular strong,
 .protocolo-particular em,
 .protocolo-particular br,
@@ -198,41 +204,58 @@
     display: inline !important;
     width: auto !important;
     float: none !important;
+    white-space: normal !important;
 }
 
-/* Solo elementos de bloque específicos */
+/* Listas y items con manejo de contenido largo */
 .protocolo-particular ul,
-.protocolo-particular ol,
-.protocolo-particular p {
+.protocolo-particular ol {
     display: block !important;
     width: 100% !important;
     margin: 0.5em 0 !important;
-}
-
-/* Listas y items de lista */
-.protocolo-particular ul,
-.protocolo-particular ol {
     padding-left: 1.5em !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
 }
 
 .protocolo-particular li {
     display: list-item !important;
-    margin-bottom: 0.3em !important;
-    width: 100% !important; /* Los li SÍ deben ocupar ancho completo */
+    margin-bottom: 0.5em !important;
+    width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
 }
 
-/* Texto antes/después de strong en la misma línea */
-.protocolo-particular li strong {
-    display: inline !important;
-    width: auto !important;
+/* Contenido dentro de los li debe ajustarse */
+.protocolo-particular li > * {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+}
+
+/* Sub-listas dentro de li */
+.protocolo-particular li ul,
+.protocolo-particular li ol {
+    margin: 0.3em 0 !important;
+    width: 100% !important;
+}
+
+/* Texto muy largo se rompe */
+.protocolo-particular,
+.protocolo-particular * {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    hyphens: auto !important;
 }
 
 /* Mantener textareas en modo edición */
-.campo-editable .protocolo-particular {
+.campo-editable .protocolocolo-particular {
     display: flex !important;
 }
 
 .campo-editable .protocolo-particular textarea {
     display: block !important;
     width: 100% !important;
+    min-height: 100px !important;
 }
