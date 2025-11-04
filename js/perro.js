@@ -248,8 +248,8 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <div class="campo-completo">
                 <div class="etiqueta">Protocolo de Reactividad</div>
                 <div class="valor protocolo-particular">
-                    <p><strong>Objetivo:</strong> que el perro aprenda a mantener la calma en presencia del estímulo.</p>
-                    
+                    <strong>Objetivo:</strong> que el perro aprenda a mantener la calma en presencia del estímulo.
+                    <br>
                     <ul>
                         <li><strong>Preparación:</strong> dar un paseo previo con olfateo para reducir activación. Evitar correa tensa.</li>
                         <li><strong>Distancia segura:</strong> trabajar en el punto donde detecta el estímulo sin reaccionar.</li>
@@ -276,17 +276,17 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <div class="campo-completo">
                 <div class="etiqueta">Protocolo de Protección de Recursos (PdR)</div>
                 <div class="valor protocolo-particular">
-                    <p><strong>Objetivo:</strong> que la presencia humana se asocie siempre a algo positivo, nunca se quitan las cosas bruscamente.</p>
-                    
-                    <p><strong>Protocolo de intercambio positivo</strong> (con barrera al inicio, por seguridad):</p>
-                    
+                    <strong>Objetivo:</strong> que la presencia humana se asocie siempre a algo positivo, nunca se quitan las cosas bruscamente.
+                    <br>
+                    <strong>Protocolo de intercambio positivo</strong> (con barrera al inicio, por seguridad):
+                    <br>
                     <ol>
                         <li><strong>Paso 1:</strong> mientras come/mastica, tirar comida extra de alto valor desde fuera.</li>
                         <li><strong>Paso 2:</strong> si coge chuches o suelta el objeto, reforzar mucho más → que asocie nuestra presencia a beneficios. (Dependiendo del grado de tensión, se puede valorar introducir el "muy bien").</li>
                         <li><strong>Paso 3:</strong> cuando ya se aleje de su recurso (por ejemplo cogiendo chuches del fondo del chenil, con el hueso en la puerta), empezar a trabajarlo desde dentro en un espacio más amplio (más adelante, atado y con supervisión).</li>
                     </ol>
-                    
-                    <p><strong>Complementar</strong> con positivar el bozal de manera progresiva y alternando (no meterlo todo el rato).</p>
+                    <br>
+                    <strong>Complementar</strong> con positivar el bozal de manera progresiva y alternando (no meterlo todo el rato).
                 </div>
             </div>
         `;
