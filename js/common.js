@@ -32,21 +32,23 @@ function calcularEdadEnAños(nacimiento) {
     
     // Detectar el formato de la fecha
     if (nacimiento.match(/^\d{4}$/)) {
-        // Formato YYYY
-        fechaNacimiento = new Date(parseInt(nacimiento), 0, 1); // 1 de enero del año
+        // Formato YYYY - considerar como 1 de enero
+        fechaNacimiento = new Date(parseInt(nacimiento), 0, 1);
     } else if (nacimiento.match(/^\d{4}-\d{2}$/)) {
-        // Formato YYYY-MM
+        // Formato YYYY-MM - considerar como primer día del mes
         const [año, mes] = nacimiento.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
     } else if (nacimiento.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        // Formato YYYY-MM-DD
+        // Formato YYYY-MM-DD - fecha exacta
         fechaNacimiento = new Date(nacimiento);
     } else {
         // Formato no reconocido
         return null;
     }
     
+    // Calcular diferencia en milisegundos
     const diffTiempo = hoy - fechaNacimiento;
+    // Convertir a años con decimales para mayor precisión
     const edadEnAños = diffTiempo / (1000 * 60 * 60 * 24 * 365.25);
     
     return Math.max(0, edadEnAños);
