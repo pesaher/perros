@@ -229,3 +229,41 @@ function crearSelectorReservado(valorActual) {
     
     return crearSelectorGenerico('reservado', opciones, valorActual);
 }
+
+function crearSelectorProblemasSalud(valorActual) {
+    // Convertir valorActual a array si es necesario (para compatibilidad con el viejo sistema booleano)
+    let problemasArray = [];
+    
+    if (Array.isArray(valorActual)) {
+        problemasArray = valorActual;
+    } else if (valorActual === true) {
+        // Compatibilidad: si era true en el viejo sistema, significa Leishmania (índice 0)
+        problemasArray = [0];
+    } else if (typeof valorActual === 'number') {
+        problemasArray = [valorActual];
+    }
+    
+    const problemas = [
+        {id: 0, nombre: 'Leishmania'},
+        {id: 1, nombre: 'Erlichia'},
+        {id: 2, nombre: 'Borrelia'},
+        {id: 3, nombre: 'Cáncer'},
+        {id: 4, nombre: 'Displasia'},
+        {id: 5, nombre: 'Tumor benigno'}
+    ];
+    
+    let html = `<div class="selector-multiple">`;
+    
+    problemas.forEach(problema => {
+        const estaSeleccionado = problemasArray.includes(problema.id);
+        html += `
+            <label class="opcion-multiple">
+                <input type="checkbox" name="problemasSalud" value="${problema.id}" ${estaSeleccionado ? 'checked' : ''}>
+                ${problema.nombre}
+            </label>
+        `;
+    });
+    
+    html += `</div>`;
+    return html;
+}
