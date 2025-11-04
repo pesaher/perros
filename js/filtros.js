@@ -23,8 +23,12 @@ function aplicarFiltros(nombrePerro) {
             case 'macho':
                 if (datosPerro.macho !== valor) return false;
                 break;
-            case 'leishmania':
-                if (datosPerro.leishmania !== valor) return false;
+            case 'excluirProblemasSalud':
+                if (Array.isArray(valor) && Array.isArray(datosPerro.leishmania)) {
+                    // Si el perro tiene alguno de los problemas que queremos excluir, no mostrarlo
+                    const tieneProblemaExcluido = datosPerro.leishmania.some(problema => valor.includes(problema));
+                    if (tieneProblemaExcluido) return false;
+                }
                 break;
             case 'sociableConPerros':
                 if (!Array.isArray(valor) && datosPerro.sociableConPerros !== valor) return false;
@@ -179,12 +183,16 @@ function mostrarModalFiltros() {
                 </div>
             </div>
             
-            <!-- Leishmania -->
+            <!-- Excluir Problemas de Salud -->
             <div class="grupo-filtros">
-                <div class="titulo-filtro">Leishmania</div>
+                <div class="titulo-filtro">Excluir Problemas de Salud</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro ${filtrosActivos.leishmania === true ? 'activa' : ''}" data-filtro="leishmania" data-valor="true">✅ Sí</div>
-                    <div class="opcion-filtro ${filtrosActivos.leishmania === false ? 'activa' : ''}" data-filtro="leishmania" data-valor="false">❌ No</div>
+                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(0) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="0">🚫 Leishmania</div>
+                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(1) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="1">🚫 Erlichia</div>
+                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(2) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="2">🚫 Borrelia</div>
+                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(3) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="3">🚫 Cáncer</div>
+                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(4) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="4">🚫 Displasia</div>
+                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(5) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="5">🚫 Tumor benigno</div>
                 </div>
             </div>
             
