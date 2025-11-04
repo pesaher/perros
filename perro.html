@@ -483,14 +483,14 @@
       `;
       
       // Protocolo particular
-      if (!modoEdicion || datos.protocoloParticular) {
+      if (modoEdicion || (datos.protocoloParticular && datos.protocoloParticular.toString().trim() !== '')) {
         html += `
           <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
             <div class="etiqueta">Protocolo Particular</div>
             <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
               ${modoEdicion ? 
                 `<textarea placeholder="Protocolo particular...">${datos.protocoloParticular || ''}</textarea>` : 
-                (datos.protocoloParticular ? datos.protocoloParticular.replace(/\n/g, '<br>') : '')
+                datos.protocoloParticular.replace(/\n/g, '<br>')
               }
             </div>
           </div>
