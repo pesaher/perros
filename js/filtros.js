@@ -101,9 +101,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Edad (años)</div>
                 <div class="rango-filtro">
-                    <input type="number" class="input-rango" id="edadMin" placeholder="Mín" value="${filtrosActivos.edadMin || ''}" step="1" min="0">
+                    <input type="number" class="input-rango" id="edadMin" placeholder="Mín" value="${filtrosActivos.edadMin !== undefined ? filtrosActivos.edadMin : ''}" step="1" min="0">
                     <span class="separador-rango">a</span>
-                    <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax || ''}" step="1" min="0">
+                    <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax !== undefined ? filtrosActivos.edadMax : ''}" step="1" min="0">
                 </div>
             </div>
             
@@ -111,9 +111,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Peso (kg)</div>
                 <div class="rango-filtro">
-                    <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin || ''}" step="1" min="0">
+                    <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin !== undefined ? filtrosActivos.pesoMin : ''}" step="1" min="0">
                     <span class="separador-rango">a</span>
-                    <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax || ''}" step="1" min="0">
+                    <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax !== undefined ? filtrosActivos.pesoMax : ''}" step="1" min="0">
                 </div>
             </div>
             
@@ -121,9 +121,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Altura (cm)</div>
                 <div class="rango-filtro">
-                    <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin || ''}" step="1" min="0">
+                    <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin !== undefined ? filtrosActivos.alturaMin : ''}" step="1" min="0">
                     <span class="separador-rango">a</span>
-                    <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax || ''}" step="1" min="0">
+                    <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax !== undefined ? filtrosActivos.alturaMax : ''}" step="1" min="0">
                 </div>
             </div>
             
@@ -265,22 +265,22 @@ function mostrarModalFiltros() {
         const edadMax = modal.querySelector('#edadMax').value;
         
         // Actualizar filtros con los valores de los rangos
-        if (pesoMin) filtrosActivos.pesoMin = parseFloat(pesoMin);
+        if (pesoMin !== '') filtrosActivos.pesoMin = parseFloat(pesoMin);
         else delete filtrosActivos.pesoMin;
         
-        if (pesoMax) filtrosActivos.pesoMax = parseFloat(pesoMax);
+        if (pesoMax !== '') filtrosActivos.pesoMax = parseFloat(pesoMax);
         else delete filtrosActivos.pesoMax;
         
-        if (alturaMin) filtrosActivos.alturaMin = parseFloat(alturaMin);
+        if (alturaMin !== '') filtrosActivos.alturaMin = parseFloat(alturaMin);
         else delete filtrosActivos.alturaMin;
         
-        if (alturaMax) filtrosActivos.alturaMax = parseFloat(alturaMax);
+        if (alturaMax !== '') filtrosActivos.alturaMax = parseFloat(alturaMax);
         else delete filtrosActivos.alturaMax;
         
-        if (edadMin) filtrosActivos.edadMin = parseFloat(edadMin);
+        if (edadMin !== '') filtrosActivos.edadMin = parseFloat(edadMin);
         else delete filtrosActivos.edadMin;
         
-        if (edadMax) filtrosActivos.edadMax = parseFloat(edadMax);
+        if (edadMax !== '') filtrosActivos.edadMax = parseFloat(edadMax);
         else delete filtrosActivos.edadMax;
         
         // Repintar la vista (esta función debe estar definida en cheniles.js)
