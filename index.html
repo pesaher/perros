@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cheniles 🐾</title>
+  <title>Cheniles</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -24,38 +24,6 @@
         margin: 0.5em;
         font-size: 14px;
       }
-      
-      h1 {
-        font-size: 1.5em;
-        margin-bottom: 1em;
-      }
-    }
-    
-    h1 {
-      text-align: center;
-      margin-bottom: 1.5em;
-    }
-    
-    #botones {
-      text-align: center;
-      margin-bottom: 1.5em;
-      display: flex;
-      justify-content: center;
-      gap: 1em;
-    }
-    
-    button {
-      background: #4CAF50;
-      color: white;
-      border: none;
-      padding: 0.6em 1.2em;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-    
-    button:hover {
-      background: #43A047;
     }
     
     #contenedor {
@@ -256,6 +224,11 @@
       color: white;
     }
     
+    .boton-filtrar {
+      background: #9C27B0 !important;
+      color: white !important;
+    }
+    
     .boton-guardar {
       background: #4CAF50 !important;
       color: white !important;
@@ -274,6 +247,125 @@
     .sortable-disabled .marco:active {
       cursor: default !important;
     }
+    
+    /* Modal de filtros */
+    .modal-filtros {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    
+    .contenido-modal {
+      background: white;
+      border-radius: 10px;
+      padding: 2em;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .contenido-modal {
+        background: #2d2d2d;
+      }
+    }
+    
+    .grupo-filtros {
+      margin-bottom: 1.5em;
+    }
+    
+    .titulo-filtro {
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      color: #333;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .titulo-filtro {
+        color: #e0e0e0;
+      }
+    }
+    
+    .opciones-filtro {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+    }
+    
+    .opcion-filtro {
+      background: #f0f0f0;
+      border: 2px solid #ddd;
+      border-radius: 20px;
+      padding: 0.5em 1em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .opcion-filtro {
+        background: #3a3a3a;
+        border-color: #555;
+        color: #e0e0e0;
+      }
+    }
+    
+    .opcion-filtro.activa {
+      background: #2196F3;
+      color: white;
+      border-color: #2196F3;
+    }
+    
+    .opcion-filtro:hover {
+      transform: scale(1.05);
+    }
+    
+    .botones-filtros {
+      display: flex;
+      gap: 1em;
+      margin-top: 1.5em;
+    }
+    
+    .boton-filtro {
+      flex: 1;
+      padding: 0.7em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    
+    .boton-aplicar {
+      background: #4CAF50;
+      color: white;
+    }
+    
+    .boton-limpiar {
+      background: #ff9800;
+      color: white;
+    }
+    
+    .boton-cerrar {
+      background: #f44336;
+      color: white;
+    }
+    
+    /* Estilos para perros filtrados */
+    .marco.filtrado {
+      opacity: 0.3;
+    }
+    
+    .marco.cumple-filtro {
+      opacity: 1;
+      border: 2px solid #4CAF50;
+    }
   </style>
 </head>
 <body>
@@ -281,6 +373,7 @@
 
   <div class="botones-flotantes" id="botonesFlotantes">
     <button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>
+    <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -290,18 +383,49 @@
     let datos = {};
     let sortableInstances = [];
     let modoReordenar = false;
-    let datosOriginales = {}; // Para guardar el estado original al cancelar
+    let datosOriginales = {};
+    let datosCompletosPerros = {}; // Almacenará todos los datos de cada perro
+    let filtrosActivos = {};
 
     function urlSinCache() {
       const base = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json';
-      return base + '?v=' + Date.now(); // fuerza a saltar la caché
+      return base + '?v=' + Date.now();
     }
 
     async function cargar() {
       const resp = await fetch(urlSinCache());
       datos = await resp.json();
-
+      await cargarDatosCompletosPerros();
       pintar();
+    }
+
+    // Cargar datos completos de todos los perros para el filtrado
+    async function cargarDatosCompletosPerros() {
+      datosCompletosPerros = {};
+      const nombresPerros = new Set();
+      
+      // Recoger todos los nombres únicos de perros
+      Object.values(datos).forEach(perros => {
+        perros.forEach(nombre => {
+          if (nombre && nombre.trim() !== '') {
+            nombresPerros.add(nombre);
+          }
+        });
+      });
+      
+      // Cargar datos de cada perro
+      for (let nombre of nombresPerros) {
+        try {
+          const url = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json?v=${Date.now()}`;
+          const respuesta = await fetch(url);
+          if (respuesta.ok) {
+            const datosPerro = await respuesta.json();
+            datosCompletosPerros[nombre] = datosPerro;
+          }
+        } catch (error) {
+          console.warn(`No se pudieron cargar los datos de ${nombre}:`, error);
+        }
+      }
     }
 
     // Colores pastel agradables basados en el nombre - MANTENIENDO COLORES ORIGINALES
@@ -360,6 +484,16 @@
               
               marco.style.backgroundColor = colorPastel(nombreOriginal);
               
+              // Aplicar filtros si existen
+              if (Object.keys(filtrosActivos).length > 0) {
+                const cumpleFiltro = aplicarFiltros(nombreOriginal);
+                if (!cumpleFiltro) {
+                  marco.classList.add('filtrado');
+                } else {
+                  marco.classList.add('cumple-filtro');
+                }
+              }
+              
               // Agregar evento de click para los nombres
               marco.addEventListener('click', () => {
                 if (!modoReordenar) {
@@ -388,6 +522,150 @@
         });
         
         sortableInstances.push(sortable);
+      });
+    }
+
+    // Función para aplicar filtros a un perro
+    function aplicarFiltros(nombrePerro) {
+      const datosPerro = datosCompletosPerros[nombrePerro];
+      if (!datosPerro) return false; // Si no tenemos datos, no mostrar
+      
+      for (const [filtro, valor] of Object.entries(filtrosActivos)) {
+        if (valor === null || valor === undefined) continue;
+        
+        switch (filtro) {
+          case 'reservado':
+            if (datosPerro.reservado !== valor) return false;
+            break;
+          case 'macho':
+            if (datosPerro.macho !== valor) return false;
+            break;
+          case 'leishmania':
+            if (datosPerro.leishmania !== valor) return false;
+            break;
+          case 'sociableConPerros':
+            if (datosPerro.sociableConPerros !== valor) return false;
+            break;
+          case 'sociableConPersonas':
+            if (datosPerro.sociableConPersonas !== valor) return false;
+            break;
+          case 'paseo':
+            if (datosPerro.paseo !== valor) return false;
+            break;
+        }
+      }
+      
+      return true;
+    }
+
+    // Mostrar modal de filtros
+    function mostrarModalFiltros() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-filtros';
+      modal.innerHTML = `
+        <div class="contenido-modal">
+          <h3>Filtrar Perros</h3>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Estado</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.reservado === null ? 'activa' : ''}" data-filtro="reservado" data-valor="null">🔓 Disponible</div>
+              <div class="opcion-filtro ${filtrosActivos.reservado === true ? 'activa' : ''}" data-filtro="reservado" data-valor="true">🔒 Reservado</div>
+              <div class="opcion-filtro ${filtrosActivos.reservado === false ? 'activa' : ''}" data-filtro="reservado" data-valor="false">🔒 Adoptado</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Sexo</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.macho === true ? 'activa' : ''}" data-filtro="macho" data-valor="true">♂️ Macho</div>
+              <div class="opcion-filtro ${filtrosActivos.macho === false ? 'activa' : ''}" data-filtro="macho" data-valor="false">♀️ Hembra</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Leishmania</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.leishmania === true ? 'activa' : ''}" data-filtro="leishmania" data-valor="true">✅ Sí</div>
+              <div class="opcion-filtro ${filtrosActivos.leishmania === false ? 'activa' : ''}" data-filtro="leishmania" data-valor="false">❌ No</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Sociable con Perros</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.sociableConPerros === 0 ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
+              <div class="opcion-filtro ${filtrosActivos.sociableConPerros === 1 ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
+              <div class="opcion-filtro ${filtrosActivos.sociableConPerros === 2 ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Nivel de Paseo</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.paseo === 0 ? 'activa' : ''}" data-filtro="paseo" data-valor="0">Pasea bien</div>
+              <div class="opcion-filtro ${filtrosActivos.paseo === 1 ? 'activa' : ''}" data-filtro="paseo" data-valor="1">Miedo (gestionable)</div>
+              <div class="opcion-filtro ${filtrosActivos.paseo === 2 ? 'activa' : ''}" data-filtro="paseo" data-valor="2">Miedo (bloqueo)</div>
+              <div class="opcion-filtro ${filtrosActivos.paseo === 3 ? 'activa' : ''}" data-filtro="paseo" data-valor="3">Reactivo</div>
+              <div class="opcion-filtro ${filtrosActivos.paseo === 4 ? 'activa' : ''}" data-filtro="paseo" data-valor="4">Tira</div>
+            </div>
+          </div>
+          
+          <div class="botones-filtros">
+            <button class="boton-filtro boton-limpiar" id="btnLimpiarFiltros">🧹 Limpiar</button>
+            <button class="boton-filtro boton-aplicar" id="btnAplicarFiltros">✅ Aplicar</button>
+            <button class="boton-filtro boton-cerrar" id="btnCerrarFiltros">✗ Cerrar</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      // Event listeners para opciones de filtro
+      modal.querySelectorAll('.opcion-filtro').forEach(opcion => {
+        opcion.addEventListener('click', () => {
+          const filtro = opcion.dataset.filtro;
+          const valor = opcion.dataset.valor === 'null' ? null : 
+                       opcion.dataset.valor === 'true' ? true :
+                       opcion.dataset.valor === 'false' ? false :
+                       !isNaN(opcion.dataset.valor) ? parseInt(opcion.dataset.valor) : opcion.dataset.valor;
+          
+          // Toggle: si ya está activo, desactivar; si no, activar
+          if (filtrosActivos[filtro] === valor) {
+            delete filtrosActivos[filtro];
+            opcion.classList.remove('activa');
+          } else {
+            filtrosActivos[filtro] = valor;
+            // Remover activo de otras opciones del mismo filtro
+            modal.querySelectorAll(`.opcion-filtro[data-filtro="${filtro}"]`).forEach(o => {
+              o.classList.remove('activa');
+            });
+            opcion.classList.add('activa');
+          }
+        });
+      });
+      
+      // Event listeners para botones
+      modal.querySelector('#btnAplicarFiltros').addEventListener('click', () => {
+        pintar();
+        document.body.removeChild(modal);
+      });
+      
+      modal.querySelector('#btnLimpiarFiltros').addEventListener('click', () => {
+        filtrosActivos = {};
+        pintar();
+        document.body.removeChild(modal);
+      });
+      
+      modal.querySelector('#btnCerrarFiltros').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+      
+      // Cerrar modal al hacer click fuera
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          document.body.removeChild(modal);
+        }
       });
     }
 
@@ -436,10 +714,14 @@
       
       // Actualizar botones flotantes
       const botonesFlotantes = document.getElementById('botonesFlotantes');
-      botonesFlotantes.innerHTML = `<button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>`;
+      botonesFlotantes.innerHTML = `
+        <button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>
+        <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
+      `;
       
-      // Agregar evento al botón de reordenar
+      // Agregar eventos a los botones
       document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
+      document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
       
       // Guardar cambios en GitHub solo si se especifica
       if (guardarEnGitHub) {
@@ -507,6 +789,7 @@
 
     // Inicialización
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
+    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
 
     cargar();
   </script>
