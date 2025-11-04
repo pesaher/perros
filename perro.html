@@ -393,7 +393,7 @@
           
           <!-- Campos en dos columnas -->
           <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-            <div class="etiqueta">Edad</div>
+            <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
             <div class="valor">
               ${modoEdicion ? 
                 `<input type="text" value="${datos.nacimiento || ''}" placeholder="YYYY, YYYY-MM o YYYY-MM-DD">` : 
