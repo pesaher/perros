@@ -1,0 +1,161 @@
+#contenedor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
+}
+
+.chenil {
+  background: var(--card-bg-light);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px var(--shadow-light);
+  width: 230px;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transition: 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .chenil {
+    background: var(--card-bg-dark);
+    box-shadow: 0 2px 5px var(--shadow-dark);
+  }
+}
+
+@media (max-width: 768px) {
+  .chenil {
+    width: calc(50% - 1em);
+    min-width: 140px;
+    padding: 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .chenil {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+.chenil:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .chenil:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
+}
+
+.titulo {
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.7em;
+  font-size: 1.1em;
+  color: var(--text-light);
+  text-transform: capitalize;
+}
+
+@media (prefers-color-scheme: dark) {
+  .titulo {
+    color: var(--text-dark);
+  }
+}
+
+.contenedor-marcos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  min-height: 2em;
+  border: 2px dashed var(--border-light);
+  border-radius: 8px;
+  padding: 0.6em;
+  position: relative;
+  transition: background 0.3s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .contenedor-marcos {
+    border-color: var(--border-dark);
+  }
+}
+
+.contenedor-marcos.vacio {
+  background: #eee;
+}
+
+@media (prefers-color-scheme: dark) {
+  .contenedor-marcos.vacio {
+    background: #3a3a3a;
+  }
+}
+
+.mensaje-vacio {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  font-size: 0.9em;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mensaje-vacio {
+    color: #aaa;
+  }
+}
+
+.marco {
+  padding: 0.5em 0.6em;
+  border-radius: 6px;
+  cursor: grab;
+  text-align: center;
+  user-select: none;
+  font-weight: bold;
+  font-size: 1.05em;
+  text-transform: uppercase;
+  color: #000 !important;
+}
+
+@media (max-width: 768px) {
+  .marco {
+    padding: 0.4em 0.5em;
+    font-size: 0.95em;
+  }
+}
+
+.marco:active {
+  cursor: grabbing;
+}
+
+/* Estilos para el modo clickable */
+.marco.clickable {
+  cursor: pointer;
+}
+
+.marco.clickable:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+  transition: transform 0.2s;
+}
+
+/* Estado deshabilitado para sortable */
+.sortable-disabled .marco {
+  cursor: default !important;
+}
+
+.sortable-disabled .marco:active {
+  cursor: default !important;
+}
+
+/* Estilos para perros filtrados */
+.marco.filtrado {
+  opacity: 0.3;
+}
+
+.marco.cumple-filtro {
+  opacity: 1;
+  border: 2px solid var(--success-color);
+}
