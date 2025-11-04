@@ -46,6 +46,12 @@ function aplicarFiltros(nombrePerro) {
             case 'proteccionDeRecursos':
                 if (datosPerro.proteccionDeRecursos !== valor) return false;
                 break;
+            case 'chip':
+                if (datosPerro.chip !== valor) return false;
+                break;
+            case 'ppp':
+                if (datosPerro.ppp !== valor) return false;
+                break;
             case 'paseo':
                 if (!Array.isArray(valor) && datosPerro.paseo !== valor) return false;
                 if (Array.isArray(valor) && !valor.includes(String(datosPerro.paseo))) return false;
@@ -182,6 +188,24 @@ function mostrarModalFiltros() {
                 <div class="opciones-filtro">
                     <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === true ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="true">✅ Sí</div>
                     <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === false ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="false">❌ No</div>
+                </div>
+            </div>
+            
+            <!-- Chip -->
+            <div class="grupo-filtros">
+                <div class="titulo-filtro">Chip</div>
+                <div class="opciones-filtro">
+                    <div class="opcion-filtro ${filtrosActivos.chip === true ? 'activa' : ''}" data-filtro="chip" data-valor="true">✅ Sí</div>
+                    <div class="opcion-filtro ${filtrosActivos.chip === false ? 'activa' : ''}" data-filtro="chip" data-valor="false">❌ No</div>
+                </div>
+            </div>
+            
+            <!-- PPP -->
+            <div class="grupo-filtros">
+                <div class="titulo-filtro">PPP</div>
+                <div class="opciones-filtro">
+                    <div class="opcion-filtro ${filtrosActivos.ppp === true ? 'activa' : ''}" data-filtro="ppp" data-valor="true">✅ Sí</div>
+                    <div class="opcion-filtro ${filtrosActivos.ppp === false ? 'activa' : ''}" data-filtro="ppp" data-valor="false">❌ No</div>
                 </div>
             </div>
             
