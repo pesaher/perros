@@ -203,8 +203,8 @@ function crearSelectorSociablePersonas(valorActual) {
 
 function crearSelectorBooleano(nombre, valorActual) {
     const opciones = {
-        'true': 'Sí',
-        'false': 'No',
+        'true': '✅ Sí',
+        'false': '❌ No',
         '': '???'
     };
     
