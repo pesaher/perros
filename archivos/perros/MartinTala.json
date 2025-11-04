@@ -1,0 +1,16 @@
+{
+  "nombre": "Martín Tala",
+  "nacimiento": "2016-01-01",
+  "macho": true,
+  "peso": 8,
+  "altura": 43,
+  "reservado": false,
+  "paseo": 4,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "leishmania": false,
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}
