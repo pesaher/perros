@@ -327,6 +327,58 @@
       transform: scale(1.05);
     }
     
+    /* Nuevos estilos para filtros múltiples */
+    .opcion-filtro.multiple {
+      background: #f0f0f0;
+      border: 2px solid #ddd;
+      border-radius: 20px;
+      padding: 0.5em 1em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .opcion-filtro.multiple {
+        background: #3a3a3a;
+        border-color: #555;
+        color: #e0e0e0;
+      }
+    }
+
+    .opcion-filtro.multiple.activa {
+      background: #2196F3;
+      color: white;
+      border-color: #2196F3;
+    }
+
+    /* Estilos para rangos de filtros */
+    .rango-filtro {
+      display: flex;
+      gap: 0.5em;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .input-rango {
+      width: 80px;
+      padding: 0.4em;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .input-rango {
+        background: #3a3a3a;
+        border-color: #555;
+        color: #e0e0e0;
+      }
+    }
+
+    .separador-rango {
+      color: #888;
+    }
+    
     .botones-filtros {
       display: flex;
       gap: 1em;
@@ -349,11 +401,6 @@
     
     .boton-limpiar {
       background: #ff9800;
-      color: white;
-    }
-    
-    .boton-cerrar {
-      background: #f44336;
       color: white;
     }
     
@@ -479,8 +526,13 @@
               // Guardar el nombre original en un atributo data
               marco.dataset.nombreOriginal = nombreOriginal;
               
-              // Mostrar en uppercase
-              marco.textContent = nombreOriginal.toUpperCase();
+              // Usar el nombre del JSON si está disponible, si no usar el original
+              const datosPerro = datosCompletosPerros[nombreOriginal];
+              const nombreAMostrar = datosPerro && datosPerro.nombre && datosPerro.nombre.trim() !== '' 
+                ? datosPerro.nombre.toUpperCase() 
+                : nombreOriginal.toUpperCase();
+              
+              marco.textContent = nombreAMostrar;
               
               marco.style.backgroundColor = colorPastel(nombreOriginal);
               
@@ -530,12 +582,19 @@
       const datosPerro = datosCompletosPerros[nombrePerro];
       if (!datosPerro) return false; // Si no tenemos datos, no mostrar
       
+      // Calcular edad si tenemos fecha de nacimiento
+      let edadEnMeses = null;
+      if (datosPerro.nacimiento) {
+        edadEnMeses = calcularEdadEnMeses(datosPerro.nacimiento);
+      }
+      
       for (const [filtro, valor] of Object.entries(filtrosActivos)) {
-        if (valor === null || valor === undefined) continue;
+        if (valor === null || valor === undefined || valor === '') continue;
         
         switch (filtro) {
           case 'reservado':
-            if (datosPerro.reservado !== valor) return false;
+            if (!Array.isArray(valor) && datosPerro.reservado !== valor) return false;
+            if (Array.isArray(valor) && !valor.includes(String(datosPerro.reservado))) return false;
             break;
           case 'macho':
             if (datosPerro.macho !== valor) return false;
@@ -544,18 +603,74 @@
             if (datosPerro.leishmania !== valor) return false;
             break;
           case 'sociableConPerros':
-            if (datosPerro.sociableConPerros !== valor) return false;
+            if (!Array.isArray(valor) && datosPerro.sociableConPerros !== valor) return false;
+            if (Array.isArray(valor) && !valor.includes(String(datosPerro.sociableConPerros))) return false;
             break;
           case 'sociableConPersonas':
-            if (datosPerro.sociableConPersonas !== valor) return false;
+            if (!Array.isArray(valor) && datosPerro.sociableConPersonas !== valor) return false;
+            if (Array.isArray(valor) && !valor.includes(String(datosPerro.sociableConPersonas))) return false;
+            break;
+          case 'sociableConGatos':
+            if (datosPerro.sociableConGatos !== valor) return false;
+            break;
+          case 'proteccionDeRecursos':
+            if (datosPerro.proteccionDeRecursos !== valor) return false;
             break;
           case 'paseo':
-            if (datosPerro.paseo !== valor) return false;
+            if (!Array.isArray(valor) && datosPerro.paseo !== valor) return false;
+            if (Array.isArray(valor) && !valor.includes(String(datosPerro.paseo))) return false;
+            break;
+          case 'pesoMin':
+            if (datosPerro.peso === null || datosPerro.peso === undefined || datosPerro.peso < valor) return false;
+            break;
+          case 'pesoMax':
+            if (datosPerro.peso === null || datosPerro.peso === undefined || datosPerro.peso > valor) return false;
+            break;
+          case 'alturaMin':
+            if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura < valor) return false;
+            break;
+          case 'alturaMax':
+            if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura > valor) return false;
+            break;
+          case 'edadMin':
+            if (edadEnMeses === null || edadEnMeses < valor) return false;
+            break;
+          case 'edadMax':
+            if (edadEnMeses === null || edadEnMeses > valor) return false;
             break;
         }
       }
       
       return true;
+    }
+
+    // Calcular edad en meses para filtrado
+    function calcularEdadEnMeses(nacimiento) {
+      if (!nacimiento) return null;
+      
+      const hoy = new Date();
+      let fechaNacimiento;
+      
+      // Detectar el formato de la fecha
+      if (nacimiento.match(/^\d{4}$/)) {
+        // Formato YYYY
+        fechaNacimiento = new Date(parseInt(nacimiento), 0, 1); // 1 de enero del año
+      } else if (nacimiento.match(/^\d{4}-\d{2}$/)) {
+        // Formato YYYY-MM
+        const [año, mes] = nacimiento.split('-');
+        fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
+      } else if (nacimiento.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        // Formato YYYY-MM-DD
+        fechaNacimiento = new Date(nacimiento);
+      } else {
+        // Formato no reconocido
+        return null;
+      }
+      
+      const diffMeses = (hoy.getFullYear() - fechaNacimiento.getFullYear()) * 12 + 
+                       (hoy.getMonth() - fechaNacimiento.getMonth());
+      
+      return Math.max(0, diffMeses);
     }
 
     // Mostrar modal de filtros
@@ -569,9 +684,9 @@
           <div class="grupo-filtros">
             <div class="titulo-filtro">Estado</div>
             <div class="opciones-filtro">
-              <div class="opcion-filtro ${filtrosActivos.reservado === null ? 'activa' : ''}" data-filtro="reservado" data-valor="null">🔓 Disponible</div>
-              <div class="opcion-filtro ${filtrosActivos.reservado === true ? 'activa' : ''}" data-filtro="reservado" data-valor="true">🔒 Reservado</div>
-              <div class="opcion-filtro ${filtrosActivos.reservado === false ? 'activa' : ''}" data-filtro="reservado" data-valor="false">🔒 Adoptado</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.reservado) && filtrosActivos.reservado.includes('null') ? 'activa' : ''}" data-filtro="reservado" data-valor="null">🔓 Disponible</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.reservado) && filtrosActivos.reservado.includes('true') ? 'activa' : ''}" data-filtro="reservado" data-valor="true">🔒 Reservado</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.reservado) && filtrosActivos.reservado.includes('false') ? 'activa' : ''}" data-filtro="reservado" data-valor="false">🔒 Adoptado</div>
             </div>
           </div>
           
@@ -594,35 +709,120 @@
           <div class="grupo-filtros">
             <div class="titulo-filtro">Sociable con Perros</div>
             <div class="opciones-filtro">
-              <div class="opcion-filtro ${filtrosActivos.sociableConPerros === 0 ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
-              <div class="opcion-filtro ${filtrosActivos.sociableConPerros === 1 ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
-              <div class="opcion-filtro ${filtrosActivos.sociableConPerros === 2 ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('0') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('1') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('2') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Sociable con Personas</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('0') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="0">Sí</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('1') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="1">Selectivo</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('2') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="2">Mal con hombres</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('3') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="3">No</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Sociable con Gatos</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.sociableConGatos === true ? 'activa' : ''}" data-filtro="sociableConGatos" data-valor="true">✅ Sí</div>
+              <div class="opcion-filtro ${filtrosActivos.sociableConGatos === false ? 'activa' : ''}" data-filtro="sociableConGatos" data-valor="false">❌ No</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Protección de Recursos</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === true ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="true">✅ Sí</div>
+              <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === false ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="false">❌ No</div>
             </div>
           </div>
           
           <div class="grupo-filtros">
             <div class="titulo-filtro">Nivel de Paseo</div>
             <div class="opciones-filtro">
-              <div class="opcion-filtro ${filtrosActivos.paseo === 0 ? 'activa' : ''}" data-filtro="paseo" data-valor="0">Pasea bien</div>
-              <div class="opcion-filtro ${filtrosActivos.paseo === 1 ? 'activa' : ''}" data-filtro="paseo" data-valor="1">Miedo (gestionable)</div>
-              <div class="opcion-filtro ${filtrosActivos.paseo === 2 ? 'activa' : ''}" data-filtro="paseo" data-valor="2">Miedo (bloqueo)</div>
-              <div class="opcion-filtro ${filtrosActivos.paseo === 3 ? 'activa' : ''}" data-filtro="paseo" data-valor="3">Reactivo</div>
-              <div class="opcion-filtro ${filtrosActivos.paseo === 4 ? 'activa' : ''}" data-filtro="paseo" data-valor="4">Tira</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('0') ? 'activa' : ''}" data-filtro="paseo" data-valor="0">Pasea bien</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('1') ? 'activa' : ''}" data-filtro="paseo" data-valor="1">Miedo (gestionable)</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('2') ? 'activa' : ''}" data-filtro="paseo" data-valor="2">Miedo (bloqueo)</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('3') ? 'activa' : ''}" data-filtro="paseo" data-valor="3">Reactivo</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('4') ? 'activa' : ''}" data-filtro="paseo" data-valor="4">Tira</div>
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Peso (kg)</div>
+            <div class="rango-filtro">
+              <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin || ''}">
+              <span class="separador-rango">a</span>
+              <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax || ''}">
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Altura (cm)</div>
+            <div class="rango-filtro">
+              <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin || ''}">
+              <span class="separador-rango">a</span>
+              <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax || ''}">
+            </div>
+          </div>
+          
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Edad (meses)</div>
+            <div class="rango-filtro">
+              <input type="number" class="input-rango" id="edadMin" placeholder="Mín" value="${filtrosActivos.edadMin || ''}">
+              <span class="separador-rango">a</span>
+              <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax || ''}">
             </div>
           </div>
           
           <div class="botones-filtros">
             <button class="boton-filtro boton-limpiar" id="btnLimpiarFiltros">🧹 Limpiar</button>
             <button class="boton-filtro boton-aplicar" id="btnAplicarFiltros">✅ Aplicar</button>
-            <button class="boton-filtro boton-cerrar" id="btnCerrarFiltros">✗ Cerrar</button>
           </div>
         </div>
       `;
       
       document.body.appendChild(modal);
       
-      // Event listeners para opciones de filtro
-      modal.querySelectorAll('.opcion-filtro').forEach(opcion => {
+      // Event listeners para opciones de filtro múltiples
+      modal.querySelectorAll('.opcion-filtro.multiple').forEach(opcion => {
+        opcion.addEventListener('click', () => {
+          const filtro = opcion.dataset.filtro;
+          const valor = opcion.dataset.valor === 'null' ? null : 
+                       opcion.dataset.valor === 'true' ? true :
+                       opcion.dataset.valor === 'false' ? false :
+                       !isNaN(opcion.dataset.valor) ? parseInt(opcion.dataset.valor) : opcion.dataset.valor;
+          
+          // Inicializar array si no existe
+          if (!Array.isArray(filtrosActivos[filtro])) {
+            filtrosActivos[filtro] = [];
+          }
+          
+          // Toggle: si ya está activo, quitar; si no, agregar
+          const valorStr = String(valor);
+          const index = filtrosActivos[filtro].indexOf(valorStr);
+          
+          if (index > -1) {
+            filtrosActivos[filtro].splice(index, 1);
+            opcion.classList.remove('activa');
+          } else {
+            filtrosActivos[filtro].push(valorStr);
+            opcion.classList.add('activa');
+          }
+          
+          // Si no hay opciones seleccionadas, eliminar el filtro
+          if (filtrosActivos[filtro].length === 0) {
+            delete filtrosActivos[filtro];
+          }
+        });
+      });
+      
+      // Event listeners para opciones de filtro booleanas (exclusivas)
+      modal.querySelectorAll('.opcion-filtro:not(.multiple)').forEach(opcion => {
         opcion.addEventListener('click', () => {
           const filtro = opcion.dataset.filtro;
           const valor = opcion.dataset.valor === 'null' ? null : 
@@ -637,7 +837,7 @@
           } else {
             filtrosActivos[filtro] = valor;
             // Remover activo de otras opciones del mismo filtro
-            modal.querySelectorAll(`.opcion-filtro[data-filtro="${filtro}"]`).forEach(o => {
+            modal.querySelectorAll(`.opcion-filtro[data-filtro="${filtro}"]:not(.multiple)`).forEach(o => {
               o.classList.remove('activa');
             });
             opcion.classList.add('activa');
@@ -647,18 +847,48 @@
       
       // Event listeners para botones
       modal.querySelector('#btnAplicarFiltros').addEventListener('click', () => {
+        // Recoger valores de los rangos
+        const pesoMin = modal.querySelector('#pesoMin').value;
+        const pesoMax = modal.querySelector('#pesoMax').value;
+        const alturaMin = modal.querySelector('#alturaMin').value;
+        const alturaMax = modal.querySelector('#alturaMax').value;
+        const edadMin = modal.querySelector('#edadMin').value;
+        const edadMax = modal.querySelector('#edadMax').value;
+        
+        // Actualizar filtros con los valores de los rangos
+        if (pesoMin) filtrosActivos.pesoMin = parseFloat(pesoMin);
+        else delete filtrosActivos.pesoMin;
+        
+        if (pesoMax) filtrosActivos.pesoMax = parseFloat(pesoMax);
+        else delete filtrosActivos.pesoMax;
+        
+        if (alturaMin) filtrosActivos.alturaMin = parseFloat(alturaMin);
+        else delete filtrosActivos.alturaMin;
+        
+        if (alturaMax) filtrosActivos.alturaMax = parseFloat(alturaMax);
+        else delete filtrosActivos.alturaMax;
+        
+        if (edadMin) filtrosActivos.edadMin = parseFloat(edadMin);
+        else delete filtrosActivos.edadMin;
+        
+        if (edadMax) filtrosActivos.edadMax = parseFloat(edadMax);
+        else delete filtrosActivos.edadMax;
+        
         pintar();
         document.body.removeChild(modal);
       });
       
       modal.querySelector('#btnLimpiarFiltros').addEventListener('click', () => {
         filtrosActivos = {};
-        pintar();
-        document.body.removeChild(modal);
-      });
-      
-      modal.querySelector('#btnCerrarFiltros').addEventListener('click', () => {
-        document.body.removeChild(modal);
+        // Limpiar también los campos de rango
+        modal.querySelectorAll('.input-rango').forEach(input => {
+          input.value = '';
+        });
+        // Desactivar todas las opciones
+        modal.querySelectorAll('.opcion-filtro').forEach(opcion => {
+          opcion.classList.remove('activa');
+        });
+        // No cerramos el modal después de limpiar
       });
       
       // Cerrar modal al hacer click fuera
