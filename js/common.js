@@ -180,6 +180,7 @@ function crearSelectorSociablePerros(valorActual) {
         '0': 'Sí',
         '1': 'Selectivo',
         '2': 'No',
+        '3': 'No sabe',
         '': '???'
     };
     
