@@ -234,17 +234,8 @@ function crearSelectorReservado(valorActual) {
 
 // Función para crear selector de problemas de salud
 function crearSelectorProblemasSalud(valorActual) {
-    // Convertir valorActual a array si es necesario (para compatibilidad con el viejo sistema booleano)
-    let problemasArray = [];
-    
-    if (Array.isArray(valorActual)) {
-        problemasArray = valorActual;
-    } else if (valorActual === true) {
-        // Compatibilidad: si era true en el viejo sistema, significa Leishmania (índice 0)
-        problemasArray = [0];
-    } else if (typeof valorActual === 'number') {
-        problemasArray = [valorActual];
-    }
+    // ValorActual debe ser un array de integers
+    let problemasArray = Array.isArray(valorActual) ? valorActual : [];
     
     const problemas = [
         {id: 0, nombre: 'Leishmania'},
