@@ -84,13 +84,17 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
     const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
     
-    // Problemas de salud
-    const textoProblemasSalud = Array.isArray(datos.leishmania) && datos.leishmania.length > 0 
-        ? datos.leishmania.map(id => {
+    // Problemas de salud - con compatibilidad para el viejo formato booleano
+    let textoProblemasSalud = 'Ninguno';
+    if (Array.isArray(datos.leishmania) && datos.leishmania.length > 0) {
+        textoProblemasSalud = datos.leishmania.map(id => {
             const problemas = ['Leishmania', 'Erlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
             return problemas[id] || 'Desconocido';
-        }).join(', ')
-        : 'Ninguno';
+        }).join(', ');
+    } else if (datos.leishmania === true) {
+        // Compatibilidad con el viejo formato booleano
+        textoProblemasSalud = 'Leishmania';
+    }
     
     // Valores por defecto y formateo
     const nombreMostrar = datos.nombre && datos.nombre.trim() !== '' ? datos.nombre.toUpperCase() : 'JOHN DOGE';
@@ -220,7 +224,9 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <div class="etiqueta">Problemas de Salud</div>
             <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
                 ${modoEdicion ? 
-                  crearSelectorProblemasSalud(datos.leishmania) : 
+                  (typeof crearSelectorProblemasSalud === 'function' ? 
+                   crearSelectorProblemasSalud(datos.leishmania) : 
+                   'Error: Función no disponible') : 
                   textoProblemasSalud
                 }
             </div>
@@ -235,7 +241,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
                     ${modoEdicion ? 
                       `<textarea placeholder="Observaciones extra...">${datos.observacionesExtra || ''}</textarea>` : 
-                      datos.observacionesExtra.replace(/\n/g, '<br>')
+                      (datos.observacionesExtra ? datos.observacionesExtra.replace(/\n/g, '<br>') : '')
                     }
                 </div>
             </div>
@@ -250,7 +256,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
                     ${modoEdicion ? 
                       `<textarea placeholder="Protocolo particular...">${datos.protocoloParticular || ''}</textarea>` : 
-                      datos.protocoloParticular.replace(/\n/g, '<br>')
+                      (datos.protocoloParticular ? datos.protocoloParticular.replace(/\n/g, '<br>') : '')
                     }
                 </div>
             </div>
