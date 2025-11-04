@@ -583,9 +583,9 @@
       if (!datosPerro) return false; // Si no tenemos datos, no mostrar
       
       // Calcular edad si tenemos fecha de nacimiento
-      let edadEnMeses = null;
+      let edadEnAños = null;
       if (datosPerro.nacimiento) {
-        edadEnMeses = calcularEdadEnMeses(datosPerro.nacimiento);
+        edadEnAños = calcularEdadEnAños(datosPerro.nacimiento);
       }
       
       for (const [filtro, valor] of Object.entries(filtrosActivos)) {
@@ -633,10 +633,10 @@
             if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura > valor) return false;
             break;
           case 'edadMin':
-            if (edadEnMeses === null || edadEnMeses < valor) return false;
+            if (edadEnAños === null || edadEnAños < valor) return false;
             break;
           case 'edadMax':
-            if (edadEnMeses === null || edadEnMeses > valor) return false;
+            if (edadEnAños === null || edadEnAños > valor) return false;
             break;
         }
       }
@@ -644,8 +644,8 @@
       return true;
     }
 
-    // Calcular edad en meses para filtrado
-    function calcularEdadEnMeses(nacimiento) {
+    // Calcular edad en años para filtrado
+    function calcularEdadEnAños(nacimiento) {
       if (!nacimiento) return null;
       
       const hoy = new Date();
@@ -667,10 +667,10 @@
         return null;
       }
       
-      const diffMeses = (hoy.getFullYear() - fechaNacimiento.getFullYear()) * 12 + 
-                       (hoy.getMonth() - fechaNacimiento.getMonth());
+      const diffTiempo = hoy - fechaNacimiento;
+      const edadEnAños = diffTiempo / (1000 * 60 * 60 * 24 * 365.25);
       
-      return Math.max(0, diffMeses);
+      return Math.max(0, edadEnAños);
     }
 
     // Mostrar modal de filtros
@@ -681,6 +681,7 @@
         <div class="contenido-modal">
           <h3>Filtrar Perros</h3>
           
+          <!-- Estado -->
           <div class="grupo-filtros">
             <div class="titulo-filtro">Estado</div>
             <div class="opciones-filtro">
@@ -690,6 +691,7 @@
             </div>
           </div>
           
+          <!-- Sexo -->
           <div class="grupo-filtros">
             <div class="titulo-filtro">Sexo</div>
             <div class="opciones-filtro">
@@ -698,49 +700,37 @@
             </div>
           </div>
           
+          <!-- Edad -->
           <div class="grupo-filtros">
-            <div class="titulo-filtro">Leishmania</div>
-            <div class="opciones-filtro">
-              <div class="opcion-filtro ${filtrosActivos.leishmania === true ? 'activa' : ''}" data-filtro="leishmania" data-valor="true">✅ Sí</div>
-              <div class="opcion-filtro ${filtrosActivos.leishmania === false ? 'activa' : ''}" data-filtro="leishmania" data-valor="false">❌ No</div>
+            <div class="titulo-filtro">Edad (años)</div>
+            <div class="rango-filtro">
+              <input type="number" class="input-rango" id="edadMin" placeholder="Mín" value="${filtrosActivos.edadMin || ''}" step="0.1" min="0">
+              <span class="separador-rango">a</span>
+              <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax || ''}" step="0.1" min="0">
             </div>
           </div>
           
+          <!-- Peso -->
           <div class="grupo-filtros">
-            <div class="titulo-filtro">Sociable con Perros</div>
-            <div class="opciones-filtro">
-              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('0') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
-              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('1') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
-              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('2') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
+            <div class="titulo-filtro">Peso (kg)</div>
+            <div class="rango-filtro">
+              <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin || ''}" step="0.1" min="0">
+              <span class="separador-rango">a</span>
+              <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax || ''}" step="0.1" min="0">
             </div>
           </div>
           
+          <!-- Altura -->
           <div class="grupo-filtros">
-            <div class="titulo-filtro">Sociable con Personas</div>
-            <div class="opciones-filtro">
-              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('0') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="0">Sí</div>
-              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('1') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="1">Selectivo</div>
-              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('2') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="2">Mal con hombres</div>
-              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('3') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="3">No</div>
+            <div class="titulo-filtro">Altura (cm)</div>
+            <div class="rango-filtro">
+              <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin || ''}" step="0.1" min="0">
+              <span class="separador-rango">a</span>
+              <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax || ''}" step="0.1" min="0">
             </div>
           </div>
           
-          <div class="grupo-filtros">
-            <div class="titulo-filtro">Sociable con Gatos</div>
-            <div class="opciones-filtro">
-              <div class="opcion-filtro ${filtrosActivos.sociableConGatos === true ? 'activa' : ''}" data-filtro="sociableConGatos" data-valor="true">✅ Sí</div>
-              <div class="opcion-filtro ${filtrosActivos.sociableConGatos === false ? 'activa' : ''}" data-filtro="sociableConGatos" data-valor="false">❌ No</div>
-            </div>
-          </div>
-          
-          <div class="grupo-filtros">
-            <div class="titulo-filtro">Protección de Recursos</div>
-            <div class="opciones-filtro">
-              <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === true ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="true">✅ Sí</div>
-              <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === false ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="false">❌ No</div>
-            </div>
-          </div>
-          
+          <!-- Nivel de Paseo -->
           <div class="grupo-filtros">
             <div class="titulo-filtro">Nivel de Paseo</div>
             <div class="opciones-filtro">
@@ -752,30 +742,51 @@
             </div>
           </div>
           
+          <!-- Sociable con Perros -->
           <div class="grupo-filtros">
-            <div class="titulo-filtro">Peso (kg)</div>
-            <div class="rango-filtro">
-              <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin || ''}">
-              <span class="separador-rango">a</span>
-              <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax || ''}">
+            <div class="titulo-filtro">Sociable con Perros</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('0') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('1') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('2') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
             </div>
           </div>
           
+          <!-- Sociable con Personas -->
           <div class="grupo-filtros">
-            <div class="titulo-filtro">Altura (cm)</div>
-            <div class="rango-filtro">
-              <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin || ''}">
-              <span class="separador-rango">a</span>
-              <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax || ''}">
+            <div class="titulo-filtro">Sociable con Personas</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('0') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="0">Sí</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('1') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="1">Selectivo</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('2') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="2">Mal con hombres</div>
+              <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('3') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="3">No</div>
             </div>
           </div>
           
+          <!-- Sociable con Gatos -->
           <div class="grupo-filtros">
-            <div class="titulo-filtro">Edad (meses)</div>
-            <div class="rango-filtro">
-              <input type="number" class="input-rango" id="edadMin" placeholder="Mín" value="${filtrosActivos.edadMin || ''}">
-              <span class="separador-rango">a</span>
-              <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax || ''}">
+            <div class="titulo-filtro">Sociable con Gatos</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.sociableConGatos === true ? 'activa' : ''}" data-filtro="sociableConGatos" data-valor="true">✅ Sí</div>
+              <div class="opcion-filtro ${filtrosActivos.sociableConGatos === false ? 'activa' : ''}" data-filtro="sociableConGatos" data-valor="false">❌ No</div>
+            </div>
+          </div>
+          
+          <!-- Protección de Recursos -->
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Protección de Recursos</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === true ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="true">✅ Sí</div>
+              <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === false ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="false">❌ No</div>
+            </div>
+          </div>
+          
+          <!-- Leishmania -->
+          <div class="grupo-filtros">
+            <div class="titulo-filtro">Leishmania</div>
+            <div class="opciones-filtro">
+              <div class="opcion-filtro ${filtrosActivos.leishmania === true ? 'activa' : ''}" data-filtro="leishmania" data-valor="true">✅ Sí</div>
+              <div class="opcion-filtro ${filtrosActivos.leishmania === false ? 'activa' : ''}" data-filtro="leishmania" data-valor="false">❌ No</div>
             </div>
           </div>
           
