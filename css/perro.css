@@ -1,0 +1,181 @@
+.contenedor-perro {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--card-bg-light);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px var(--shadow-light);
+  padding: 1.5em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .contenedor-perro {
+    background: var(--card-bg-dark);
+    box-shadow: 0 2px 5px var(--shadow-dark);
+  }
+}
+
+@media (max-width: 768px) {
+  .contenedor-perro {
+    padding: 1em;
+    margin: 0.5em auto;
+  }
+}
+
+.campos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  margin-bottom: 1.5em;
+}
+
+@media (max-width: 360px) {
+  .campos-grid {
+    grid-template-columns: 1fr;
+    gap: 1em;
+  }
+}
+
+.campo {
+  margin-bottom: 0;
+}
+
+.campo-completo {
+  grid-column: 1 / -1;
+  margin-bottom: 1.2em;
+}
+
+@media (max-width: 768px) {
+  .campo-completo {
+    margin-bottom: 1em;
+  }
+}
+
+.etiqueta {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: var(--text-light);
+  font-size: 0.9em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .etiqueta {
+    color: var(--text-dark);
+  }
+}
+
+.valor {
+  padding: 0.7em;
+  background: #f9f9f9;
+  border-radius: 6px;
+  border-left: 4px solid var(--success-color);
+  font-size: 0.95em;
+  min-height: 2.5em;
+  display: flex;
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .valor {
+    background: #3a3a3a;
+  }
+}
+
+@media (max-width: 768px) {
+  .valor {
+    padding: 0.6em;
+    font-size: 0.9em;
+    min-height: 2.2em;
+  }
+}
+
+.nombre-perro {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  font-size: 1.3em;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  padding: 1em;
+}
+
+.nombre-contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.icono-sexo {
+  font-size: 1.2em;
+}
+
+.icono-reservado {
+  position: absolute;
+  left: 15px;
+  font-size: 1.2em;
+}
+
+/* Colores según el estado de reservado */
+.marco-reservado-null {
+  background-color: var(--success-color) !important; /* Verde */
+}
+
+.marco-reservado-false {
+  background-color: #87CEEB !important; /* Azul claro */
+}
+
+.marco-reservado-true {
+  background-color: #D3D3D3 !important; /* Gris claro */
+}
+
+@media (max-width: 768px) {
+  .nombre-perro {
+    font-size: 1.1em;
+  }
+}
+
+.protocolo-particular {
+  background: #fff3cd !important;
+  border-left-color: var(--warning-color) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .protocolo-particular {
+    background: #5d4200 !important;
+    border-left-color: var(--warning-color) !important;
+  }
+}
+
+/* Estilos para modo edición */
+.campo-editable input,
+.campo-editable select,
+.campo-editable textarea {
+  width: 100%;
+  padding: 0.7em;
+  border: 2px solid var(--primary-color);
+  border-radius: 6px;
+  font-size: 0.95em;
+  background: white;
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  .campo-editable input,
+  .campo-editable select,
+  .campo-editable textarea {
+    background: var(--card-bg-dark);
+    color: var(--text-dark);
+    border-color: #1976D2;
+  }
+}
+
+.campo-editable textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
