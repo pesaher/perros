@@ -26,7 +26,9 @@ function aplicarFiltros(nombrePerro) {
             case 'excluirProblemasSalud':
                 if (Array.isArray(valor) && Array.isArray(datosPerro.problemasDeSalud)) {
                     // Si el perro tiene alguno de los problemas que queremos excluir, no mostrarlo
-                    const tieneProblemaExcluido = datosPerro.problemasDeSalud.some(problema => valor.includes(problema));
+                    const tieneProblemaExcluido = datosPerro.problemasDeSalud.some(problema => 
+                        valor.some(v => parseInt(v) === problema)
+                    );
                     if (tieneProblemaExcluido) return false;
                 }
                 break;
@@ -219,15 +221,25 @@ function mostrarModalFiltros() {
                 filtrosActivos[filtro] = [];
             }
             
+            // Para problemas de salud, guardar como número
+            let valorParaGuardar;
+            if (filtro === 'excluirProblemasSalud') {
+                valorParaGuardar = parseInt(opcion.dataset.valor);
+            } else {
+                valorParaGuardar = opcion.dataset.valor === 'null' ? null : 
+                                 opcion.dataset.valor === 'true' ? true :
+                                 opcion.dataset.valor === 'false' ? false :
+                                 !isNaN(opcion.dataset.valor) ? parseInt(opcion.dataset.valor) : opcion.dataset.valor;
+            }
+            
             // Toggle: si ya está activo, quitar; si no, agregar
-            const valorStr = String(valor);
-            const index = filtrosActivos[filtro].indexOf(valorStr);
+            const index = filtrosActivos[filtro].indexOf(valorParaGuardar);
             
             if (index > -1) {
                 filtrosActivos[filtro].splice(index, 1);
                 opcion.classList.remove('activa');
             } else {
-                filtrosActivos[filtro].push(valorStr);
+                filtrosActivos[filtro].push(valorParaGuardar);
                 opcion.classList.add('activa');
             }
             
