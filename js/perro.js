@@ -72,7 +72,14 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const textoSociablePersonas = sociablePersonas.hasOwnProperty(datos.sociableConPersonas) ? sociablePersonas[datos.sociableConPersonas] : '???';
     const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
     const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
-    const textoLeishmania = getEstadoBooleano(datos.leishmania, 'Sí', 'No');
+    
+    // Problemas de salud
+    const textoProblemasSalud = Array.isArray(datos.leishmania) && datos.leishmania.length > 0 
+        ? datos.leishmania.map(id => {
+            const problemas = ['Leishmania', 'Erlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
+            return problemas[id] || 'Desconocido';
+        }).join(', ')
+        : 'Ninguno';
     
     // Valores por defecto y formateo
     const nombreMostrar = datos.nombre && datos.nombre.trim() !== '' ? datos.nombre.toUpperCase() : 'JOHN DOGE';
@@ -180,13 +187,6 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 </div>
             </div>
             
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Leishmania</div>
-                <div class="valor">
-                    ${modoEdicion ? crearSelectorBooleano('leishmania', datos.leishmania) : textoLeishmania}
-                </div>
-            </div>
-            
             ${modoEdicion ? `
                 <div class="campo campo-editable">
                     <div class="etiqueta">Sexo</div>
@@ -202,6 +202,17 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                     </div>
                 </div>
             ` : ''}
+        </div>
+        
+        <!-- Problemas de Salud -->
+        <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
+            <div class="etiqueta">Problemas de Salud</div>
+            <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
+                ${modoEdicion ? 
+                  crearSelectorProblemasSalud(datos.leishmania) : 
+                  textoProblemasSalud
+                }
+            </div>
         </div>
     `;
     
@@ -343,13 +354,18 @@ function guardarCambios() {
                                         formData.get('sociableConGatos') === 'false' ? false : null;
     datosActualizados.proteccionDeRecursos = formData.get('proteccionDeRecursos') === 'true' ? true : 
                                             formData.get('proteccionDeRecursos') === 'false' ? false : null;
-    datosActualizados.leishmania = formData.get('leishmania') === 'true' ? true : 
-                                  formData.get('leishmania') === 'false' ? false : null;
     datosActualizados.macho = formData.get('macho') === 'true' ? true : 
                              formData.get('macho') === 'false' ? false : null;
     datosActualizados.reservado = formData.get('reservado') === 'null' ? null : 
                                  formData.get('reservado') === 'true' ? true : 
                                  formData.get('reservado') === 'false' ? false : null;
+    
+    // Procesar problemas de salud (checkboxes múltiples)
+    const problemasSaludSeleccionados = [];
+    document.querySelectorAll('input[name="problemasSalud"]:checked').forEach(checkbox => {
+        problemasSaludSeleccionados.push(parseInt(checkbox.value));
+    });
+    datosActualizados.leishmania = problemasSaludSeleccionados;
     
     // Actualizar y salir del modo edición
     datosOriginales = datosActualizados;
