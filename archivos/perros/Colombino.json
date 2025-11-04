@@ -1,0 +1,16 @@
+{
+  "nombre": "Colombino",
+  "nacimiento": "2024-08-10",
+  "macho": true,
+  "peso": 25,
+  "altura": 57,
+  "reservado": false,
+  "paseo": 3,
+  "sociableConPerros": 3,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "leishmania": false,
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}
