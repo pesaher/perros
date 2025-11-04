@@ -10,6 +10,7 @@
   "sociableConPersonas": 0,
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
-  "protocoloParticular": "",
-  "leishmania": false
+  "leishmania": false,
+  "observacionesExtra": "",
+  "protocoloParticular": ""
 }
