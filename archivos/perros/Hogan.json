@@ -1,0 +1,16 @@
+{
+  "nombre": "Hogan",
+  "nacimiento": "",
+  "macho": true,
+  "peso": null,
+  "altura": null,
+  "reservado": false,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "leishmania": null,
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}
