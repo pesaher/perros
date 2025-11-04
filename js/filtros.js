@@ -24,9 +24,9 @@ function aplicarFiltros(nombrePerro) {
                 if (datosPerro.macho !== valor) return false;
                 break;
             case 'excluirProblemasSalud':
-                if (Array.isArray(valor) && Array.isArray(datosPerro.leishmania)) {
+                if (Array.isArray(valor) && Array.isArray(datosPerro.problemasDeSalud)) {
                     // Si el perro tiene alguno de los problemas que queremos excluir, no mostrarlo
-                    const tieneProblemaExcluido = datosPerro.leishmania.some(problema => valor.includes(problema));
+                    const tieneProblemaExcluido = datosPerro.problemasDeSalud.some(problema => valor.includes(problema));
                     if (tieneProblemaExcluido) return false;
                 }
                 break;
