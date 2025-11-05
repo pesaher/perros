@@ -370,13 +370,15 @@ async function crearNuevoPerro() {
         }
         datos[chenil].push(nombreArchivo);
 
-        // 5. Guardar cambios localmente
+        // 5. Guardar cambios
         localStorage.setItem('chenilesDrag', JSON.stringify(datos));
+        pushToGithub();
 
         // 6. Cerrar modal
         const modal = document.querySelector('.modal-anadir-perro');
         document.body.removeChild(modal);
         modalAnadirAbierto = false;
+        pintar();
 
         // 7. Redirigir a la página del perro
         window.location.href = `perro.html?nombre=${encodeURIComponent(nombreArchivo)}`;
