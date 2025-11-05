@@ -144,13 +144,15 @@ function desactivarModoReordenar(guardarEnGitHub = false) {
     // Actualizar botones flotantes
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
-        <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
         <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
+        <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
+        <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
     `;
 
     // Agregar eventos a los botones
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
     document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
+    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
 
     // Guardar cambios en GitHub solo si se especifica
     if (guardarEnGitHub) {
@@ -168,8 +170,17 @@ function cancelarReordenar() {
     // Volver a pintar con los datos originales
     pintar();
 
-    // Desactivar modo reordenar sin guardar
-    desactivarModoReordenar(false);
+    // Desactivar modo reordenar sin guardar - Y RESTAURAR BOTÓN AÑADIR
+    const botonesFlotantes = document.getElementById('botonesFlotantes');
+    botonesFlotantes.innerHTML = `
+        <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
+        <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
+        <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
+    `;
+
+    document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
+    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
+    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
 }
 
 function limpiarVacios() {
@@ -249,7 +260,7 @@ function mostrarModalAnadirPerro() {
 
             <div class="grupo-formulario">
                 <label class="etiqueta-formulario" for="nombrePerro">Nombre del Perro</label>
-                <input type="text" class="input-formulario" id="nombrePerro" placeholder="Ej: Luna, Thor, Max...">
+                <input type="text" class="input-formulario" id="nombrePerro" placeholder="Ej: Maggie, Misade Domingo, Rex...">
                 <div class="mensaje-error" id="errorNombre"></div>
             </div>
 
