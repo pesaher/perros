@@ -16,7 +16,21 @@ function cargarDatosPerro() {
 
 async function cargarDatosPerroDesdeAPI(nombre) {
     try {
-        // Primero verificar si es un perro nuevo (está en datosCompletosPerros)
+        // PRIMERO: Intentar cargar desde GitHub (datos reales)
+        const url = urlSinCache(`https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`);
+        const respuesta = await fetch(url);
+
+        if (respuesta.ok) {
+            // Perro encontrado en GitHub
+            const datosPerro = await respuesta.json();
+            datosOriginales = JSON.parse(JSON.stringify(datosPerro));
+            document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
+            mostrarDatosPerro(nombre, datosPerro, false);
+            configurarEventos();
+            return;
+        }
+
+        // SEGUNDO: Si no está en GitHub, buscar en datosCompletosPerros (perros creados recientemente)
         if (datosCompletosPerros[nombre]) {
             const datosPerro = datosCompletosPerros[nombre];
             datosOriginales = JSON.parse(JSON.stringify(datosPerro));
@@ -26,21 +40,51 @@ async function cargarDatosPerroDesdeAPI(nombre) {
             return;
         }
 
-        // Si no es nuevo, cargar desde GitHub
-        const url = urlSinCache(`https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`);
-        const respuesta = await fetch(url);
+        // TERCERO: Si no está en ningún lado, usar plantilla
+        await cargarDesdePlantilla(nombre);
 
-        if (!respuesta.ok) throw new Error('Perro no encontrado');
+    } catch (error) {
+        // Si hay error de red, intentar con datos locales primero
+        console.warn(`Error al cargar ${nombre}:`, error.message);
 
-        const datosPerro = await respuesta.json();
+        // Primero intentar con datosCompletosPerros
+        if (datosCompletosPerros[nombre]) {
+            const datosPerro = datosCompletosPerros[nombre];
+            datosOriginales = JSON.parse(JSON.stringify(datosPerro));
+            document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
+            mostrarDatosPerro(nombre, datosPerro, false);
+            configurarEventos();
+        } else {
+            // Si no hay datos locales, usar plantilla
+            await cargarDesdePlantilla(nombre);
+        }
+    }
+}
+
+// Función auxiliar para cargar desde plantilla (igual que antes)
+async function cargarDesdePlantilla(nombre) {
+    try {
+        // Cargar plantilla de perro.json
+        const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
+        const respuesta = await fetch(plantillaUrl);
+        const plantilla = await respuesta.json();
+
+        // Crear datos del perro usando la plantilla + nombre
+        const datosPerro = {
+            ...plantilla,
+            nombre: nombre
+        };
+
         datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-
-        document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
+        document.title = `${nombre.toUpperCase()} 🐾`;
         mostrarDatosPerro(nombre, datosPerro, false);
         configurarEventos();
 
+        console.warn(`Mostrando datos de plantilla para ${nombre} (no encontrado en GitHub)`);
+
     } catch (error) {
-        document.getElementById('contenido-perro').innerHTML = `<p>Error al cargar los datos de ${nombre}: ${error.message}</p>`;
+        // Si falla incluso la plantilla, mostrar error
+        document.getElementById('contenido-perro').innerHTML = `<p>Error: No se pudieron cargar los datos para el perro "${nombre}"</p>`;
     }
 }
 
