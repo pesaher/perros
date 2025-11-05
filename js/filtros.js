@@ -17,61 +17,103 @@ function aplicarFiltros(nombrePerro) {
         
         switch (filtro) {
             case 'reservado':
-                if (!Array.isArray(valor) && datosPerro.reservado !== valor) return false;
-                if (Array.isArray(valor) && !valor.includes(String(datosPerro.reservado))) return false;
+                if (Array.isArray(valor)) {
+                    // Convertir valores del filtro a sus tipos correctos
+                    const valoresConvertidos = valor.map(v => {
+                        if (v === 'null') return null;
+                        if (v === 'true') return true;
+                        if (v === 'false') return false;
+                        return v;
+                    });
+                    
+                    if (!valoresConvertidos.includes(datosPerro.reservado)) return false;
+                } else if (datosPerro.reservado !== valor) {
+                    return false;
+                }
                 break;
+                
             case 'macho':
                 if (datosPerro.macho !== valor) return false;
                 break;
+                
             case 'excluirProblemasSalud':
                 if (Array.isArray(valor) && Array.isArray(datosPerro.problemasDeSalud)) {
-                    // Si el perro tiene alguno de los problemas que queremos excluir, no mostrarlo
+                    // Convertir valores del filtro a números
+                    const valoresConvertidos = valor.map(v => parseInt(v));
                     const tieneProblemaExcluido = datosPerro.problemasDeSalud.some(problema => 
-                        valor.some(v => parseInt(v) === problema)
+                        valoresConvertidos.includes(problema)
                     );
                     if (tieneProblemaExcluido) return false;
                 }
                 break;
+                
             case 'sociableConPerros':
-                if (!Array.isArray(valor) && datosPerro.sociableConPerros !== valor) return false;
-                if (Array.isArray(valor) && !valor.includes(String(datosPerro.sociableConPerros))) return false;
+                if (Array.isArray(valor)) {
+                    // Convertir valores del filtro a números
+                    const valoresConvertidos = valor.map(v => parseInt(v));
+                    if (!valoresConvertidos.includes(datosPerro.sociableConPerros)) return false;
+                } else if (datosPerro.sociableConPerros !== valor) {
+                    return false;
+                }
                 break;
+                
             case 'sociableConPersonas':
-                if (!Array.isArray(valor) && datosPerro.sociableConPersonas !== valor) return false;
-                if (Array.isArray(valor) && !valor.includes(String(datosPerro.sociableConPersonas))) return false;
+                if (Array.isArray(valor)) {
+                    // Convertir valores del filtro a números
+                    const valoresConvertidos = valor.map(v => parseInt(v));
+                    if (!valoresConvertidos.includes(datosPerro.sociableConPersonas)) return false;
+                } else if (datosPerro.sociableConPersonas !== valor) {
+                    return false;
+                }
                 break;
+                
             case 'sociableConGatos':
                 if (datosPerro.sociableConGatos !== valor) return false;
                 break;
+                
             case 'proteccionDeRecursos':
                 if (datosPerro.proteccionDeRecursos !== valor) return false;
                 break;
+                
             case 'chip':
                 if (datosPerro.chip !== valor) return false;
                 break;
+                
             case 'ppp':
                 if (datosPerro.ppp !== valor) return false;
                 break;
+                
             case 'paseo':
-                if (!Array.isArray(valor) && datosPerro.paseo !== valor) return false;
-                if (Array.isArray(valor) && !valor.includes(String(datosPerro.paseo))) return false;
+                if (Array.isArray(valor)) {
+                    // Convertir valores del filtro a números
+                    const valoresConvertidos = valor.map(v => parseInt(v));
+                    if (!valoresConvertidos.includes(datosPerro.paseo)) return false;
+                } else if (datosPerro.paseo !== valor) {
+                    return false;
+                }
                 break;
+                
             case 'pesoMin':
                 if (datosPerro.peso === null || datosPerro.peso === undefined || datosPerro.peso < valor) return false;
                 break;
+                
             case 'pesoMax':
                 if (datosPerro.peso === null || datosPerro.peso === undefined || datosPerro.peso > valor) return false;
                 break;
+                
             case 'alturaMin':
                 if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura < valor) return false;
                 break;
+                
             case 'alturaMax':
                 if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura > valor) return false;
                 break;
+                
             case 'edadMin':
                 if (edadEnAños === null) return false;
                 if (Math.floor(edadEnAños) < valor) return false;
                 break;
+                
             case 'edadMax':
                 if (edadEnAños === null) return false;
                 if (Math.floor(edadEnAños) > valor) return false;
@@ -86,6 +128,16 @@ function aplicarFiltros(nombrePerro) {
 function mostrarModalFiltros() {
     const modal = document.createElement('div');
     modal.className = 'modal-filtros';
+    
+    // Función helper para verificar si un valor está activo en los filtros
+    const estaActivo = (filtro, valorBuscado) => {
+        if (!Array.isArray(filtrosActivos[filtro])) return false;
+        
+        // Convertir valorBuscado a string para comparar con los valores guardados
+        const valorBuscadoStr = String(valorBuscado);
+        return filtrosActivos[filtro].some(v => String(v) === valorBuscadoStr);
+    };
+
     modal.innerHTML = `
         <div class="contenido-modal">
             <h3>Filtrar Perros</h3>
@@ -94,9 +146,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Estado</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.reservado) && filtrosActivos.reservado.includes('null') ? 'activa' : ''}" data-filtro="reservado" data-valor="null">🔓 Disponible</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.reservado) && filtrosActivos.reservado.includes('true') ? 'activa' : ''}" data-filtro="reservado" data-valor="true">🔒 Reservado</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.reservado) && filtrosActivos.reservado.includes('false') ? 'activa' : ''}" data-filtro="reservado" data-valor="false">🔒 Adoptado</div>
+                    <div class="opcion-filtro multiple ${estaActivo('reservado', null) ? 'activa' : ''}" data-filtro="reservado" data-valor="null">🔓 Disponible</div>
+                    <div class="opcion-filtro multiple ${estaActivo('reservado', true) ? 'activa' : ''}" data-filtro="reservado" data-valor="true">🔒 Reservado</div>
+                    <div class="opcion-filtro multiple ${estaActivo('reservado', false) ? 'activa' : ''}" data-filtro="reservado" data-valor="false">🔒 Adoptado</div>
                 </div>
             </div>
             
@@ -143,11 +195,11 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Nivel de Paseo</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('0') ? 'activa' : ''}" data-filtro="paseo" data-valor="0">Pasea bien</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('1') ? 'activa' : ''}" data-filtro="paseo" data-valor="1">Miedo (gestionable)</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('2') ? 'activa' : ''}" data-filtro="paseo" data-valor="2">Miedo (bloqueo)</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('3') ? 'activa' : ''}" data-filtro="paseo" data-valor="3">Reactivo</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.paseo) && filtrosActivos.paseo.includes('4') ? 'activa' : ''}" data-filtro="paseo" data-valor="4">Tira</div>
+                    <div class="opcion-filtro multiple ${estaActivo('paseo', 0) ? 'activa' : ''}" data-filtro="paseo" data-valor="0">Pasea bien</div>
+                    <div class="opcion-filtro multiple ${estaActivo('paseo', 1) ? 'activa' : ''}" data-filtro="paseo" data-valor="1">Miedo (gestionable)</div>
+                    <div class="opcion-filtro multiple ${estaActivo('paseo', 2) ? 'activa' : ''}" data-filtro="paseo" data-valor="2">Miedo (bloqueo)</div>
+                    <div class="opcion-filtro multiple ${estaActivo('paseo', 3) ? 'activa' : ''}" data-filtro="paseo" data-valor="3">Reactivo</div>
+                    <div class="opcion-filtro multiple ${estaActivo('paseo', 4) ? 'activa' : ''}" data-filtro="paseo" data-valor="4">Tira</div>
                 </div>
             </div>
             
@@ -155,10 +207,10 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Sociable con Perros</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('0') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('1') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('2') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPerros) && filtrosActivos.sociableConPerros.includes('3') ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="3">No sabe</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPerros', 0) ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="0">Sí</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPerros', 1) ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="1">Selectivo</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPerros', 2) ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="2">No</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPerros', 3) ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="3">No sabe</div>
                 </div>
             </div>
             
@@ -166,10 +218,10 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Sociable con Personas</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('0') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="0">Sí</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('1') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="1">Selectivo</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('2') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="2">Mal con hombres</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.sociableConPersonas) && filtrosActivos.sociableConPersonas.includes('3') ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="3">No</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPersonas', 0) ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="0">Sí</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPersonas', 1) ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="1">Selectivo</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPersonas', 2) ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="2">Mal con hombres</div>
+                    <div class="opcion-filtro multiple ${estaActivo('sociableConPersonas', 3) ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="3">No</div>
                 </div>
             </div>
             
@@ -213,12 +265,12 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Excluir Problemas de Salud</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(0) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="0">🚫 Leishmania</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(1) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="1">🚫 Erlichia</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(2) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="2">🚫 Borrelia</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(3) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="3">🚫 Cáncer</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(4) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="4">🚫 Displasia</div>
-                    <div class="opcion-filtro multiple ${Array.isArray(filtrosActivos.excluirProblemasSalud) && filtrosActivos.excluirProblemasSalud.includes(5) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="5">🚫 Tumor benigno</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 0) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="0">🚫 Leishmania</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 1) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="1">🚫 Erlichia</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 2) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="2">🚫 Borrelia</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 3) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="3">🚫 Cáncer</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 4) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="4">🚫 Displasia</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 5) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="5">🚫 Tumor benigno</div>
                 </div>
             </div>
             
