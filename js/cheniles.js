@@ -386,10 +386,9 @@ async function crearNuevoPerro() {
         const modal = document.querySelector('.modal-anadir-perro');
         document.body.removeChild(modal);
         modalAnadirAbierto = false;
-        pintar();
 
-        // 7. Redirigir a la página del perro
-        window.location.href = `perro.html?nombre=${encodeURIComponent(nombreArchivo)}`;
+        // 7. Actualizar la vista sin redirigir
+        pintar();
 
     } catch (error) {
         mostrarError(errorDiv, 'Error al crear el perro: ' + error.message);
