@@ -41,20 +41,20 @@ function pintar() {
                 if (nombreOriginal && nombreOriginal.trim() !== '') {
                     const marco = document.createElement('div');
                     marco.className = 'marco clickable';
-                    
+
                     // Guardar el nombre original en un atributo data
                     marco.dataset.nombreOriginal = nombreOriginal;
-                    
+
                     // Usar el nombre del JSON si está disponible, si no usar el original
                     const datosPerro = datosCompletosPerros[nombreOriginal];
-                    const nombreAMostrar = datosPerro && datosPerro.nombre && datosPerro.nombre.trim() !== '' 
-                        ? datosPerro.nombre.toUpperCase() 
+                    const nombreAMostrar = datosPerro && datosPerro.nombre && datosPerro.nombre.trim() !== ''
+                        ? datosPerro.nombre.toUpperCase()
                         : nombreOriginal.toUpperCase();
-                    
+
                     marco.textContent = nombreAMostrar;
-                    
+
                     marco.style.backgroundColor = colorPastel(nombreOriginal);
-                    
+
                     // Aplicar filtros si existen
                     if (Object.keys(filtrosActivos).length > 0) {
                         const cumpleFiltro = aplicarFiltros(nombreOriginal);
@@ -64,7 +64,7 @@ function pintar() {
                             marco.classList.add('cumple-filtro');
                         }
                     }
-                    
+
                     // Agregar evento de click para los nombres
                     marco.addEventListener('click', () => {
                         if (!modoReordenar) {
@@ -72,7 +72,7 @@ function pintar() {
                             window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}`;
                         }
                     });
-                    
+
                     zona.appendChild(marco);
                 }
             });
@@ -91,7 +91,7 @@ function pintar() {
                 actualizarDatos();
             }
         });
-        
+
         sortableInstances.push(sortable);
     });
 }
@@ -99,28 +99,28 @@ function pintar() {
 // Funciones de reordenamiento
 function activarModoReordenar() {
     modoReordenar = true;
-    
+
     // Guardar estado original para posible cancelación
     datosOriginales = JSON.parse(JSON.stringify(datos));
-    
+
     // Activar todas las instancias de Sortable
     sortableInstances.forEach(sortable => {
         sortable.option("disabled", false);
     });
-    
+
     // Cambiar cursores y clases
     document.querySelectorAll('.marco').forEach(marco => {
         marco.classList.remove('clickable');
         marco.style.cursor = 'grab';
     });
-    
+
     // Actualizar botones flotantes
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
         <button class="boton-flotante boton-guardar" id="btnGuardar">✓</button>
         <button class="boton-flotante boton-cancelar" id="btnCancelar">✗</button>
     `;
-    
+
     // Agregar eventos a los nuevos botones
     document.getElementById('btnGuardar').addEventListener('click', () => desactivarModoReordenar(true));
     document.getElementById('btnCancelar').addEventListener('click', cancelarReordenar);
@@ -128,29 +128,29 @@ function activarModoReordenar() {
 
 function desactivarModoReordenar(guardarEnGitHub = false) {
     modoReordenar = false;
-    
+
     // Desactivar todas las instancias de Sortable
     sortableInstances.forEach(sortable => {
         sortable.option("disabled", true);
     });
-    
+
     // Restaurar cursores y clases
     document.querySelectorAll('.marco').forEach(marco => {
         marco.classList.add('clickable');
         marco.style.cursor = 'pointer';
     });
-    
+
     // Actualizar botones flotantes
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
-        <button class="boton-flotante boton-reordenar" id="btnReordenar">↕️</button>
+        <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
         <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
     `;
-    
+
     // Agregar eventos a los botones
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
     document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
-    
+
     // Guardar cambios en GitHub solo si se especifica
     if (guardarEnGitHub) {
         pushToGithub();
@@ -160,13 +160,13 @@ function desactivarModoReordenar(guardarEnGitHub = false) {
 function cancelarReordenar() {
     // Restaurar datos originales
     datos = JSON.parse(JSON.stringify(datosOriginales));
-    
+
     // Limpiar instancias de Sortable antes de repintar
     sortableInstances = [];
-    
+
     // Volver a pintar con los datos originales
     pintar();
-    
+
     // Desactivar modo reordenar sin guardar
     desactivarModoReordenar(false);
 }
