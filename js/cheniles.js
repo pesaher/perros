@@ -161,6 +161,8 @@ function desactivarModoReordenar(guardarEnGitHub = false) {
 }
 
 function cancelarReordenar() {
+    modoReordenar = false;
+
     // Restaurar datos originales
     datos = JSON.parse(JSON.stringify(datosOriginales));
 
