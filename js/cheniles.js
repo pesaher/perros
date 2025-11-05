@@ -74,6 +74,15 @@ function pintar() {
                         }
                     });
 
+                    // Asegurar que el cursor sea correcto según el modo
+                    if (modoReordenar) {
+                        marco.classList.remove('clickable');
+                        marco.style.cursor = 'grab';
+                    } else {
+                        marco.classList.add('clickable');
+                        marco.style.cursor = 'pointer';
+                    }
+
                     zona.appendChild(marco);
                 }
             });
