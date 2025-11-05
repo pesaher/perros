@@ -189,28 +189,28 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Sociable con Gatos</div>
                 <div class="valor">
-                    ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datos.sociableConGatos) : textoSociableGatos}
+                    ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datos.sociableConGatos, true) : textoSociableGatos}
                 </div>
             </div>
             
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Protección de Recursos</div>
                 <div class="valor">
-                    ${modoEdicion ? crearSelectorBooleano('proteccionDeRecursos', datos.proteccionDeRecursos) : textoProteccionRecursos}
+                    ${modoEdicion ? crearSelectorBooleano('proteccionDeRecursos', datos.proteccionDeRecursos, true) : textoProteccionRecursos}
                 </div>
             </div>
             
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Chip</div>
                 <div class="valor">
-                    ${modoEdicion ? crearSelectorBooleano(datos.chip) : textoChip}
+                    ${modoEdicion ? crearSelectorBooleano('chip', datos.chip, false) : textoChip}
                 </div>
             </div>
             
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">PPP</div>
                 <div class="valor">
-                    ${modoEdicion ? crearSelectorBooleano(datos.ppp) : textoPPP}
+                    ${modoEdicion ? crearSelectorBooleano('ppp', datos.ppp, true) : textoPPP}
                 </div>
             </div>
             
