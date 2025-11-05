@@ -2,6 +2,7 @@
 let datos = {};
 let sortableInstances = [];
 let modoReordenar = false;
+let modalAnadirAbierto = false;
 let datosOriginales = {};
 
 // Función principal de carga
@@ -215,9 +216,178 @@ async function pushToGithub() {
     }
 }
 
+// Función para capitalizar nombres (CadaPalabraConMayúscula)
+function capitalizarNombre(nombre) {
+    return nombre
+        .toLowerCase() // Primero todo a minúsculas
+        .split(' ') // Dividir por espacios
+        .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)) // Capitalizar cada palabra
+        .join(''); // Unir sin espacios
+}
+
+// Función para normalizar nombre de archivo
+function normalizarNombreArchivo(nombre) {
+    const nombreCapitalizado = capitalizarNombre(nombre);
+
+    return nombreCapitalizado
+        .normalize("NFD") // Separar acentos
+        .replace(/[\u0300-\u036f]/g, "") // Quitar acentos
+        .replace(/ñ/g, "n") // ñ -> n
+        .replace(/[^a-zA-Z0-9]/g, ""); // quitar caracteres especiales
+}
+
+// Función para mostrar modal de añadir perro
+function mostrarModalAnadirPerro() {
+    if (modalAnadirAbierto) return;
+    modalAnadirAbierto = true;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-anadir-perro';
+    modal.innerHTML = `
+        <div class="contenido-modal-anadir">
+            <h3>Añadir Nuevo Perro</h3>
+
+            <div class="grupo-formulario">
+                <label class="etiqueta-formulario" for="nombrePerro">Nombre del Perro</label>
+                <input type="text" class="input-formulario" id="nombrePerro" placeholder="Ej: Luna, Thor, Max...">
+                <div class="mensaje-error" id="errorNombre"></div>
+            </div>
+
+            <div class="grupo-formulario">
+                <label class="etiqueta-formulario" for="chenilDestino">Chenil de Destino</label>
+                <select class="select-formulario" id="chenilDestino">
+                    ${generarOpcionesCheniles()}
+                </select>
+            </div>
+
+            <div class="botones-modal-anadir">
+                <button class="boton-modal boton-cancelar-anadir" id="btnCancelarAnadir">Cancelar</button>
+                <button class="boton-modal boton-crear" id="btnCrearPerro">Crear Perro</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Event listeners
+    modal.querySelector('#btnCancelarAnadir').addEventListener('click', () => {
+        document.body.removeChild(modal);
+        modalAnadirAbierto = false;
+    });
+
+    modal.querySelector('#btnCrearPerro').addEventListener('click', crearNuevoPerro);
+
+    // Cerrar modal al hacer click fuera
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+            modalAnadirAbierto = false;
+        }
+    });
+
+    // Enter para crear
+    modal.querySelector('#nombrePerro').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            crearNuevoPerro();
+        }
+    });
+
+    // Enfocar input de nombre
+    setTimeout(() => {
+        modal.querySelector('#nombrePerro').focus();
+    }, 100);
+}
+
+// Generar opciones de cheniles para el select
+function generarOpcionesCheniles() {
+    return Object.keys(datos).map(chenil =>
+        `<option value="${chenil}">${formatearNombreChenil(chenil)}</option>`
+    ).join('');
+}
+
+// Función para crear nuevo perro
+async function crearNuevoPerro() {
+    const nombreInput = document.getElementById('nombrePerro');
+    const chenilSelect = document.getElementById('chenilDestino');
+    const errorDiv = document.getElementById('errorNombre');
+
+    const nombreMostrar = nombreInput.value.trim();
+    const chenil = chenilSelect.value;
+
+    // Validaciones
+    if (!nombreMostrar) {
+        mostrarError(errorDiv, 'El nombre es obligatorio');
+        return;
+    }
+
+    if (nombreMostrar.length < 2) {
+        mostrarError(errorDiv, 'El nombre debe tener al menos 2 caracteres');
+        return;
+    }
+
+    const nombreArchivo = normalizarNombreArchivo(nombreMostrar);
+
+    // Verificar si el nombre ya existe
+    const nombreExiste = Object.values(datos).some(perros =>
+        perros.some(perro => perro && normalizarNombreArchivo(perro) === nombreArchivo)
+    );
+
+    if (nombreExiste) {
+        mostrarError(errorDiv, 'Ya existe un perro con este nombre');
+        return;
+    }
+
+    // Crear perro localmente
+    try {
+        // 1. Cargar plantilla de perro
+        const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
+        const respuesta = await fetch(plantillaUrl);
+        const plantilla = await respuesta.json();
+
+        // 2. Actualizar plantilla con nombre del perro
+        const datosPerro = {
+            ...plantilla,
+            nombre: nombreMostrar
+        };
+
+        // 3. Guardar localmente en datosCompletosPerros
+        datosCompletosPerros[nombreArchivo] = datosPerro;
+
+        // 4. Añadir perro al chenil seleccionado
+        if (!datos[chenil]) {
+            datos[chenil] = [];
+        }
+        datos[chenil].push(nombreArchivo);
+
+        // 5. Guardar cambios localmente
+        localStorage.setItem('chenilesDrag', JSON.stringify(datos));
+
+        // 6. Cerrar modal
+        const modal = document.querySelector('.modal-anadir-perro');
+        document.body.removeChild(modal);
+        modalAnadirAbierto = false;
+
+        // 7. Redirigir a la página del perro
+        window.location.href = `perro.html?nombre=${encodeURIComponent(nombreArchivo)}`;
+
+    } catch (error) {
+        mostrarError(errorDiv, 'Error al crear el perro: ' + error.message);
+    }
+}
+
+// Función auxiliar para mostrar errores
+function mostrarError(elemento, mensaje) {
+    elemento.textContent = mensaje;
+    elemento.style.display = 'block';
+    setTimeout(() => {
+        elemento.style.display = 'none';
+    }, 5000);
+}
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
     document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
+    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
     cargar();
 });

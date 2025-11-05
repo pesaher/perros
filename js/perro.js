@@ -16,6 +16,17 @@ function cargarDatosPerro() {
 
 async function cargarDatosPerroDesdeAPI(nombre) {
     try {
+        // Primero verificar si es un perro nuevo (está en datosCompletosPerros)
+        if (datosCompletosPerros[nombre]) {
+            const datosPerro = datosCompletosPerros[nombre];
+            datosOriginales = JSON.parse(JSON.stringify(datosPerro));
+            document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
+            mostrarDatosPerro(nombre, datosPerro, false);
+            configurarEventos();
+            return;
+        }
+
+        // Si no es nuevo, cargar desde GitHub
         const url = urlSinCache(`https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`);
         const respuesta = await fetch(url);
 
@@ -26,8 +37,6 @@ async function cargarDatosPerroDesdeAPI(nombre) {
 
         document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
         mostrarDatosPerro(nombre, datosPerro, false);
-
-        // Configurar el evento del botón de editar DESPUÉS de cargar los datos
         configurarEventos();
 
     } catch (error) {
@@ -391,7 +400,7 @@ function guardarCambios() {
                         formData.get('chip') === 'false' ? false : false; // Por defecto false si no hay valor
     datosActualizados.ppp = formData.get('ppp') === 'true' ? true :
                        formData.get('ppp') === 'false' ? false : null;
-   datosActualizados.apadrinado = formData.get('apadrinado') === 'true' ? true : 
+   datosActualizados.apadrinado = formData.get('apadrinado') === 'true' ? true :
                         formData.get('apadrinado') === 'false' ? false : false; // Siempre false por defecto
     datosActualizados.macho = formData.get('macho') === 'true' ? true :
                              formData.get('macho') === 'false' ? false : null;
