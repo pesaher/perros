@@ -1,20 +1,21 @@
 #contenedor {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 1em;
-  justify-content: center;
+  width: 100%;
 }
 
 .chenil {
   background: var(--card-bg-light);
   border-radius: 10px;
   box-shadow: 0 2px 5px var(--shadow-light);
-  width: 230px;
+  width: 100%;
   padding: 1em;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   transition: 0.2s;
+  min-width: 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,16 +27,7 @@
 
 @media (max-width: 768px) {
   .chenil {
-    width: calc(50% - 1em);
-    min-width: 140px;
     padding: 0.8em;
-  }
-}
-
-@media (max-width: 480px) {
-  .chenil {
-    width: 100%;
-    min-width: auto;
   }
 }
 
