@@ -201,14 +201,22 @@ function crearSelectorSociablePersonas(valorActual) {
     return crearSelectorGenerico('sociableConPersonas', opciones, valorActual);
 }
 
-function crearSelectorBooleano(nombre, valorActual) {
-    const opciones = {
-        'true': '✅ Sí',
-        'false': '❌ No',
-        '': '???'
-    };
+function crearSelectorBooleano(nombre, valorActual, permitirNull = true) {
+    let html = `<select name="${nombre}">`;
     
-    return crearSelectorGenerico(nombre, opciones, valorActual);
+    if (permitirNull) {
+        // Opciones con "???"
+        html += `<option value="" ${(valorActual === null || valorActual === undefined) ? 'selected' : ''}>???</option>`;
+        html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
+        html += `<option value="false" ${valorActual === false ? 'selected' : ''}>❌ No</option>`;
+    } else {
+        // Opciones sin "???" - Chip no puede ser null
+        html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
+        html += `<option value="false" ${valorActual === false || valorActual === null || valorActual === undefined ? 'selected' : ''}>❌ No</option>`;
+    }
+    
+    html += '</select>';
+    return html;
 }
 
 function crearSelectorSexo(valorActual) {
