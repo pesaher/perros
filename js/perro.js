@@ -90,7 +90,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     // Problemas de salud
     const textoProblemasSalud = Array.isArray(datos.problemasDeSalud) && datos.problemasDeSalud.length > 0
         ? datos.problemasDeSalud.map(id => {
-            const problemas = ['Leishmania', 'Erlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
+            const problemas = ['Leishmania', 'Ehrlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
             return problemas[id] || 'Desconocido';
         }).join(', ')
         : 'Ninguno';

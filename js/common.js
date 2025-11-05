@@ -247,7 +247,7 @@ function crearSelectorProblemasSalud(valorActual) {
     
     const problemas = [
         {id: 0, nombre: 'Leishmania'},
-        {id: 1, nombre: 'Erlichia'},
+        {id: 1, nombre: 'Ehrlichia'},
         {id: 2, nombre: 'Borrelia'},
         {id: 3, nombre: 'Cáncer'},
         {id: 4, nombre: 'Displasia'},

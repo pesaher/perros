@@ -1,0 +1,19 @@
+{
+  "nombre": "Percival Repe",
+  "nacimiento": "",
+  "macho": true,
+  "peso": null,
+  "altura": null,
+  "reservado": null,
+  "paseo": 3,
+  "sociableConPerros": 1,
+  "sociableConPersonas": 2,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "chip": null,
+  "ppp": false,
+  "apadrinado": false,
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": "Trabajar reactividad con control de distancias. Reforzar calma al mirar de lejos. Si vemos que hay perfiles con los que reacciona bien (por ejemplo galgas hembras o así) valorar reducir distancias para que socialice. Aprovechar visitas de hombres desconocidos para que se acerquen y le den chuches (aún sin bozal)."
+}

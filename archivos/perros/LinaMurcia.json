@@ -1,0 +1,19 @@
+{
+  "nombre": "Lina Murcia",
+  "nacimiento": "2024-09-15",
+  "macho": false,
+  "peso": 15,
+  "altura": 56,
+  "reservado": null,
+  "paseo": 4,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "chip": false,
+  "ppp": false,
+  "apadrinado": false,
+  "problemasDeSalud": [0],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

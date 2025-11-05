@@ -279,7 +279,7 @@ function mostrarModalFiltros() {
                 <div class="titulo-filtro">Excluir Problemas de Salud</div>
                 <div class="opciones-filtro">
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 0) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="0">🚫 Leishmania</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 1) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="1">🚫 Erlichia</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 1) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="1">🚫 Ehrlichia</div>
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 2) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="2">🚫 Borrelia</div>
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 3) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="3">🚫 Cáncer</div>
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 4) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="4">🚫 Displasia</div>
