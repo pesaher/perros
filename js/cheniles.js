@@ -346,52 +346,77 @@ async function crearNuevoPerro() {
 
     const nombreArchivo = normalizarNombreArchivo(nombreMostrar);
 
-    // Verificar si el nombre ya existe
-    const nombreExiste = Object.values(datos).some(perros =>
-        perros.some(perro => perro && normalizarNombreArchivo(perro) === nombreArchivo)
-    );
-
-    if (nombreExiste) {
-        mostrarError(errorDiv, 'Ya existe un perro con este nombre');
-        return;
-    }
-
-    // Crear perro localmente
     try {
-        // 1. Cargar plantilla de perro
-        const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
-        const respuesta = await fetch(plantillaUrl);
-        const plantilla = await respuesta.json();
+        // 1. Primero verificar si el JSON del perro ya existe en GitHub
+        const urlPerro = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombreArchivo)}.json`;
+        const respuesta = await fetch(urlPerro);
 
-        // 2. Actualizar plantilla con nombre del perro
-        const datosPerro = {
-            ...plantilla,
-            nombre: nombreMostrar
-        };
+        let datosPerro;
+        let esPerroExistente = false;
+        let mensajeExito = '';
 
-        // 3. Guardar localmente en datosCompletosPerros
+        if (respuesta.ok) {
+            // El perro YA EXISTE en GitHub
+            datosPerro = await respuesta.json();
+            esPerroExistente = true;
+
+            // 2. Verificar si ya está en algún chenil actual
+            const yaEstaEnChenil = Object.values(datos).some(perros =>
+                perros.some(perro => perro && normalizarNombreArchivo(perro) === nombreArchivo)
+            );
+
+            if (yaEstaEnChenil) {
+                mostrarError(errorDiv, 'Este perro ya existe y está en un chenil');
+                return;
+            }
+
+            mensajeExito = `✅ Perro existente "${nombreMostrar}" añadido a ${formatearNombreChenil(chenil)}`;
+
+        } else {
+            // El perro NO EXISTE en GitHub - crear nuevo perro
+            const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
+            const respuestaPlantilla = await fetch(plantillaUrl);
+            const plantilla = await respuestaPlantilla.json();
+
+            datosPerro = {
+                ...plantilla,
+                nombre: nombreMostrar
+            };
+
+            mensajeExito = `✅ Nuevo perro "${nombreMostrar}" creado exitosamente en ${formatearNombreChenil(chenil)}`;
+        }
+
+        // CÓDIGO COMÚN PARA AMBOS CASOS (perro existente o nuevo)
+
+        // 1. Guardar en datosCompletosPerros
         datosCompletosPerros[nombreArchivo] = datosPerro;
 
-        // 4. Añadir perro al chenil seleccionado
+        // 2. Añadir perro al chenil seleccionado
         if (!datos[chenil]) {
             datos[chenil] = [];
         }
         datos[chenil].push(nombreArchivo);
 
-        // 5. Guardar cambios
+        // 3. Guardar cambios
         localStorage.setItem('chenilesDrag', JSON.stringify(datos));
         pushToGithub();
 
-        // 6. Cerrar modal
+        // 4. Cerrar modal y actualizar vista
         const modal = document.querySelector('.modal-anadir-perro');
         document.body.removeChild(modal);
         modalAnadirAbierto = false;
-
-        // 7. Actualizar la vista sin redirigir
         pintar();
 
+        // 5. Mostrar mensaje de confirmación
+        alert(mensajeExito);
+
     } catch (error) {
-        mostrarError(errorDiv, 'Error al crear el perro: ' + error.message);
+        // Manejo de errores de red
+        if (error.message.includes('fetch') || error.message.includes('network')) {
+            mostrarError(errorDiv, 'Error de conexión. Inténtalo de nuevo.');
+        } else {
+            mostrarError(errorDiv, 'Error: ' + error.message);
+        }
     }
 }
 
