@@ -14,6 +14,28 @@ function cargarDatosPerro() {
     }
 }
 
+// Función para cargar y mostrar datos del perro
+function cargarYMostrarPerro(nombre, datosPerro) {
+    datosOriginales = JSON.parse(JSON.stringify(datosPerro));
+    document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
+    mostrarDatosPerro(nombre, datosPerro, false);
+    configurarEventos();
+}
+
+// Función para manejar la carga cuando GitHub falla
+async function manejarCargaFallback(nombre) {
+    // Primero intentar con datosCompletosPerros
+    if (datosCompletosPerros[nombre]) {
+        const datosPerro = datosCompletosPerros[nombre];
+        cargarYMostrarPerro(nombre, datosPerro);
+        return true;
+    }
+
+    // Si no hay datos locales, usar plantilla
+    await cargarDesdePlantilla(nombre);
+    return true;
+}
+
 async function cargarDatosPerroDesdeAPI(nombre) {
     try {
         // PRIMERO: Intentar cargar desde GitHub (datos reales)
@@ -23,20 +45,14 @@ async function cargarDatosPerroDesdeAPI(nombre) {
         if (respuesta.ok) {
             // Perro encontrado en GitHub
             const datosPerro = await respuesta.json();
-            datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-            document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
-            mostrarDatosPerro(nombre, datosPerro, false);
-            configurarEventos();
+            cargarYMostrarPerro(nombre, datosPerro);
             return;
         }
 
-        // SEGUNDO: Si no está en GitHub, buscar en datosCompletosPerros (perros creados recientemente)
+        // SEGUNDO: Si no está en GitHub, buscar en datosCompletosPerros
         if (datosCompletosPerros[nombre]) {
             const datosPerro = datosCompletosPerros[nombre];
-            datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-            document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
-            mostrarDatosPerro(nombre, datosPerro, false);
-            configurarEventos();
+            cargarYMostrarPerro(nombre, datosPerro);
             return;
         }
 
@@ -44,20 +60,9 @@ async function cargarDatosPerroDesdeAPI(nombre) {
         await cargarDesdePlantilla(nombre);
 
     } catch (error) {
-        // Si hay error de red, intentar con datos locales primero
+        // Si hay error de red, usar el fallback
         console.warn(`Error al cargar ${nombre}:`, error.message);
-
-        // Primero intentar con datosCompletosPerros
-        if (datosCompletosPerros[nombre]) {
-            const datosPerro = datosCompletosPerros[nombre];
-            datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-            document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
-            mostrarDatosPerro(nombre, datosPerro, false);
-            configurarEventos();
-        } else {
-            // Si no hay datos locales, usar plantilla
-            await cargarDesdePlantilla(nombre);
-        }
+        await manejarCargaFallback(nombre);
     }
 }
 
