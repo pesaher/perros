@@ -1,0 +1,19 @@
+{
+  "nombre": "Maggie",
+  "nacimiento": "2024-09-15",
+  "macho": false,
+  "peso": 24,
+  "altura": null,
+  "reservado": false,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": false,
+  "chip": true,
+  "ppp": false,
+  "apadrinado": false,
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}
