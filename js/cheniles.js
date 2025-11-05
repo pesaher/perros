@@ -66,15 +66,6 @@ function pintar() {
                         }
                     }
 
-                    // Asegurar que la clase clickable esté aplicada correctamente según el modo
-                    if (modoReordenar) {
-                        marco.classList.remove('clickable');
-                        marco.style.cursor = 'grab';
-                    } else {
-                        marco.classList.add('clickable');
-                        marco.style.cursor = 'pointer';
-                    }
-
                     // Agregar evento de click para los nombres
                     marco.addEventListener('click', () => {
                         if (!modoReordenar) {
