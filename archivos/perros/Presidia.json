@@ -12,7 +12,7 @@
   "proteccionDeRecursos": null,
   "chip": null,
   "ppp": false,
-  "apadrinado": false,
+  "apadrinado": true,
   "problemasDeSalud": [],
   "observacionesExtra": "",
   "protocoloParticular": ""
