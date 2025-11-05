@@ -286,11 +286,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 5) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="5">🚫 Tumor benigno</div>
                 </div>
             </div>
+        </div>
 
-            <div class="botones-filtros">
-                <button class="boton-filtro boton-limpiar" id="btnLimpiarFiltros">🧹 Limpiar</button>
-                <button class="boton-filtro boton-aplicar" id="btnAplicarFiltros">✅ Aplicar</button>
-            </div>
+        <div class="botones-filtros">
+            <button class="boton-filtro boton-limpiar" id="btnLimpiarFiltros">🧹 Limpiar</button>
+            <button class="boton-filtro boton-aplicar" id="btnAplicarFiltros">✅ Aplicar</button>
         </div>
     `;
 
