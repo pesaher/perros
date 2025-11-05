@@ -274,11 +274,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     }
 
     // Verificar si debe mostrar el Protocolo de Reactividad
-    const debeMostrarProtocolo = 
-        datos.paseo === 3 || // Reactivo
-        datos.sociableConPerros === 2 || // No
-        datos.sociableConPersonas === 2 || // Mal con hombres
-        datos.sociableConPersonas === 3; // No (personas)
+    const debeMostrarProtocolo = datos.paseo === 3; // Reactivo
     
     // Protocolo de Reactividad (solo en modo visual)
     if (!modoEdicion && debeMostrarProtocolo) {
