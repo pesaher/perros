@@ -211,7 +211,6 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 <div class="etiqueta">PPP</div>
                 <div class="valor">
                     ${modoEdicion ? crearSelectorBooleano(datos.ppp) : textoPPP}
-                    }
                 </div>
             </div>
             
