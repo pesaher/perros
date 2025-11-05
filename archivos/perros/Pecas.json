@@ -1,5 +1,5 @@
 {
-  "nombre": "",
+  "nombre": "Pecas",
   "nacimiento": "",
   "macho": true,
   "peso": null,
@@ -10,8 +10,8 @@
   "sociableConPersonas": null,
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
-  "chip": false,
-  "ppp": null,
+  "chip": null,
+  "ppp": false,
   "apadrinado": false,
   "problemasDeSalud": [],
   "observacionesExtra": "",
