@@ -34,7 +34,7 @@
 
 @media (max-width: 480px) {
   .chenil {
-    width: 100%;
+    width: calc(50% - 0.5em);
     min-width: auto;
   }
 }
