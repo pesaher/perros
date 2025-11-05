@@ -170,6 +170,12 @@ function cancelarReordenar() {
     // Volver a pintar con los datos originales
     pintar();
 
+    // Restaurar cursores y clases
+    document.querySelectorAll('.marco').forEach(marco => {
+        marco.classList.add('clickable');
+        marco.style.cursor = 'pointer';
+    });
+
     // Desactivar modo reordenar sin guardar - Y RESTAURAR BOTÓN AÑADIR
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
