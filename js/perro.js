@@ -28,12 +28,11 @@ async function manejarCargaFallback(nombre) {
     if (datosCompletosPerros[nombre]) {
         const datosPerro = datosCompletosPerros[nombre];
         cargarYMostrarPerro(nombre, datosPerro);
-        return true;
+        return;
     }
 
     // Si no hay datos locales, usar plantilla
     await cargarDesdePlantilla(nombre);
-    return true;
 }
 
 async function cargarDatosPerroDesdeAPI(nombre) {
@@ -50,18 +49,10 @@ async function cargarDatosPerroDesdeAPI(nombre) {
         }
 
         // SEGUNDO: Si no está en GitHub, buscar en datosCompletosPerros
-        if (datosCompletosPerros[nombre]) {
-            const datosPerro = datosCompletosPerros[nombre];
-            cargarYMostrarPerro(nombre, datosPerro);
-            return;
-        }
-
-        // TERCERO: Si no está en ningún lado, usar plantilla
-        await cargarDesdePlantilla(nombre);
+        await manejarCargaFallback(nombre);
 
     } catch (error) {
-        // Si hay error de red, usar el fallback
-        console.warn(`Error al cargar ${nombre}:`, error.message);
+        // TERCERO: Si hay error, usar el fallback
         await manejarCargaFallback(nombre);
     }
 }
