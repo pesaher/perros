@@ -1,0 +1,19 @@
+{
+  "nombre": "Tania Punto",
+  "nacimiento": "2023-02-10",
+  "macho": false,
+  "peso": 19,
+  "altura": 42,
+  "reservado": null,
+  "paseo": 4,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 3,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "chip": false,
+  "ppp": false,
+  "apadrinado": false,
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": "Manipulación y arnés de forma progresiva, siempre con comida. Reforzar vínculo con mordedor. No presionar."
+}

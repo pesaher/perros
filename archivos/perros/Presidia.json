@@ -1,0 +1,19 @@
+{
+  "nombre": "Presidia",
+  "nacimiento": "",
+  "macho": false,
+  "peso": null,
+  "altura": null,
+  "reservado": null,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "chip": null,
+  "ppp": false,
+  "apadrinado": false,
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

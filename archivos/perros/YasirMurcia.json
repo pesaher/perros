@@ -1,0 +1,19 @@
+{
+  "nombre": "Yasir Murcia",
+  "nacimiento": "",
+  "macho": true,
+  "peso": null,
+  "altura": null,
+  "reservado": null,
+  "paseo": 4,
+  "sociableConPerros": 1,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "chip": null,
+  "ppp": null,
+  "apadrinado": false,
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

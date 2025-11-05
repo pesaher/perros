@@ -1,0 +1,19 @@
+{
+  "nombre": "Calixto",
+  "nacimiento": "2023-09-10",
+  "macho": true,
+  "peso": 8,
+  "altura": 33,
+  "reservado": true,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "chip": false,
+  "ppp": false,
+  "apadrinado": false,
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}
