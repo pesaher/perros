@@ -1,8 +1,10 @@
 #contenedor {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1em;
   width: 100%;
+  padding: 0 0.5em;
+  box-sizing: border-box;
 }
 
 .chenil {
@@ -16,6 +18,7 @@
   align-items: stretch;
   transition: 0.2s;
   min-width: 0;
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -109,6 +112,7 @@
   font-size: 1.05em;
   text-transform: uppercase;
   color: #000 !important;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
