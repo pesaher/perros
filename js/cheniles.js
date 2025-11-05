@@ -353,7 +353,6 @@ async function crearNuevoPerro() {
 
         let datosPerro;
         let esPerroExistente = false;
-        let mensajeExito = '';
 
         if (respuesta.ok) {
             // El perro YA EXISTE en GitHub
@@ -370,8 +369,6 @@ async function crearNuevoPerro() {
                 return;
             }
 
-            mensajeExito = `✅ Perro existente "${nombreMostrar}" añadido a ${formatearNombreChenil(chenil)}`;
-
         } else {
             // El perro NO EXISTE en GitHub - crear nuevo perro
             const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
@@ -382,8 +379,6 @@ async function crearNuevoPerro() {
                 ...plantilla,
                 nombre: nombreMostrar
             };
-
-            mensajeExito = `✅ Nuevo perro "${nombreMostrar}" creado exitosamente en ${formatearNombreChenil(chenil)}`;
         }
 
         // CÓDIGO COMÚN PARA AMBOS CASOS (perro existente o nuevo)
@@ -406,9 +401,6 @@ async function crearNuevoPerro() {
         document.body.removeChild(modal);
         modalAnadirAbierto = false;
         pintar();
-
-        // 5. Mostrar mensaje de confirmación
-        alert(mensajeExito);
 
     } catch (error) {
         // Manejo de errores de red
