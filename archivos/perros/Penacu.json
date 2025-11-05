@@ -4,7 +4,7 @@
   "macho": true,
   "peso": 17,
   "altura": 50,
-  "reservado": false,
+  "reservado": null,
   "paseo": 3,
   "sociableConPerros": 2,
   "sociableConPersonas": 1,
