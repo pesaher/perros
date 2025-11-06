@@ -1,5 +1,6 @@
 {
   "nombre": "Paul Dozo",
+  "nivelDeDificultad": 0,
   "nacimiento": "2024-02-10",
   "macho": true,
   "peso": 11,
