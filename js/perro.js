@@ -473,7 +473,6 @@ async function guardarCambios() {
     });
     datosActualizados.problemasDeSalud = problemasSaludSeleccionados;
 
-    console.log(datosActualizados);
     try {
         // Guardar en GitHub
         const respuesta = await fetch('/.netlify/functions/save-perro', {
