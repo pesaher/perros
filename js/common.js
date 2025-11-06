@@ -30,17 +30,19 @@ function calcularEdadEnAños(nacimiento) {
     const hoy = new Date();
     let fechaNacimiento;
 
+    const parsedNacimiento = nacimiento.replace('/', '-');
+
     // Detectar el formato de la fecha
-    if (nacimiento.match(/^\d{4}$/)) {
+    if (parsedNacimiento.match(/^\d{4}$/)) {
         // Formato YYYY - considerar como 1 de enero
-        fechaNacimiento = new Date(parseInt(nacimiento), 0, 1);
-    } else if (nacimiento.match(/^\d{4}-\d{2}$/)) {
+        fechaNacimiento = new Date(parseInt(parsedNacimiento), 0, 1);
+    } else if (parsedNacimiento.match(/^\d{4}-\d{2}$/)) {
         // Formato YYYY-MM - considerar como primer día del mes
-        const [año, mes] = nacimiento.split('-');
+        const [año, mes] = parsedNacimiento.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
-    } else if (nacimiento.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    } else if (parsedNacimiento.match(/^\d{4}-\d{2}-\d{2}$/)) {
         // Formato YYYY-MM-DD - fecha exacta
-        fechaNacimiento = new Date(nacimiento);
+        fechaNacimiento = new Date(parsedNacimiento);
     } else {
         // Formato no reconocido
         return null;
