@@ -97,6 +97,13 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const contenedor = document.getElementById('contenido-perro');
 
     // Mapeos de valores
+    const estados = {
+        0: "Disponible",
+        1: "Chip (preguntar)",
+        2: "Reservado",
+        3: "Residencia"
+    };
+
     const nivelesPaseo = {
         0: "Pasea bien",
         1: "Miedo (gestionable)",
@@ -127,12 +134,12 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     };
 
     // Valores formateados para modo visual
+    const textoEstado = estados.hasOwnProperty(datos.estado) ? estados[datos.estado] : '???';
     const textoPaseo = nivelesPaseo.hasOwnProperty(datos.paseo) ? nivelesPaseo[datos.paseo] : '???';
     const textoSociablePerros = sociablePerros.hasOwnProperty(datos.sociableConPerros) ? sociablePerros[datos.sociableConPerros] : '???';
     const textoSociablePersonas = sociablePersonas.hasOwnProperty(datos.sociableConPersonas) ? sociablePersonas[datos.sociableConPersonas] : '???';
     const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
     const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
-    const textoChip = getEstadoBooleano(datos.chip, 'Sí', 'No');
     const textoPPP = getEstadoBooleano(datos.ppp, 'Sí', 'No');
     const textoApadrinado = getEstadoBooleano(datos.apadrinado, 'Sí', 'No');
 
@@ -153,27 +160,11 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     // Icono de sexo
     const iconoSexo = datos.macho === true ? '♂️' : datos.macho === false ? '♀️' : '';
 
-    // Icono y color de reservado
-    let iconoReservado = '';
-    let claseReservado = '';
-
-    if (datos.reservado === null) {
-        iconoReservado = '🔓';
-        claseReservado = 'marco-reservado-null';
-    } else if (datos.reservado === false) {
-        iconoReservado = '🔒';
-        claseReservado = 'marco-reservado-false';
-    } else if (datos.reservado === true) {
-        iconoReservado = '🔒';
-        claseReservado = 'marco-reservado-true';
-    }
-
     let html = `
         <div class="campos-grid">
             <!-- Nombre ocupa toda la fila con iconos -->
             <div class="campo-completo">
-                <div class="valor nombre-perro ${claseReservado}">
-                    ${iconoReservado ? `<span class="icono-reservado">${iconoReservado}</span>` : ''}
+                <div class="valor nombre-perro">
                     <div class="nombre-contenedor">
                         ${modoEdicion ?
                           `<input type="text" value="${datos.nombre || ''}" placeholder="Nombre del perro">` :
@@ -185,14 +176,14 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             </div>
 
             <!-- Campos en dos columnas -->
-            ${modoEdicion ? `
-                <div class="campo campo-editable">
-                    <div class="etiqueta">Estado</div>
-                    <div class="valor">
-                        ${crearSelectorReservado(datos.reservado)}
-                    </div>
+            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+                <div class="etiqueta">Estado</div>
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('estado', datos.estado)}` : ''}">
+                    ${modoEdicion ? crearSelectorEstado(datos.estado) : textoEstado}
                 </div>
+            </div>
 
+            ${modoEdicion ? `
                 <div class="campo campo-editable">
                     <div class="etiqueta">Sexo</div>
                     <div class="valor">
@@ -263,13 +254,6 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 <div class="etiqueta">Protección de Recursos</div>
                 <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('proteccionDeRecursos', datos.proteccionDeRecursos)}` : ''}">
                     ${modoEdicion ? crearSelectorBooleano('proteccionDeRecursos', datos.proteccionDeRecursos, true) : textoProteccionRecursos}
-                </div>
-            </div>
-
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Chip</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('chip', datos.chip)}` : ''}">
-                    ${modoEdicion ? crearSelectorBooleano('chip', datos.chip, false) : textoChip}
                 </div>
             </div>
 
@@ -447,9 +431,6 @@ async function guardarCambios() {
     datosActualizados.proteccionDeRecursos = selectProteccion?.value === 'true' ? true :
                                             selectProteccion?.value === 'false' ? false : null;
 
-    const selectChip = document.querySelector('select[name="chip"]');
-    datosActualizados.chip = selectChip?.value === 'true' ? true : false;
-
     const selectPPP = document.querySelector('select[name="ppp"]');
     datosActualizados.ppp = selectPPP?.value === 'true' ? true :
                            selectPPP?.value === 'false' ? false : null;
@@ -461,10 +442,8 @@ async function guardarCambios() {
     datosActualizados.macho = selectSexo?.value === 'true' ? true :
                              selectSexo?.value === 'false' ? false : null;
 
-    const selectReservado = document.querySelector('select[name="reservado"]');
-    datosActualizados.reservado = selectReservado?.value === 'null' ? null :
-                                 selectReservado?.value === 'true' ? true :
-                                 selectReservado?.value === 'false' ? false : null;
+    const selectEstado = document.querySelector('select[name="estado"]');
+    datosActualizados.estado = selectEstado?.value ? parseInt(selectEstado.value) : null;
 
     // Procesar problemas de salud (checkboxes múltiples)
     const problemasSaludSeleccionados = [];

@@ -16,18 +16,11 @@ function aplicarFiltros(nombrePerro) {
         if (valor === null || valor === undefined || valor === '') continue;
 
         switch (filtro) {
-            case 'reservado':
+            case 'estado':
                 if (Array.isArray(valor)) {
-                    // Convertir valores del filtro a sus tipos correctos
-                    const valoresConvertidos = valor.map(v => {
-                        if (v === 'null') return null;
-                        if (v === 'true') return true;
-                        if (v === 'false') return false;
-                        return v;
-                    });
-
-                    if (!valoresConvertidos.includes(datosPerro.reservado)) return false;
-                } else if (datosPerro.reservado !== valor) {
+                    const valoresConvertidos = valor.map(v => parseInt(v));
+                    if (!valoresConvertidos.includes(datosPerro.estado)) return false;
+                } else if (datosPerro.estado !== valor) {
                     return false;
                 }
                 break;
@@ -73,10 +66,6 @@ function aplicarFiltros(nombrePerro) {
 
             case 'proteccionDeRecursos':
                 if (datosPerro.proteccionDeRecursos !== valor) return false;
-                break;
-
-            case 'chip':
-                if (datosPerro.chip !== valor) return false;
                 break;
 
             case 'ppp':
@@ -150,9 +139,10 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Estado</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${estaActivo('reservado', null) ? 'activa' : ''}" data-filtro="reservado" data-valor="null">🔓 Disponible</div>
-                    <div class="opcion-filtro multiple ${estaActivo('reservado', true) ? 'activa' : ''}" data-filtro="reservado" data-valor="true">🔒 Reservado</div>
-                    <div class="opcion-filtro multiple ${estaActivo('reservado', false) ? 'activa' : ''}" data-filtro="reservado" data-valor="false">🔒 Adoptado</div>
+                    <div class="opcion-filtro multiple ${estaActivo('estado', 0) ? 'activa' : ''}" data-filtro="estado" data-valor="0">Disponible</div>
+                    <div class="opcion-filtro multiple ${estaActivo('estado', 1) ? 'activa' : ''}" data-filtro="estado" data-valor="1">Chip (preguntar)</div>
+                    <div class="opcion-filtro multiple ${estaActivo('estado', 2) ? 'activa' : ''}" data-filtro="estado" data-valor="2">Reservado</div>
+                    <div class="opcion-filtro multiple ${estaActivo('estado', 3) ? 'activa' : ''}" data-filtro="estado" data-valor="3">Residencia</div>
                 </div>
             </div>
 
@@ -244,15 +234,6 @@ function mostrarModalFiltros() {
                 <div class="opciones-filtro">
                     <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === true ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="true">✅ Sí</div>
                     <div class="opcion-filtro ${filtrosActivos.proteccionDeRecursos === false ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="false">❌ No</div>
-                </div>
-            </div>
-
-            <!-- Chip -->
-            <div class="grupo-filtros">
-                <div class="titulo-filtro">Chip</div>
-                <div class="opciones-filtro">
-                    <div class="opcion-filtro ${filtrosActivos.chip === true ? 'activa' : ''}" data-filtro="chip" data-valor="true">✅ Sí</div>
-                    <div class="opcion-filtro ${filtrosActivos.chip === false ? 'activa' : ''}" data-filtro="chip" data-valor="false">❌ No</div>
                 </div>
             </div>
 

@@ -138,25 +138,6 @@
   font-size: 1.2em;
 }
 
-.icono-reservado {
-  position: absolute;
-  left: 15px;
-  font-size: 1.2em;
-}
-
-/* Colores según el estado de reservado */
-.marco-reservado-null {
-  background-color: var(--success-color) !important; /* Verde */
-}
-
-.marco-reservado-false {
-  background-color: #87CEEB !important; /* Azul claro */
-}
-
-.marco-reservado-true {
-  background-color: #D3D3D3 !important; /* Gris claro */
-}
-
 @media (max-width: 768px) {
   .nombre-perro {
     font-size: 1.1em;

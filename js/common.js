@@ -214,7 +214,7 @@ function crearSelectorBooleano(nombre, valorActual, permitirNull = true) {
         html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
         html += `<option value="false" ${valorActual === false ? 'selected' : ''}>❌ No</option>`;
     } else {
-        // Opciones sin "???" - Chip no puede ser null
+        // Opciones sin "???" - no pueden ser null
         html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
         html += `<option value="false" ${valorActual === false || valorActual === null || valorActual === undefined ? 'selected' : ''}>❌ No</option>`;
     }
@@ -232,15 +232,16 @@ function crearSelectorSexo(valorActual) {
     return crearSelectorGenerico('macho', opciones, valorActual === null || valorActual === undefined ? true : valorActual);
 }
 
-function crearSelectorReservado(valorActual) {
+function crearSelectorEstado(valorActual) {
     const opciones = {
-        'null': '🔓 Disponible',
-        'true': '🔒 Reservado',
-        'false': '🔒 Adoptado',
+        '0': 'Disponible',
+        '1': 'Chip (preguntar)',
+        '2': 'Reservado',
+        '3': 'Residencia',
         '': '???'
     };
 
-    return crearSelectorGenerico('reservado', opciones, valorActual);
+    return crearSelectorGenerico('estado', opciones, valorActual);
 }
 
 // Función para crear selector de problemas de salud
@@ -281,6 +282,13 @@ function determinarColorEstado(campo, valor, datosCompletos = {}) {
     }
 
     switch (campo) {
+        case 'estado':
+            // 0: Disponible (verde), 1: Chip preguntar (amarillo), 2: Reservado (rojo), 3: Residencia (rojo)
+            if (valor === 0) return 'bueno';
+            if (valor === 1) return 'medio';
+            if (valor === 2 || valor === 3) return 'malo';
+            break;
+
         case 'paseo':
             // 0: Pasea bien (verde), 1-2: Miedo (amarillo), 3-4: Reactivo/Tira (rojo)
             if (valor === 0) return 'bueno';
@@ -314,12 +322,6 @@ function determinarColorEstado(campo, valor, datosCompletos = {}) {
             if (valor === false) return 'bueno';
             break;
 
-        case 'chip':
-            // true: Sí (rojo), false: No (verde)
-            if (valor === true) return 'malo';
-            if (valor === false) return 'bueno';
-            break;
-
         case 'ppp':
             // true: Sí (rojo - requiere más cuidados), false: No (verde)
             if (valor === true) return 'malo';
@@ -330,11 +332,6 @@ function determinarColorEstado(campo, valor, datosCompletos = {}) {
             // true: Sí (verde - tiene apoyo), false: No (rojo - necesita apoyo)
             if (valor === true) return 'bueno';
             if (valor === false) return 'malo';
-            break;
-
-        case 'reservado':
-            // null: Disponible (verde), false: Adoptado (verde), true: Reservado (amarillo)
-            return 'bueno';
             break;
 
         case 'problemasDeSalud':
