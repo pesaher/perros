@@ -1,7 +1,7 @@
 {
   "nombre": "Maggie",
   "nacimiento": "2024-09-15",
-  "macho": false,
+  "macho": true,
   "peso": 24,
   "altura": null,
   "reservado": false,
