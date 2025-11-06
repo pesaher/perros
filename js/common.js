@@ -62,16 +62,18 @@ function calcularEdad(nacimiento) {
     const hoy = new Date();
     let fechaNacimiento;
 
+    const parsedNacimiento = nacimiento.replace('/', '-');
+
     // Detectar el formato de la fecha
-    if (nacimiento.match(/^\d{4}$/)) {
+    if (parsedNacimiento.match(/^\d{4}$/)) {
         // Formato YYYY
-        fechaNacimiento = new Date(parseInt(nacimiento), 0, 1); // 1 de enero del año
+        fechaNacimiento = new Date(parseInt(parsedNacimiento), 0, 1); // 1 de enero del año
         const años = hoy.getFullYear() - fechaNacimiento.getFullYear();
         return `Unos ${años} años`;
 
-    } else if (nacimiento.match(/^\d{4}-\d{2}$/)) {
+    } else if (parsedNacimiento.match(/^\d{4}-\d{2}$/)) {
         // Formato YYYY-MM
-        const [año, mes] = nacimiento.split('-');
+        const [año, mes] = parsedNacimiento.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
         const diffMeses = (hoy.getFullYear() - fechaNacimiento.getFullYear()) * 12 + (hoy.getMonth() - fechaNacimiento.getMonth());
         const años = Math.floor(diffMeses / 12);
@@ -85,9 +87,9 @@ function calcularEdad(nacimiento) {
             return `${años} ${años === 1 ? 'año' : 'años'} y ${meses} ${meses === 1 ? 'mes' : 'meses'}`;
         }
 
-    } else if (nacimiento.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    } else if (parsedNacimiento.match(/^\d{4}-\d{2}-\d{2}$/)) {
         // Formato YYYY-MM-DD
-        fechaNacimiento = new Date(nacimiento);
+        fechaNacimiento = new Date(parsedNacimiento);
         const diffTiempo = hoy - fechaNacimiento;
         const diffDias = Math.floor(diffTiempo / (1000 * 60 * 60 * 24));
         const años = Math.floor(diffDias / 365);
