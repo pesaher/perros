@@ -417,34 +417,54 @@ async function guardarCambios() {
     const datosActualizados = { ...datosOriginales };
 
     // Procesar campos
-    datosActualizados.nombre = document.querySelector('input[type="text"]')?.value || '';
+    datosActualizados.nombre = document.querySelector('.nombre-perro input')?.value || '';
     datosActualizados.nacimiento = document.querySelector('input[placeholder*="YYYY"]')?.value || '';
-    datosActualizados.peso = document.querySelector('input[placeholder*="Peso"]')?.value ?
-        parseInt(document.querySelector('input[placeholder*="Peso"]').value) : null;
-    datosActualizados.altura = document.querySelector('input[placeholder*="Altura"]')?.value ?
-        parseInt(document.querySelector('input[placeholder*="Altura"]').value) : null;
+
+    const pesoInput = document.querySelector('input[placeholder*="Peso"]');
+    datosActualizados.peso = pesoInput?.value ? parseFloat(pesoInput.value) : null;
+
+    const alturaInput = document.querySelector('input[placeholder*="Altura"]');
+    datosActualizados.altura = alturaInput?.value ? parseFloat(alturaInput.value) : null;
+
     datosActualizados.protocoloParticular = document.querySelector('textarea[placeholder*="Protocolo particular"]')?.value || '';
     datosActualizados.observacionesExtra = document.querySelector('textarea[placeholder*="Observaciones extra"]')?.value || '';
 
     // Procesar selectores
-    datosActualizados.paseo = document.querySelector('select[name="paseo"]') ? parseInt(document.querySelector('select[name="paseo"]')) : null;
-    datosActualizados.sociableConPerros = document.querySelector('select[name="sociableConPerros"]') ? parseInt(document.querySelector('select[name="sociableConPerros"]')) : null;
-    datosActualizados.sociableConPersonas = document.querySelector('select[name="sociableConPersonas"]') ? parseInt(document.querySelector('select[name="sociableConPersonas"]')) : null;
-    datosActualizados.sociableConGatos = document.querySelector('select[name="sociableConGatos"]') === 'true' ? true :
-                                        document.querySelector('select[name="sociableConGatos"]') === 'false' ? false : null;
-    datosActualizados.proteccionDeRecursos = document.querySelector('select[name="proteccionDeRecursos"]') === 'true' ? true :
-                                            document.querySelector('select[name="proteccionDeRecursos"]') === 'false' ? false : null;
-    datosActualizados.chip = document.querySelector('select[name="chip"]') === 'true' ? true :
-                        document.querySelector('select[name="chip"]') === 'false' ? false : false; // Por defecto false si no hay valor
-    datosActualizados.ppp = document.querySelector('select[name="ppp"]') === 'true' ? true :
-                       document.querySelector('select[name="ppp"]') === 'false' ? false : null;
-   datosActualizados.apadrinado = document.querySelector('select[name="apadrinado"]') === 'true' ? true :
-                        document.querySelector('select[name="apadrinado"]') === 'false' ? false : false; // Siempre false por defecto
-    datosActualizados.macho = document.querySelector('select[name="macho"]') === 'true' ? true :
-                             document.querySelector('select[name="macho"]') === 'false' ? false : null;
-    datosActualizados.reservado = document.querySelector('select[name="reservado"]') === 'null' ? null :
-                                 document.querySelector('select[name="reservado"]') === 'true' ? true :
-                                 document.querySelector('select[name="reservado"]') === 'false' ? false : null;
+    const selectPaseo = document.querySelector('select[name="paseo"]');
+    datosActualizados.paseo = selectPaseo?.value ? parseInt(selectPaseo.value) : null;
+
+    const selectSociablePerros = document.querySelector('select[name="sociableConPerros"]');
+    datosActualizados.sociableConPerros = selectSociablePerros?.value ? parseInt(selectSociablePerros.value) : null;
+
+    const selectSociablePersonas = document.querySelector('select[name="sociableConPersonas"]');
+    datosActualizados.sociableConPersonas = selectSociablePersonas?.value ? parseInt(selectSociablePersonas.value) : null;
+
+    const selectSociableGatos = document.querySelector('select[name="sociableConGatos"]');
+    datosActualizados.sociableConGatos = selectSociableGatos?.value === 'true' ? true :
+                                        selectSociableGatos?.value === 'false' ? false : null;
+
+    const selectProteccion = document.querySelector('select[name="proteccionDeRecursos"]');
+    datosActualizados.proteccionDeRecursos = selectProteccion?.value === 'true' ? true :
+                                            selectProteccion?.value === 'false' ? false : null;
+
+    const selectChip = document.querySelector('select[name="chip"]');
+    datosActualizados.chip = selectChip?.value === 'true' ? true : false;
+
+    const selectPPP = document.querySelector('select[name="ppp"]');
+    datosActualizados.ppp = selectPPP?.value === 'true' ? true :
+                           selectPPP?.value === 'false' ? false : null;
+
+    const selectApadrinado = document.querySelector('select[name="apadrinado"]');
+    datosActualizados.apadrinado = selectApadrinado?.value === 'true' ? true : false;
+
+    const selectSexo = document.querySelector('select[name="macho"]');
+    datosActualizados.macho = selectSexo?.value === 'true' ? true :
+                             selectSexo?.value === 'false' ? false : null;
+
+    const selectReservado = document.querySelector('select[name="reservado"]');
+    datosActualizados.reservado = selectReservado?.value === 'null' ? null :
+                                 selectReservado?.value === 'true' ? true :
+                                 selectReservado?.value === 'false' ? false : null;
 
     // Procesar problemas de salud (checkboxes múltiples)
     const problemasSaludSeleccionados = [];
@@ -452,10 +472,6 @@ async function guardarCambios() {
         problemasSaludSeleccionados.push(parseInt(checkbox.value));
     });
     datosActualizados.problemasDeSalud = problemasSaludSeleccionados;
-
-    // Actualizar y salir del modo edición
-    datosOriginales = datosActualizados;
-    cancelarEdicion();
 
     try {
         // Guardar en GitHub
@@ -473,14 +489,14 @@ async function guardarCambios() {
         if (resultado.ok) {
             // Actualizar datos locales
             datosOriginales = datosActualizados;
-            modoEdicion = false;
-            mostrarDatosPerro(nombrePerro, datosActualizados, false);
-            restaurarBotonesNormales();
+            cancelarEdicion();
 
             // Actualizar datosCompletosPerros
             datosCompletosPerros[nombrePerro] = datosActualizados;
         }
-    } catch (error) {}
+    } catch (error) {
+        console.error('Error al guardar:', error);
+    }
 }
 
 // Inicialización
