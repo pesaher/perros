@@ -451,9 +451,6 @@ function mostrarError(elemento, mensaje) {
     }, 5000);
 }
 
-// Variables para modal eliminar
-let modalEliminarAbierto = false;
-
 // Función para mostrar modal de eliminar perro
 function mostrarModalEliminarPerro() {
     if (modalEliminarAbierto) return;
