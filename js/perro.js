@@ -185,6 +185,22 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             </div>
 
             <!-- Campos en dos columnas -->
+            ${modoEdicion ? `
+                <div class="campo campo-editable">
+                    <div class="etiqueta">Estado</div>
+                    <div class="valor">
+                        ${crearSelectorReservado(datos.reservado)}
+                    </div>
+                </div>
+
+                <div class="campo campo-editable">
+                    <div class="etiqueta">Sexo</div>
+                    <div class="valor">
+                        ${crearSelectorSexo(datos.macho)}
+                    </div>
+                </div>
+            ` : ''}
+
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
                 <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('edad', calcularEdadEnAños(datos.nacimiento))}` : ''}">
@@ -270,22 +286,6 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                     ${modoEdicion ? crearSelectorBooleano('apadrinado', datos.apadrinado, false) : textoApadrinado}
                 </div>
             </div>
-
-            ${modoEdicion ? `
-                <div class="campo campo-editable">
-                    <div class="etiqueta">Sexo</div>
-                    <div class="valor">
-                        ${crearSelectorSexo(datos.macho)}
-                    </div>
-                </div>
-
-                <div class="campo campo-editable">
-                    <div class="etiqueta">Estado</div>
-                    <div class="valor">
-                        ${crearSelectorReservado(datos.reservado)}
-                    </div>
-                </div>
-            ` : ''}
         </div>
 
         <!-- Problemas de Salud -->
