@@ -151,6 +151,11 @@
   opacity: 0.3;
 }
 
+.marco.cumple-filtro {
+  opacity: 1;
+  border: 2px solid var(--success-color);
+}
+
 /* Estilos para niveles de dificultad en los marcos - COLOR DE FONDO */
 .marco.dificultad-bueno {
     background: #c8e6c9 !important; /* Verde claro */
