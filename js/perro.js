@@ -413,7 +413,7 @@ function restaurarBotonesNormales() {
     configurarEventos();
 }
 
-function guardarCambios() {
+async function guardarCambios() {
     const datosActualizados = { ...datosOriginales };
 
     // Procesar campos
@@ -427,24 +427,24 @@ function guardarCambios() {
     datosActualizados.observacionesExtra = document.querySelector('textarea[placeholder*="Observaciones extra"]')?.value || '';
 
     // Procesar selectores
-    datosActualizados.paseo = document.querySelector('paseo') ? parseInt(document.querySelector('paseo')) : null;
-    datosActualizados.sociableConPerros = document.querySelector('sociableConPerros') ? parseInt(document.querySelector('sociableConPerros')) : null;
-    datosActualizados.sociableConPersonas = document.querySelector('sociableConPersonas') ? parseInt(document.querySelector('sociableConPersonas')) : null;
-    datosActualizados.sociableConGatos = document.querySelector('sociableConGatos') === 'true' ? true :
-                                        document.querySelector('sociableConGatos') === 'false' ? false : null;
-    datosActualizados.proteccionDeRecursos = document.querySelector('proteccionDeRecursos') === 'true' ? true :
-                                            document.querySelector('proteccionDeRecursos') === 'false' ? false : null;
-    datosActualizados.chip = document.querySelector('chip') === 'true' ? true :
-                        document.querySelector('chip') === 'false' ? false : false; // Por defecto false si no hay valor
-    datosActualizados.ppp = document.querySelector('ppp') === 'true' ? true :
-                       document.querySelector('ppp') === 'false' ? false : null;
-   datosActualizados.apadrinado = document.querySelector('apadrinado') === 'true' ? true :
-                        document.querySelector('apadrinado') === 'false' ? false : false; // Siempre false por defecto
-    datosActualizados.macho = document.querySelector('macho') === 'true' ? true :
-                             document.querySelector('macho') === 'false' ? false : null;
-    datosActualizados.reservado = document.querySelector('reservado') === 'null' ? null :
-                                 document.querySelector('reservado') === 'true' ? true :
-                                 document.querySelector('reservado') === 'false' ? false : null;
+    datosActualizados.paseo = document.querySelector('select[name="paseo"]') ? parseInt(document.querySelector('select[name="paseo"]')) : null;
+    datosActualizados.sociableConPerros = document.querySelector('select[name="sociableConPerros"]') ? parseInt(document.querySelector('select[name="sociableConPerros"]')) : null;
+    datosActualizados.sociableConPersonas = document.querySelector('select[name="sociableConPersonas"]') ? parseInt(document.querySelector('select[name="sociableConPersonas"]')) : null;
+    datosActualizados.sociableConGatos = document.querySelector('select[name="sociableConGatos"]') === 'true' ? true :
+                                        document.querySelector('select[name="sociableConGatos"]') === 'false' ? false : null;
+    datosActualizados.proteccionDeRecursos = document.querySelector('select[name="proteccionDeRecursos"]') === 'true' ? true :
+                                            document.querySelector('select[name="proteccionDeRecursos"]') === 'false' ? false : null;
+    datosActualizados.chip = document.querySelector('select[name="chip"]') === 'true' ? true :
+                        document.querySelector('select[name="chip"]') === 'false' ? false : false; // Por defecto false si no hay valor
+    datosActualizados.ppp = document.querySelector('select[name="ppp"]') === 'true' ? true :
+                       document.querySelector('select[name="ppp"]') === 'false' ? false : null;
+   datosActualizados.apadrinado = document.querySelector('select[name="apadrinado"]') === 'true' ? true :
+                        document.querySelector('select[name="apadrinado"]') === 'false' ? false : false; // Siempre false por defecto
+    datosActualizados.macho = document.querySelector('select[name="macho"]') === 'true' ? true :
+                             document.querySelector('select[name="macho"]') === 'false' ? false : null;
+    datosActualizados.reservado = document.querySelector('select[name="reservado"]') === 'null' ? null :
+                                 document.querySelector('select[name="reservado"]') === 'true' ? true :
+                                 document.querySelector('select[name="reservado"]') === 'false' ? false : null;
 
     // Procesar problemas de salud (checkboxes múltiples)
     const problemasSaludSeleccionados = [];
