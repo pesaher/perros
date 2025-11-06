@@ -199,7 +199,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 <div class="etiqueta">Peso (kg)</div>
                 <div class="valor">
                     ${modoEdicion ?
-                      `<input type="number" value="${datos.peso || ''}" placeholder="Peso en kg">` :
+                      `<input type="number" value="${datos.peso || ''}" placeholder="Peso en kg" step="0.1" min="0">` :
                       pesoMostrar
                     }
                 </div>
@@ -209,7 +209,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 <div class="etiqueta">Altura (cm)</div>
                 <div class="valor">
                     ${modoEdicion ?
-                      `<input type="number" value="${datos.altura || ''}" placeholder="Altura en cm">` :
+                      `<input type="number" value="${datos.altura || ''}" placeholder="Altura en cm" step="1" min="0">` :
                       alturaMostrar
                     }
                 </div>
