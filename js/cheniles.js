@@ -379,6 +379,28 @@ async function crearNuevoPerro() {
                 ...plantilla,
                 nombre: nombreMostrar
             };
+
+            // Guardar el JSON del perro en GitHub
+            try {
+                const respuesta = await fetch('/.netlify/functions/save-perro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nombrePerro: nombreArchivo,
+                        datosPerro: datosPerro
+                    })
+                });
+
+                const resultado = await respuesta.json();
+
+                if (!resultado.ok) {
+                    console.warn('No se pudo guardar el JSON del perro en GitHub:', resultado.error);
+                    // Continuamos de todas formas, el perro se creó localmente
+                }
+            } catch (error) {
+                console.warn('Error al guardar perro en GitHub:', error);
+                // Continuamos de todas formas
+            }
         }
 
         // CÓDIGO COMÚN PARA AMBOS CASOS (perro existente o nuevo)

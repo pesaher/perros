@@ -461,8 +461,29 @@ function guardarCambios() {
     mostrarDatosPerro(nombrePerro, datosActualizados, false);
     restaurarBotonesNormales();
 
-    alert('Cambios guardados localmente');
-    // Aquí podrías añadir la lógica para guardar en GitHub
+    try {
+        // Guardar en GitHub
+        const respuesta = await fetch('/.netlify/functions/save-perro', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nombrePerro: nombrePerro,
+                datosPerro: datosActualizados
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (resultado.ok) {
+            // Actualizar datos locales
+            datosOriginales = datosActualizados;
+            modoEdicion = false;
+            mostrarDatosPerro(nombrePerro, datosActualizados, false);
+            restaurarBotonesNormales();
+
+            // Actualizar datosCompletosPerros
+            datosCompletosPerros[nombrePerro] = datosActualizados;
+    } catch (error) {}
 }
 
 // Inicialización
