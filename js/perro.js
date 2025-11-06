@@ -473,6 +473,7 @@ async function guardarCambios() {
     });
     datosActualizados.problemasDeSalud = problemasSaludSeleccionados;
 
+    console.log(datosActualizados);
     try {
         // Guardar en GitHub
         const respuesta = await fetch('/.netlify/functions/save-perro', {
@@ -489,10 +490,10 @@ async function guardarCambios() {
         if (resultado.ok) {
             // Actualizar datos locales
             datosOriginales = datosActualizados;
-            cancelarEdicion();
 
             // Actualizar datosCompletosPerros
             datosCompletosPerros[nombrePerro] = datosActualizados;
+            cancelarEdicion();
         }
     } catch (error) {
         console.error('Error al guardar:', error);
