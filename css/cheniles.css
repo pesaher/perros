@@ -158,21 +158,21 @@
 
 /* Estilos para niveles de dificultad en los marcos - COLOR DE FONDO */
 .marco.dificultad-bueno {
-    background: linear-gradient(135deg, var(--estado-bueno) 0%, #a8e6a8 100%) !important;
+    background: #c8e6c9 !important; /* Verde claro */
     color: #000 !important;
     font-weight: bold;
     border: 2px solid var(--estado-bueno) !important;
 }
 
 .marco.dificultad-medio {
-    background: linear-gradient(135deg, var(--estado-medio) 0%, #ffecb3 100%) !important;
+    background: #fff9c4 !important; /* Amarillo claro */
     color: #000 !important;
     font-weight: bold;
     border: 2px solid var(--estado-medio) !important;
 }
 
 .marco.dificultad-malo {
-    background: linear-gradient(135deg, var(--estado-malo) 0%, #ffcdd2 100%) !important;
+    background: #ffcdd2 !important; /* Rojo claro */
     color: #000 !important;
     font-weight: bold;
     border: 2px solid var(--estado-malo) !important;

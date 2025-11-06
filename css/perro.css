@@ -123,17 +123,17 @@
 
 /* Estilos para niveles de dificultad en el nombre del perro */
 .nombre-perro.dificultad-bueno {
-    background: linear-gradient(135deg, var(--estado-bueno) 0%, #a8e6a8 100%) !important;
+    background: #c8e6c9 !important; /* Verde claro */
     border-left: none !important;
 }
 
 .nombre-perro.dificultad-medio {
-    background: linear-gradient(135deg, var(--estado-medio) 0%, #ffecb3 100%) !important;
+    background: #fff9c4 !important; /* Amarillo claro */
     border-left: none !important;
 }
 
 .nombre-perro.dificultad-malo {
-    background: linear-gradient(135deg, var(--estado-malo) 0%, #ffcdd2 100%) !important;
+    background: #ffcdd2 !important; /* Rojo claro */
     border-left: none !important;
 }
 
