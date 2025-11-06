@@ -3,6 +3,7 @@ let datos = {};
 let sortableInstances = [];
 let modoReordenar = false;
 let modalAnadirAbierto = false;
+let modalEliminarAbierto = false;
 let datosOriginales = {};
 
 // Función principal de carga
@@ -222,16 +223,23 @@ function actualizarDatos() {
 }
 
 async function pushToGithub() {
-    const resp = await fetch('/.netlify/functions/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-    });
-    const result = await resp.json();
-    if (resp.ok && result.ok) {
-        alert('✅ Guardado correctamente');
-    } else {
-        alert('❌ Error: ' + (result.error || 'Desconocido'));
+    try {
+        const resp = await fetch('/.netlify/functions/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        });
+        const result = await resp.json();
+        if (resp.ok && result.ok) {
+            console.log('✅ Cheniles guardados correctamente');
+            return true;
+        } else {
+            console.error('❌ Error guardando cheniles:', result.error);
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Error de conexión:', error);
+        return false;
     }
 }
 
@@ -443,10 +451,137 @@ function mostrarError(elemento, mensaje) {
     }, 5000);
 }
 
+// Variables para modal eliminar
+let modalEliminarAbierto = false;
+
+// Función para mostrar modal de eliminar perro
+function mostrarModalEliminarPerro() {
+    if (modalEliminarAbierto) return;
+    modalEliminarAbierto = true;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-eliminar-perro';
+
+    // Obtener lista de todos los perros
+    const todosLosPerros = [];
+    Object.values(datos).forEach(perros => {
+        perros.forEach(nombre => {
+            if (nombre && nombre.trim() !== '') {
+                todosLosPerros.push(nombre);
+            }
+        });
+    });
+
+    // Ordenar alfabéticamente
+    todosLosPerros.sort((a, b) => {
+        const nombreA = datosCompletosPerros[a]?.nombre || a;
+        const nombreB = datosCompletosPerros[b]?.nombre || b;
+        return nombreA.localeCompare(nombreB);
+    });
+
+    modal.innerHTML = `
+        <div class="contenido-modal-eliminar">
+            <h3>Eliminar Perro de Cheniles</h3>
+
+            <div class="grupo-formulario">
+                <label class="etiqueta-formulario" for="perroAEliminar">Seleccionar Perro</label>
+                <select class="select-formulario" id="perroAEliminar">
+                    <option value="">-- Selecciona un perro --</option>
+                    ${todosLosPerros.map(nombre => {
+                        const datosPerro = datosCompletosPerros[nombre];
+                        const nombreMostrar = datosPerro?.nombre || nombre;
+                        return `<option value="${nombre}">${nombreMostrar}</option>`;
+                    }).join('')}
+                </select>
+            </div>
+
+            <div class="botones-modal-eliminar">
+                <button class="boton-modal boton-cancelar-eliminar" id="btnCancelarEliminar">Cancelar</button>
+                <button class="boton-modal boton-eliminar-confirmar" id="btnConfirmarEliminar">Eliminar de Cheniles</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Event listeners
+    modal.querySelector('#btnCancelarEliminar').addEventListener('click', () => {
+        document.body.removeChild(modal);
+        modalEliminarAbierto = false;
+    });
+
+    modal.querySelector('#btnConfirmarEliminar').addEventListener('click', eliminarPerroDeCheniles);
+
+    // Cerrar modal al hacer click fuera
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+            modalEliminarAbierto = false;
+        }
+    });
+}
+
+// Función para eliminar perro de cheniles
+async function eliminarPerroDeCheniles() {
+    const selectPerro = document.getElementById('perroAEliminar');
+    const nombrePerro = selectPerro.value;
+
+    if (!nombrePerro) {
+        console.log('❌ No se seleccionó ningún perro');
+        return;
+    }
+
+    // Buscar y eliminar el perro de todos los cheniles
+    let perroEncontrado = false;
+
+    Object.keys(datos).forEach(chenil => {
+        const index = datos[chenil].indexOf(nombrePerro);
+        if (index > -1) {
+            datos[chenil].splice(index, 1);
+            perroEncontrado = true;
+
+            // Si el chenil queda vacío, poner array vacío
+            if (datos[chenil].length === 0) {
+                datos[chenil] = [""];
+            }
+        }
+    });
+
+    if (!perroEncontrado) {
+        console.log('❌ No se encontró el perro en los cheniles');
+        return;
+    }
+
+    try {
+        // Guardar cambios en GitHub
+        const guardadoExitoso = await pushToGithub();
+
+        if (guardadoExitoso) {
+            // Cerrar modal
+            const modal = document.querySelector('.modal-eliminar-perro');
+            document.body.removeChild(modal);
+            modalEliminarAbierto = false;
+
+            // Actualizar vista
+            pintar();
+
+            const datosPerro = datosCompletosPerros[nombrePerro];
+            const nombreMostrar = datosPerro?.nombre || nombrePerro;
+            console.log(`✅ Perro "${nombreMostrar}" eliminado de los cheniles`);
+        } else {
+            console.error('❌ Error al guardar los cambios en GitHub');
+        }
+
+    } catch (error) {
+        console.error('❌ Error al eliminar perro:', error);
+    }
+}
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
     document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
     document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
+    document.getElementById('btnEliminarPerro').addEventListener('click', mostrarModalEliminarPerro);
     cargar();
 });
