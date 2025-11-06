@@ -120,23 +120,6 @@
   padding: 1em;
 }
 
-/* Para el nombre del perro (campo especial) */
-.nombre-perro.estado-bueno {
-  border-left-color: var(--estado-bueno) !important;
-}
-
-.nombre-perro.estado-medio {
-  border-left-color: var(--estado-medio) !important;
-}
-
-.nombre-perro.estado-malo {
-  border-left-color: var(--estado-malo) !important;
-}
-
-.nombre-perro.estado-neutral {
-  border-left-color: var(--estado-neutral) !important;
-}
-
 /* En modo edición, mantener los estilos pero sin el color de estado */
 .campo-editable .valor {
   border-left-color: var(--primary-color) !important;
