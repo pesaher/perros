@@ -151,9 +151,7 @@ function desactivarModoReordenar(guardarEnGitHub = false) {
     `;
 
     // Agregar eventos a los botones
-    document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
-    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
-    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
+    mostrarBotones();
 
     // Guardar cambios en GitHub solo si se especifica
     if (guardarEnGitHub) {
@@ -187,9 +185,7 @@ function cancelarReordenar() {
         <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
     `;
 
-    document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
-    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
-    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
+    mostrarBotones();
 }
 
 function limpiarVacios() {
@@ -220,6 +216,13 @@ function actualizarDatos() {
     });
     datos = nuevo;
     localStorage.setItem('chenilesDrag', JSON.stringify(datos));
+}
+
+function mostrarBotones() {
+    document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
+    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
+    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
+    document.getElementById('btnEliminarPerro').addEventListener('click', mostrarModalEliminarPerro);
 }
 
 async function pushToGithub() {
@@ -576,9 +579,6 @@ async function eliminarPerroDeCheniles() {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
-    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
-    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
-    document.getElementById('btnEliminarPerro').addEventListener('click', mostrarModalEliminarPerro);
+    mostrarBotones();
     cargar();
 });
