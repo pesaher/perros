@@ -130,11 +130,11 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const textoPaseo = nivelesPaseo.hasOwnProperty(datos.paseo) ? nivelesPaseo[datos.paseo] : '???';
     const textoSociablePerros = sociablePerros.hasOwnProperty(datos.sociableConPerros) ? sociablePerros[datos.sociableConPerros] : '???';
     const textoSociablePersonas = sociablePersonas.hasOwnProperty(datos.sociableConPersonas) ? sociablePersonas[datos.sociableConPersonas] : '???';
-    const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, '✅ Sí', '❌ No');
-    const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, '✅ Sí', '❌ No');
-    const textoChip = getEstadoBooleano(datos.chip, '✅ Sí', '❌ No');
-    const textoPPP = getEstadoBooleano(datos.ppp, '✅ Sí', '❌ No');
-    const textoApadrinado = getEstadoBooleano(datos.apadrinado, '✅ Sí', '❌ No');
+    const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
+    const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
+    const textoChip = getEstadoBooleano(datos.chip, 'Sí', 'No');
+    const textoPPP = getEstadoBooleano(datos.ppp, 'Sí', 'No');
+    const textoApadrinado = getEstadoBooleano(datos.apadrinado, 'Sí', 'No');
 
     // Problemas de salud
     const textoProblemasSalud = Array.isArray(datos.problemasDeSalud) && datos.problemasDeSalud.length > 0
