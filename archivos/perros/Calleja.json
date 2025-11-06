@@ -1,5 +1,6 @@
 {
   "nombre": "Calleja",
+  "nivelDeDificultad": null,
   "nacimiento": "2019-09-05",
   "macho": true,
   "peso": 31,

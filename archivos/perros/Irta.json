@@ -1,5 +1,6 @@
 {
   "nombre": "Irta",
+  "nivelDeDificultad": null,
   "nacimiento": "",
   "macho": false,
   "peso": null,

@@ -1,5 +1,6 @@
 {
   "nombre": "Colombino",
+  "nivelDeDificultad": null,
   "nacimiento": "2024-08-10",
   "macho": true,
   "peso": 25,

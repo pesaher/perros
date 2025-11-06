@@ -1,5 +1,6 @@
 {
   "nombre": "Hogan",
+  "nivelDeDificultad": null,
   "nacimiento": "",
   "macho": true,
   "peso": null,

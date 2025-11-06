@@ -1,5 +1,6 @@
 {
   "nombre": "Maggie",
+  "nivelDeDificultad": 0,
   "nacimiento": "2024-09-15",
   "macho": false,
   "peso": 24,

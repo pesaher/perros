@@ -1,5 +1,6 @@
 {
   "nombre": "Mango Cija",
+  "nivelDeDificultad": null,
   "nacimiento": "2021-06-10",
   "macho": true,
   "peso": 18,

@@ -1,5 +1,6 @@
 {
   "nombre": "Saratoga",
+  "nivelDeDificultad": null,
   "nacimiento": "2020-03-10",
   "macho": false,
   "peso": 45,

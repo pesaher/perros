@@ -1,5 +1,6 @@
 {
   "nombre": "Madrazo",
+  "nivelDeDificultad": null,
   "nacimiento": "2020-05-15",
   "macho": true,
   "peso": 20,

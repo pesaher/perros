@@ -1,5 +1,6 @@
 {
   "nombre": "Cejo",
+  "nivelDeDificultad": null,
   "nacimiento": "2023-09-15",
   "macho": true,
   "peso": 12,

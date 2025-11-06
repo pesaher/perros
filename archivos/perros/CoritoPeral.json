@@ -1,5 +1,6 @@
 {
   "nombre": "Corito Peral",
+  "nivelDeDificultad": null,
   "nacimiento": "2021-06-15",
   "macho": true,
   "peso": 26,

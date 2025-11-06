@@ -1,5 +1,6 @@
 {
   "nombre": "Cosme Tome",
+  "nivelDeDificultad": null,
   "nacimiento": "2016-06-10",
   "macho": true,
   "peso": 4,

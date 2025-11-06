@@ -1,5 +1,6 @@
 {
   "nombre": "Patatín",
+  "nivelDeDificultad": null,
   "nacimiento": "",
   "macho": true,
   "peso": 7.7,

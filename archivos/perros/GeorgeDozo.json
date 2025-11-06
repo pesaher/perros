@@ -1,5 +1,6 @@
 {
   "nombre": "George Dozo",
+  "nivelDeDificultad": null,
   "nacimiento": "2024-08-22",
   "macho": true,
   "peso": 15,
