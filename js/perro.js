@@ -160,11 +160,15 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     // Icono de sexo
     const iconoSexo = datos.macho === true ? '♂️' : datos.macho === false ? '♀️' : '';
 
+    // Determinar color de dificultad
+    const colorDificultad = determinarColorDificultad(datos.nivelDeDificultad);
+    const claseDificultad = colorDificultad ? `dificultad-${colorDificultad}` : '';
+
     let html = `
         <div class="campos-grid">
             <!-- Nombre ocupa toda la fila con iconos -->
             <div class="campo-completo">
-                <div class="valor nombre-perro">
+                <div class="valor nombre-perro ${!modoEdicion ? claseDificultad : ''}">
                     <div class="nombre-contenedor">
                         ${modoEdicion ?
                           `<input type="text" value="${datos.nombre || ''}" placeholder="Nombre del perro">` :
@@ -184,6 +188,13 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             </div>
 
             ${modoEdicion ? `
+                <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+                    <div class="etiqueta">Nivel de Dificultad</div>
+                    <div class="valor">
+                        ${modoEdicion ? crearSelectorDificultad(datos.nivelDeDificultad) : ''}
+                    </div>
+                </div>
+
                 <div class="campo campo-editable">
                     <div class="etiqueta">Sexo</div>
                     <div class="valor">
@@ -444,6 +455,9 @@ async function guardarCambios() {
 
     const selectEstado = document.querySelector('select[name="estado"]');
     datosActualizados.estado = selectEstado?.value ? parseInt(selectEstado.value) : null;
+
+    const selectDificultad = document.querySelector('select[name="nivelDeDificultad"]');
+    datosActualizados.nivelDeDificultad = selectDificultad?.value ? parseInt(selectDificultad.value) : null;
 
     // Procesar problemas de salud (checkboxes múltiples)
     const problemasSaludSeleccionados = [];

@@ -55,7 +55,17 @@ function pintar() {
 
                     marco.textContent = nombreAMostrar;
 
-                    marco.style.backgroundColor = colorPastel(nombreOriginal);
+                    const datosPerro = datosCompletosPerros[nombreOriginal];
+                    if (datosPerro && datosPerro.nivelDeDificultad !== null && datosPerro.nivelDeDificultad !== undefined) {
+                        const colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
+                        if (colorDificultad) {
+                            marco.classList.add(`dificultad-${colorDificultad}`);
+                        } else {
+                            marco.style.backgroundColor = colorPastel(nombreOriginal);
+                        }
+                    } else {
+                        marco.style.backgroundColor = colorPastel(nombreOriginal);
+                    }
 
                     // Aplicar filtros si existen
                     if (Object.keys(filtrosActivos).length > 0) {

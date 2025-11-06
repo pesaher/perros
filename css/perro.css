@@ -121,6 +121,30 @@
   border-left: none !important;
 }
 
+/* Estilos para niveles de dificultad en el nombre del perro */
+.nombre-perro.dificultad-bueno {
+    background: linear-gradient(135deg, var(--estado-bueno) 0%, #a8e6a8 100%) !important;
+    border-left: none !important;
+}
+
+.nombre-perro.dificultad-medio {
+    background: linear-gradient(135deg, var(--estado-medio) 0%, #ffecb3 100%) !important;
+    border-left: none !important;
+}
+
+.nombre-perro.dificultad-malo {
+    background: linear-gradient(135deg, var(--estado-malo) 0%, #ffcdd2 100%) !important;
+    border-left: none !important;
+}
+
+/* Asegurar que el texto sea legible */
+.nombre-perro.dificultad-bueno,
+.nombre-perro.dificultad-medio,
+.nombre-perro.dificultad-malo {
+    color: #000 !important;
+    font-weight: bold;
+}
+
 /* En modo edición, mantener los estilos pero sin el color de estado */
 .campo-editable .valor {
   border-left-color: var(--primary-color) !important;

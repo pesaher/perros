@@ -274,6 +274,17 @@ function crearSelectorProblemasSalud(valorActual) {
     return html;
 }
 
+function crearSelectorDificultad(valorActual) {
+    const opciones = {
+        '0': '🟢 Fácil',
+        '1': '🟡 Medio',
+        '2': '🔴 Difícil',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('nivelDeDificultad', opciones, valorActual);
+}
+
 // Función para determinar el color del estado según condiciones
 function determinarColorEstado(campo, valor, datosCompletos = {}) {
     // Si el valor es null, undefined o vacío, gris
@@ -357,4 +368,15 @@ function determinarColorEstado(campo, valor, datosCompletos = {}) {
 
     // Valor por defecto si no coincide con ningún caso
     return 'neutral';
+}
+
+function determinarColorDificultad(nivel) {
+    if (nivel === null || nivel === undefined) return null;
+
+    switch(nivel) {
+        case 0: return 'bueno';    // Verde - Fácil
+        case 1: return 'medio';    // Amarillo - Medio
+        case 2: return 'malo';     // Rojo - Difícil
+        default: return null;
+    }
 }
