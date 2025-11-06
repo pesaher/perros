@@ -479,6 +479,7 @@ function guardarCambios() {
 
             // Actualizar datosCompletosPerros
             datosCompletosPerros[nombrePerro] = datosActualizados;
+        }
     } catch (error) {}
 }
 
