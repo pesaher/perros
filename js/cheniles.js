@@ -148,6 +148,7 @@ function desactivarModoReordenar(guardarEnGitHub = false) {
         <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
         <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
         <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
+        <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
     `;
 
     // Agregar eventos a los botones
@@ -183,6 +184,7 @@ function cancelarReordenar() {
         <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
         <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
         <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
+        <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
     `;
 
     mostrarBotones();
