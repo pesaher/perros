@@ -457,9 +457,7 @@ function guardarCambios() {
 
     // Actualizar y salir del modo edición
     datosOriginales = datosActualizados;
-    modoEdicion = false;
-    mostrarDatosPerro(nombrePerro, datosActualizados, false);
-    restaurarBotonesNormales();
+    cancelarEdicion();
 
     try {
         // Guardar en GitHub
