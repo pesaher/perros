@@ -414,8 +414,6 @@ function restaurarBotonesNormales() {
 }
 
 function guardarCambios() {
-    // Recoger datos del formulario
-    const formData = new FormData(document.querySelector('.campos-grid'));
     const datosActualizados = { ...datosOriginales };
 
     // Procesar campos
@@ -429,24 +427,24 @@ function guardarCambios() {
     datosActualizados.observacionesExtra = document.querySelector('textarea[placeholder*="Observaciones extra"]')?.value || '';
 
     // Procesar selectores
-    datosActualizados.paseo = formData.get('paseo') ? parseInt(formData.get('paseo')) : null;
-    datosActualizados.sociableConPerros = formData.get('sociableConPerros') ? parseInt(formData.get('sociableConPerros')) : null;
-    datosActualizados.sociableConPersonas = formData.get('sociableConPersonas') ? parseInt(formData.get('sociableConPersonas')) : null;
-    datosActualizados.sociableConGatos = formData.get('sociableConGatos') === 'true' ? true :
-                                        formData.get('sociableConGatos') === 'false' ? false : null;
-    datosActualizados.proteccionDeRecursos = formData.get('proteccionDeRecursos') === 'true' ? true :
-                                            formData.get('proteccionDeRecursos') === 'false' ? false : null;
-    datosActualizados.chip = formData.get('chip') === 'true' ? true :
-                        formData.get('chip') === 'false' ? false : false; // Por defecto false si no hay valor
-    datosActualizados.ppp = formData.get('ppp') === 'true' ? true :
-                       formData.get('ppp') === 'false' ? false : null;
-   datosActualizados.apadrinado = formData.get('apadrinado') === 'true' ? true :
-                        formData.get('apadrinado') === 'false' ? false : false; // Siempre false por defecto
-    datosActualizados.macho = formData.get('macho') === 'true' ? true :
-                             formData.get('macho') === 'false' ? false : null;
-    datosActualizados.reservado = formData.get('reservado') === 'null' ? null :
-                                 formData.get('reservado') === 'true' ? true :
-                                 formData.get('reservado') === 'false' ? false : null;
+    datosActualizados.paseo = document.querySelector('paseo') ? parseInt(document.querySelector('paseo')) : null;
+    datosActualizados.sociableConPerros = document.querySelector('sociableConPerros') ? parseInt(document.querySelector('sociableConPerros')) : null;
+    datosActualizados.sociableConPersonas = document.querySelector('sociableConPersonas') ? parseInt(document.querySelector('sociableConPersonas')) : null;
+    datosActualizados.sociableConGatos = document.querySelector('sociableConGatos') === 'true' ? true :
+                                        document.querySelector('sociableConGatos') === 'false' ? false : null;
+    datosActualizados.proteccionDeRecursos = document.querySelector('proteccionDeRecursos') === 'true' ? true :
+                                            document.querySelector('proteccionDeRecursos') === 'false' ? false : null;
+    datosActualizados.chip = document.querySelector('chip') === 'true' ? true :
+                        document.querySelector('chip') === 'false' ? false : false; // Por defecto false si no hay valor
+    datosActualizados.ppp = document.querySelector('ppp') === 'true' ? true :
+                       document.querySelector('ppp') === 'false' ? false : null;
+   datosActualizados.apadrinado = document.querySelector('apadrinado') === 'true' ? true :
+                        document.querySelector('apadrinado') === 'false' ? false : false; // Siempre false por defecto
+    datosActualizados.macho = document.querySelector('macho') === 'true' ? true :
+                             document.querySelector('macho') === 'false' ? false : null;
+    datosActualizados.reservado = document.querySelector('reservado') === 'null' ? null :
+                                 document.querySelector('reservado') === 'true' ? true :
+                                 document.querySelector('reservado') === 'false' ? false : null;
 
     // Procesar problemas de salud (checkboxes múltiples)
     const problemasSaludSeleccionados = [];
