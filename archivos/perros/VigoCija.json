@@ -1,9 +1,9 @@
 {
-  "nombre": "Vigo Cija",
-  "nacimiento": "",
+  "nombre": "Mango Cija",
+  "nacimiento": "2021/06/10",
   "macho": true,
-  "peso": null,
-  "altura": null,
+  "peso": 18,
+  "altura": 58,
   "reservado": null,
   "paseo": null,
   "sociableConPerros": null,
