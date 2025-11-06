@@ -4,8 +4,8 @@
   "macho": true,
   "peso": 8,
   "altura": 43,
-  "reservado": null,
-  "paseo": 4,
+  "reservado": true,
+  "paseo": 0,
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
   "sociableConGatos": null,
@@ -13,7 +13,9 @@
   "chip": false,
   "ppp": false,
   "apadrinado": false,
-  "problemasDeSalud": [],
+  "problemasDeSalud": [
+    5
+  ],
   "observacionesExtra": "",
   "protocoloParticular": ""
 }
