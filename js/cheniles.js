@@ -55,7 +55,6 @@ function pintar() {
 
                     marco.textContent = nombreAMostrar;
 
-                    const datosPerro = datosCompletosPerros[nombreOriginal];
                     if (datosPerro && datosPerro.nivelDeDificultad !== null && datosPerro.nivelDeDificultad !== undefined) {
                         const colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
                         if (colorDificultad) {
