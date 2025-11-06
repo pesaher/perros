@@ -1,9 +1,9 @@
 {
   "nombre": "Cejo",
-  "nacimiento": "",
+  "nacimiento": "2023/09/15",
   "macho": true,
-  "peso": null,
-  "altura": null,
+  "peso": 12,
+  "altura": 49,
   "reservado": null,
   "paseo": null,
   "sociableConPerros": null,
