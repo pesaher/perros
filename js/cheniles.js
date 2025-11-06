@@ -71,8 +71,6 @@ function pintar() {
                         const cumpleFiltro = aplicarFiltros(nombreOriginal);
                         if (!cumpleFiltro) {
                             marco.classList.add('filtrado');
-                        } else {
-                            marco.classList.add('cumple-filtro');
                         }
                     }
 
