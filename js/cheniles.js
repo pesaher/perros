@@ -152,7 +152,7 @@ function desactivarModoReordenar(guardarEnGitHub = false) {
     `;
 
     // Agregar eventos a los botones
-    mostrarBotones();
+    agregarEventosBotones();
 
     // Guardar cambios en GitHub solo si se especifica
     if (guardarEnGitHub) {
@@ -187,7 +187,7 @@ function cancelarReordenar() {
         <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
     `;
 
-    mostrarBotones();
+    agregarEventosBotones();
 }
 
 function limpiarVacios() {
@@ -220,7 +220,7 @@ function actualizarDatos() {
     localStorage.setItem('chenilesDrag', JSON.stringify(datos));
 }
 
-function mostrarBotones() {
+function agregarEventosBotones() {
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
     document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
     document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
@@ -581,6 +581,6 @@ async function eliminarPerroDeCheniles() {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
-    mostrarBotones();
+    agregarEventosBotones();
     cargar();
 });
