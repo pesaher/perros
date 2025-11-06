@@ -172,7 +172,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
         <div class="campos-grid">
             <!-- Nombre ocupa toda la fila con iconos -->
             <div class="campo-completo">
-                <div class="valor nombre-perro ${claseReservado} ${!modoEdicion ? `estado-${determinarColorEstado('reservado', datos.reservado)}` : ''}">
+                <div class="valor nombre-perro ${claseReservado}">
                     ${iconoReservado ? `<span class="icono-reservado">${iconoReservado}</span>` : ''}
                     <div class="nombre-contenedor">
                         ${modoEdicion ?
