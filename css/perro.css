@@ -118,6 +118,7 @@
   gap: 10px;
   position: relative;
   padding: 1em;
+  border-left: none !important;
 }
 
 /* En modo edición, mantener los estilos pero sin el color de estado */
