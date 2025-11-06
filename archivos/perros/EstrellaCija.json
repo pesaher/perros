@@ -13,7 +13,9 @@
   "chip": false,
   "ppp": false,
   "apadrinado": false,
-  "problemasDeSalud": [],
+  "problemasDeSalud": [
+    0
+  ],
   "observacionesExtra": "",
   "protocoloParticular": ""
 }
