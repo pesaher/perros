@@ -1,9 +1,9 @@
 {
-  "nombre": "Fany Tala",
-  "nacimiento": "",
+  "nombre": "FanyTala",
+  "nacimiento": "2019/01/01",
   "macho": true,
-  "peso": null,
-  "altura": null,
+  "peso": 12,
+  "altura": 39,
   "reservado": null,
   "paseo": null,
   "sociableConPerros": null,
@@ -14,6 +14,6 @@
   "ppp": null,
   "apadrinado": false,
   "problemasDeSalud": [],
-  "observacionesExtra": "",
+  "observacionesExtra": "Tiene cataratas en el ojo derecho ",
   "protocoloParticular": ""
 }
