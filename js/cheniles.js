@@ -72,7 +72,11 @@ function pintar() {
                         if (!cumpleFiltro) {
                             marco.classList.add('filtrado');
                         } else {
-                            marco.classList.add('cumple-filtro');
+                            // Solo añadir borde verde si el perro NO tiene nivel de dificultad
+                            const datosPerro = datosCompletosPerros[nombreOriginal];
+                            if (!datosPerro || datosPerro.nivelDeDificultad === null || datosPerro.nivelDeDificultad === undefined) {
+                                marco.classList.add('cumple-filtro');
+                            }
                         }
                     }
 
