@@ -272,3 +272,92 @@ function crearSelectorProblemasSalud(valorActual) {
     html += `</div>`;
     return html;
 }
+
+// Función para determinar el color del estado según condiciones
+function determinarColorEstado(campo, valor, datosCompletos = {}) {
+    // Si el valor es null, undefined o vacío, gris
+    if (valor === null || valor === undefined || valor === '') {
+        return 'neutral';
+    }
+
+    switch (campo) {
+        case 'paseo':
+            // 0: Pasea bien (verde), 1-2: Miedo (amarillo), 3-4: Reactivo/Tira (rojo)
+            if (valor === 0) return 'bueno';
+            if (valor === 1) return 'medio';
+            if (valor === 2 || valor === 3 || valor === 4) return 'malo';
+            break;
+
+        case 'sociableConPerros':
+            // 0: Sí (verde), 1: Selectivo (amarillo), 2-3: No/No sabe (rojo)
+            if (valor === 0) return 'bueno';
+            if (valor === 1) return 'medio';
+            if (valor === 2 || valor === 3) return 'malo';
+            break;
+
+        case 'sociableConPersonas':
+            // 0: Sí (verde), 1: Selectivo (amarillo), 2-3: Mal con hombres/No (rojo)
+            if (valor === 0) return 'bueno';
+            if (valor === 1) return 'medio';
+            if (valor === 2 || valor === 3) return 'malo';
+            break;
+
+        case 'sociableConGatos':
+            // true: Sí (verde), false: No (rojo)
+            if (valor === true) return 'bueno';
+            if (valor === false) return 'malo';
+            break;
+
+        case 'proteccionDeRecursos':
+            // true: Sí (rojo), false: No (verde)
+            if (valor === true) return 'malo';
+            if (valor === false) return 'bueno';
+            break;
+
+        case 'chip':
+            // true: Sí (rojo), false: No (verde)
+            if (valor === true) return 'malo';
+            if (valor === false) return 'bueno';
+            break;
+
+        case 'ppp':
+            // true: Sí (rojo - requiere más cuidados), false: No (verde)
+            if (valor === true) return 'malo';
+            if (valor === false) return 'bueno';
+            break;
+
+        case 'apadrinado':
+            // true: Sí (verde - tiene apoyo), false: No (rojo - necesita apoyo)
+            if (valor === true) return 'bueno';
+            if (valor === false) return 'malo';
+            break;
+
+        case 'reservado':
+            // null: Disponible (verde), false: Adoptado (verde), true: Reservado (amarillo)
+            return 'bueno';
+            break;
+
+        case 'problemasDeSalud':
+            // Array vacío: Ninguno (verde), con elementos: según gravedad
+            if (!Array.isArray(valor) || valor.length === 0) return 'bueno';
+
+            // Otros problemas -> rojo
+            return 'malo';
+            break;
+
+        case 'peso':
+            return 'bueno';
+            break;
+
+        case 'altura':
+            return 'bueno';
+            break;
+
+        case 'edad':
+            return 'bueno';
+            break;
+    }
+
+    // Valor por defecto si no coincide con ningún caso
+    return 'neutral';
+}

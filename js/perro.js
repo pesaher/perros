@@ -172,7 +172,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
         <div class="campos-grid">
             <!-- Nombre ocupa toda la fila con iconos -->
             <div class="campo-completo">
-                <div class="valor nombre-perro ${claseReservado}">
+                <div class="valor nombre-perro ${claseReservado} ${!modoEdicion ? `estado-${determinarColorEstado('reservado', datos.reservado)}` : ''}">
                     ${iconoReservado ? `<span class="icono-reservado">${iconoReservado}</span>` : ''}
                     <div class="nombre-contenedor">
                         ${modoEdicion ?
@@ -187,7 +187,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <!-- Campos en dos columnas -->
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('edad', calcularEdadEnAños(datos.nacimiento))}` : ''}">
                     ${modoEdicion ?
                       `<input type="text" value="${datos.nacimiento || ''}" placeholder="YYYY, YYYY-MM o YYYY-MM-DD">` :
                       edadMostrar
@@ -197,7 +197,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Peso (kg)</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('peso', datos.peso)}` : ''}">
                     ${modoEdicion ?
                       `<input type="number" value="${datos.peso || ''}" placeholder="Peso en kg" step="0.1" min="0">` :
                       pesoMostrar
@@ -207,7 +207,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Altura (cm)</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('altura', datos.altura)}` : ''}">
                     ${modoEdicion ?
                       `<input type="number" value="${datos.altura || ''}" placeholder="Altura en cm" step="1" min="0">` :
                       alturaMostrar
@@ -217,56 +217,56 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Nivel de Paseo</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('paseo', datos.paseo)}` : ''}">
                     ${modoEdicion ? crearSelectorPaseo(datos.paseo) : textoPaseo}
                 </div>
             </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Sociable con Perros</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPerros', datos.sociableConPerros)}` : ''}">
                     ${modoEdicion ? crearSelectorSociablePerros(datos.sociableConPerros) : textoSociablePerros}
                 </div>
             </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Sociable con Personas</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPersonas', datos.sociableConPersonas)}` : ''}">
                     ${modoEdicion ? crearSelectorSociablePersonas(datos.sociableConPersonas) : textoSociablePersonas}
                 </div>
             </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Sociable con Gatos</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConGatos', datos.sociableConGatos)}` : ''}">
                     ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datos.sociableConGatos, true) : textoSociableGatos}
                 </div>
             </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Protección de Recursos</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('proteccionDeRecursos', datos.proteccionDeRecursos)}` : ''}">
                     ${modoEdicion ? crearSelectorBooleano('proteccionDeRecursos', datos.proteccionDeRecursos, true) : textoProteccionRecursos}
                 </div>
             </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Chip</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('chip', datos.chip)}` : ''}">
                     ${modoEdicion ? crearSelectorBooleano('chip', datos.chip, false) : textoChip}
                 </div>
             </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">PPP</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('ppp', datos.ppp)}` : ''}">
                     ${modoEdicion ? crearSelectorBooleano('ppp', datos.ppp, true) : textoPPP}
                 </div>
             </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Apadrinado</div>
-                <div class="valor">
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('apadrinado', datos.apadrinado)}` : ''}">
                     ${modoEdicion ? crearSelectorBooleano('apadrinado', datos.apadrinado, false) : textoApadrinado}
                 </div>
             </div>
@@ -291,7 +291,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
         <!-- Problemas de Salud -->
         <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
             <div class="etiqueta">Problemas de Salud</div>
-            <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
+            <div class="valor ${!modoEdicion ? `protocolo-particular estado-${determinarColorEstado('problemasDeSalud', datos.problemasDeSalud)}` : ''}">
                 ${modoEdicion ?
                   crearSelectorProblemasSalud(datos.problemasDeSalud) :
                   textoProblemasSalud

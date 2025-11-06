@@ -67,11 +67,29 @@
   padding: 0.7em;
   background: #f9f9f9;
   border-radius: 6px;
-  border-left: 4px solid var(--success-color);
+  border-left: 4px solid var(--estado-neutral);
   font-size: 0.95em;
   min-height: 2.5em;
   display: flex;
   align-items: center;
+  transition: border-left-color 0.3s ease;
+}
+
+/* Clases de estado para los colores */
+.valor.estado-bueno {
+  border-left-color: var(--estado-bueno);
+}
+
+.valor.estado-medio {
+  border-left-color: var(--estado-medio);
+}
+
+.valor.estado-malo {
+  border-left-color: var(--estado-malo);
+}
+
+.valor.estado-neutral {
+  border-left-color: var(--estado-neutral);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -100,6 +118,28 @@
   gap: 10px;
   position: relative;
   padding: 1em;
+}
+
+/* Para el nombre del perro (campo especial) */
+.nombre-perro.estado-bueno {
+  border-left-color: var(--estado-bueno) !important;
+}
+
+.nombre-perro.estado-medio {
+  border-left-color: var(--estado-medio) !important;
+}
+
+.nombre-perro.estado-malo {
+  border-left-color: var(--estado-malo) !important;
+}
+
+.nombre-perro.estado-neutral {
+  border-left-color: var(--estado-neutral) !important;
+}
+
+/* En modo edición, mantener los estilos pero sin el color de estado */
+.campo-editable .valor {
+  border-left-color: var(--primary-color) !important;
 }
 
 .nombre-contenedor {
