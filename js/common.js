@@ -288,8 +288,8 @@ function crearSelectorDificultad(valorActual) {
 function crearSelectorProteccionRecursos(valorActual) {
     const opciones = {
         '0': 'No',
-        '1': 'Con perros',
-        '2': 'Con personas',
+        '1': 'Solo con perros',
+        '2': 'Solo con personas',
         '3': 'Con perros y personas',
         '': '???'
     };
