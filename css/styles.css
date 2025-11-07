@@ -388,6 +388,27 @@ body {
   margin: 0;
 }
 
+/* Alineación de checkboxes en móvil */
+@media (max-width: 768px) {
+  .opcion-multiple {
+    padding: 0.4em 0.2em;
+  }
+
+  .opcion-multiple input[type="checkbox"] {
+    margin-right: 0.5em;
+    transform: scale(1.1);
+  }
+}
+
+/* Asegurar que las checkboxes estén siempre alineadas a la izquierda */
+.selector-multiple {
+  align-items: flex-start;
+}
+
+.opcion-multiple {
+  justify-content: flex-start;
+}
+
 /* Botón añadir */
 .boton-anadir {
   background: var(--success-color);
