@@ -151,12 +151,16 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const textoApadrinado = getEstadoBooleano(datos.apadrinado, 'Sí', 'No');
 
     // Problemas de salud
-    const textoProblemasSalud = Array.isArray(datos.problemasDeSalud) && datos.problemasDeSalud.length > 0
-        ? datos.problemasDeSalud.map(id => {
-            const problemas = ['Leishmania', 'Ehrlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
-            return problemas[id] || 'Desconocido';
-        }).join(', ')
-        : 'Ninguno';
+    const textoProblemasSalud = Array.isArray(datos.problemasDeSalud) && datos.problemasDeSalud.length > 0 ? datos.problemasDeSalud.map(id => {
+        const problemas = ['Leishmania', 'Ehrlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
+        return problemas[id] || 'Desconocido';
+    }).join(', ') : 'Ninguno';
+
+    // Mapeo de instinto de predación
+    const textoInstintoPredacion = Array.isArray(datos.instintoDePredacion) && datos.instintoDePredacion.length > 0 ? datos.instintoDePredacion.map(id => {
+        const instintos = ['Niños', 'Perros pequeños', 'Gatos'];
+        return instintos[id] || 'Desconocido';
+    }).join(', ') : 'Ninguno';
 
     // Valores por defecto y formateo
     const nombreMostrar = datos.nombre && datos.nombre.trim() !== '' ? datos.nombre.toUpperCase() : 'JOHN DOGE';
@@ -291,6 +295,17 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             </div>
         </div>
 
+        <!-- Instinto de Predación -->
+        <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
+            <div class="etiqueta">Instinto de Predación</div>
+            <div class="valor ${!modoEdicion ? `protocolo-particular estado-${determinarColorEstado('instintoDePredacion', datos.instintoDePredacion)}` : ''}">
+                ${modoEdicion ?
+                  crearSelectorInstintoPredacion(datos.instintoDePredacion) :
+                  textoInstintoPredacion
+                }
+            </div>
+        </div>
+
         <!-- Problemas de Salud -->
         <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
             <div class="etiqueta">Problemas de Salud</div>
@@ -382,6 +397,23 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
         `;
     }
 
+    // Protocolo de Instinto de Predación (solo en modo visual)
+    if (!modoEdicion && Array.isArray(datos.instintoDePredacion) && datos.instintoDePredacion.length > 0) {
+        html += `
+            <div class="campo-completo">
+                <div class="etiqueta">Protocolo de Instinto de Predación</div>
+                <div class="valor protocolo-particular">
+                    <ul>
+                        <li><strong>Obediencia básica:</strong> reforzar “mírame”, “quieta”, “sienta” (por seguridad).</li>
+                        <li><strong>Exposición controlada:</strong> ver estímulos a gran distancia, reforzar cuando veamos que están tranquilos.</li>
+                        <li><strong>Alternativas seguras:</strong> ofrecer mordedores/juguetes/hueso suave (tipo snacks) para redirigir energía.</li>
+                        <li><strong>Siempre premiar la calma.</strong></li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
     contenedor.innerHTML = html;
 }
 
@@ -465,6 +497,13 @@ async function guardarCambios() {
 
     const selectDificultad = document.querySelector('select[name="nivelDeDificultad"]');
     datosActualizados.nivelDeDificultad = selectDificultad?.value ? parseInt(selectDificultad.value) : null;
+
+    // Procesar instinto de predación (checkboxes múltiples)
+    const instintoPredacionSeleccionados = [];
+    document.querySelectorAll('input[name="instintoDePredacion"]:checked').forEach(checkbox => {
+        instintoPredacionSeleccionados.push(parseInt(checkbox.value));
+    });
+    datosActualizados.instintoDePredacion = instintoPredacionSeleccionados;
 
     // Procesar problemas de salud (checkboxes múltiples)
     const problemasSaludSeleccionados = [];

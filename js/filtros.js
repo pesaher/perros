@@ -33,10 +33,19 @@ function aplicarFiltros(nombrePerro) {
                 if (Array.isArray(valor) && Array.isArray(datosPerro.problemasDeSalud)) {
                     // Convertir valores del filtro a números
                     const valoresConvertidos = valor.map(v => parseInt(v));
-                    const tieneProblemaExcluido = datosPerro.problemasDeSalud.some(problema =>
-                        valoresConvertidos.includes(problema)
+                    const tieneProblemaExcluido = datosPerro.problemasDeSalud.some(problema => valoresConvertidos.includes(problema)
                     );
                     if (tieneProblemaExcluido) return false;
+                }
+                break;
+
+            case 'excluirInstintoPredacion':
+                if (Array.isArray(valor) && Array.isArray(datosPerro.instintoDePredacion)) {
+                    // Convertir valores del filtro a números
+                    const valoresConvertidos = valor.map(v => parseInt(v));
+                    const tieneInstintoExcluido = datosPerro.instintoDePredacion.some(instinto => valoresConvertidos.includes(instinto)
+                    );
+                    if (tieneInstintoExcluido) return false;
                 }
                 break;
 
@@ -266,6 +275,16 @@ function mostrarModalFiltros() {
                 <div class="opciones-filtro">
                     <div class="opcion-filtro ${filtrosActivos.apadrinado === true ? 'activa' : ''}" data-filtro="apadrinado" data-valor="true">✅ Sí</div>
                     <div class="opcion-filtro ${filtrosActivos.apadrinado === false ? 'activa' : ''}" data-filtro="apadrinado" data-valor="false">❌ No</div>
+                </div>
+            </div>
+
+            <!-- Excluir Instinto de Predación -->
+            <div class="grupo-filtros">
+                <div class="titulo-filtro">Excluir Instinto de Predación</div>
+                <div class="opciones-filtro">
+                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoPredacion', 0) ? 'activa' : ''}" data-filtro="excluirInstintoPredacion" data-valor="0">🚫 Niños</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoPredacion', 1) ? 'activa' : ''}" data-filtro="excluirInstintoPredacion" data-valor="1">🚫 Perros pequeños</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoPredacion', 2) ? 'activa' : ''}" data-filtro="excluirInstintoPredacion" data-valor="2">🚫 Gatos</div>
                 </div>
             </div>
 

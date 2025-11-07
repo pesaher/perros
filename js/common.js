@@ -297,6 +297,32 @@ function crearSelectorProteccionRecursos(valorActual) {
     return crearSelectorGenerico('proteccionDeRecursos', opciones, valorActual);
 }
 
+function crearSelectorInstintoPredacion(valorActual) {
+    // ValorActual debe ser un array de integers
+    let instintoArray = Array.isArray(valorActual) ? valorActual : [];
+
+    const instintos = [
+        {id: 0, nombre: 'Niños'},
+        {id: 1, nombre: 'Perros pequeños'},
+        {id: 2, nombre: 'Gatos'}
+    ];
+
+    let html = `<div class="selector-multiple">`;
+
+    instintos.forEach(instinto => {
+        const estaSeleccionado = instintoArray.includes(instinto.id);
+        html += `
+            <label class="opcion-multiple">
+                <input type="checkbox" name="instintoDePredacion" value="${instinto.id}" ${estaSeleccionado ? 'checked' : ''}>
+                ${instinto.nombre}
+            </label>
+        `;
+    });
+
+    html += `</div>`;
+    return html;
+}
+
 // Función para determinar el color del estado según condiciones
 function determinarColorEstado(campo, valor, datosCompletos = {}) {
     // Si el valor es null, undefined o vacío, gris
@@ -355,6 +381,14 @@ function determinarColorEstado(campo, valor, datosCompletos = {}) {
             // true: Sí (verde - tiene apoyo), false: No (rojo - necesita apoyo)
             if (valor === true) return 'bueno';
             if (valor === false) return 'malo';
+            break;
+
+        case 'instintoDePredacion':
+            // Array vacío: Ninguno (verde), con elementos: según gravedad
+            if (!Array.isArray(valor) || valor.length === 0) return 'bueno';
+
+            // Tiene instintos de predación -> rojo
+            return 'malo';
             break;
 
         case 'problemasDeSalud':
