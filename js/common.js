@@ -210,9 +210,9 @@ function crearSelectorBooleano(nombre, valorActual, permitirNull = true) {
 
     if (permitirNull) {
         // Opciones con "???"
-        html += `<option value="" ${(valorActual === null || valorActual === undefined) ? 'selected' : ''}>???</option>`;
         html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
         html += `<option value="false" ${valorActual === false ? 'selected' : ''}>❌ No</option>`;
+        html += `<option value="" ${(valorActual === null || valorActual === undefined) ? 'selected' : ''}>???</option>`;
     } else {
         // Opciones sin "???" - no pueden ser null
         html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
