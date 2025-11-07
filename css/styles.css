@@ -392,10 +392,6 @@ body {
   flex-shrink: 0;
 }
 
-.opcion-multiple span {
-  flex: 1;
-}
-
 /* Estilos específicos para móvil */
 @media (max-width: 768px) {
   .selector-multiple {
