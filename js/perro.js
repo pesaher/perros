@@ -298,7 +298,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
         <!-- Instinto de Predación -->
         <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
             <div class="etiqueta">Instinto de Predación</div>
-            <div class="valor ${!modoEdicion ? `protocolo-particular estado-${determinarColorEstado('instintoDePredacion', datos.instintoDePredacion)}` : ''}">
+            <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('instintoDePredacion', datos.instintoDePredacion)}` : ''}">
                 ${modoEdicion ?
                   crearSelectorInstintoPredacion(datos.instintoDePredacion) :
                   textoInstintoPredacion
@@ -309,7 +309,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
         <!-- Problemas de Salud -->
         <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
             <div class="etiqueta">Problemas de Salud</div>
-            <div class="valor ${!modoEdicion ? `protocolo-particular estado-${determinarColorEstado('problemasDeSalud', datos.problemasDeSalud)}` : ''}">
+            <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('problemasDeSalud', datos.problemasDeSalud)}` : ''}">
                 ${modoEdicion ?
                   crearSelectorProblemasSalud(datos.problemasDeSalud) :
                   textoProblemasSalud
