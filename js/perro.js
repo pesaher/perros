@@ -180,13 +180,6 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             </div>
 
             <!-- Campos en dos columnas -->
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Estado</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('estado', datos.estado)}` : ''}">
-                    ${modoEdicion ? crearSelectorEstado(datos.estado) : textoEstado}
-                </div>
-            </div>
-
             ${modoEdicion ? `
                 <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                     <div class="etiqueta">Nivel de Dificultad</div>
@@ -202,6 +195,13 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                     </div>
                 </div>
             ` : ''}
+
+            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+                <div class="etiqueta">Estado</div>
+                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('estado', datos.estado)}` : ''}">
+                    ${modoEdicion ? crearSelectorEstado(datos.estado) : textoEstado}
+                </div>
+            </div>
 
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
