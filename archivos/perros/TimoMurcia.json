@@ -1,17 +1,16 @@
 {
   "nombre": "Timo Murcia",
+  "estado": 2,
   "nivelDeDificultad": null,
   "nacimiento": "2021-07-10",
   "macho": true,
   "peso": 13,
   "altura": 47,
-  "reservado": true,
   "paseo": 1,
   "sociableConPerros": 0,
   "sociableConPersonas": 3,
   "sociableConGatos": true,
   "proteccionDeRecursos": false,
-  "chip": false,
   "ppp": false,
   "apadrinado": false,
   "problemasDeSalud": [

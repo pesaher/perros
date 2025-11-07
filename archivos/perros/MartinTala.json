@@ -1,17 +1,16 @@
 {
   "nombre": "Martín Tala",
+  "estado": 2,
   "nivelDeDificultad": null,
   "nacimiento": "2016-01-01",
   "macho": true,
   "peso": 8,
   "altura": 43,
-  "reservado": true,
   "paseo": 0,
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
-  "chip": false,
   "ppp": false,
   "apadrinado": false,
   "problemasDeSalud": [
