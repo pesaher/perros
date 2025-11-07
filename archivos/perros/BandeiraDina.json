@@ -1,7 +1,7 @@
 {
   "nombre": "Bandeira Dina",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "2016-09-01",
   "macho": false,
   "peso": 24,
@@ -9,12 +9,16 @@
   "paseo": 0,
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
-  "sociableConGatos": null,
+  "sociableConGatos": true,
   "proteccionDeRecursos": null,
   "ppp": false,
   "apadrinado": true,
-  "instintoDePredacion": [],
-  "problemasDeSalud": [3],
+  "instintoDePredacion": [
+    2
+  ],
+  "problemasDeSalud": [
+    3
+  ],
   "observacionesExtra": "",
   "protocoloParticular": ""
 }
