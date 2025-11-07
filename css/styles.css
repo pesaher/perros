@@ -409,6 +409,14 @@ body {
   justify-content: flex-start;
 }
 
+/* Asegurar que todas las checkboxes tengan el mismo ancho */
+.opcion-multiple input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
 /* Botón añadir */
 .boton-anadir {
   background: var(--success-color);
