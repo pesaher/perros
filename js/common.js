@@ -285,6 +285,18 @@ function crearSelectorDificultad(valorActual) {
     return crearSelectorGenerico('nivelDeDificultad', opciones, valorActual);
 }
 
+function crearSelectorProteccionRecursos(valorActual) {
+    const opciones = {
+        '0': 'No',
+        '1': 'Con perros',
+        '2': 'Con personas',
+        '3': 'Con perros y personas',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('proteccionDeRecursos', opciones, valorActual);
+}
+
 // Función para determinar el color del estado según condiciones
 function determinarColorEstado(campo, valor, datosCompletos = {}) {
     // Si el valor es null, undefined o vacío, gris
@@ -328,9 +340,9 @@ function determinarColorEstado(campo, valor, datosCompletos = {}) {
             break;
 
         case 'proteccionDeRecursos':
-            // true: Sí (rojo), false: No (verde)
-            if (valor === true) return 'malo';
-            if (valor === false) return 'bueno';
+            // 0: No (verde), 1-3: Sí en diferentes situaciones (rojo)
+            if (valor === 0) return 'bueno';
+            if (valor === 1 || valor === 2 || valor === 3) return 'malo';
             break;
 
         case 'ppp':

@@ -126,6 +126,13 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
         3: "No"
     };
 
+    const proteccionRecursos = {
+        0: "No",
+        1: "Con perros",
+        2: "Con personas",
+        3: "Con perros y personas"
+    };
+
     // Estados booleanos
     const getEstadoBooleano = (valor, textoTrue, textoFalse) => {
         if (valor === true) return textoTrue;
@@ -139,7 +146,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     const textoSociablePerros = sociablePerros.hasOwnProperty(datos.sociableConPerros) ? sociablePerros[datos.sociableConPerros] : '???';
     const textoSociablePersonas = sociablePersonas.hasOwnProperty(datos.sociableConPersonas) ? sociablePersonas[datos.sociableConPersonas] : '???';
     const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
-    const textoProteccionRecursos = getEstadoBooleano(datos.proteccionDeRecursos, 'Sí', 'No');
+    const textoProteccionRecursos = proteccionRecursos.hasOwnProperty(datos.proteccionDeRecursos) ? proteccionRecursos[datos.proteccionDeRecursos] : '???';
     const textoPPP = getEstadoBooleano(datos.ppp, 'Sí', 'No');
     const textoApadrinado = getEstadoBooleano(datos.apadrinado, 'Sí', 'No');
 
@@ -264,7 +271,8 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
             <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
                 <div class="etiqueta">Protección de Recursos</div>
                 <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('proteccionDeRecursos', datos.proteccionDeRecursos)}` : ''}">
-                    ${modoEdicion ? crearSelectorBooleano('proteccionDeRecursos', datos.proteccionDeRecursos, true) : textoProteccionRecursos}
+                    ${modoEdicion ? crearSelectorProteccionRecursos(datos.proteccionDeRecursos) : textoProteccionRecursos
+                    }
                 </div>
             </div>
 
@@ -356,7 +364,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     }
 
     // Protocolo de Protección de Recursos (solo en modo visual)
-    if (!modoEdicion && datos.proteccionDeRecursos === true) {
+    if (!modoEdicion && datos.proteccionDeRecursos !== null && datos.proteccionDeRecursos !== undefined && datos.proteccionDeRecursos !== 0) {
         html += `
             <div class="campo-completo">
                 <div class="etiqueta">Protocolo de Protección de Recursos (PdR)</div>
@@ -439,8 +447,7 @@ async function guardarCambios() {
                                         selectSociableGatos?.value === 'false' ? false : null;
 
     const selectProteccion = document.querySelector('select[name="proteccionDeRecursos"]');
-    datosActualizados.proteccionDeRecursos = selectProteccion?.value === 'true' ? true :
-                                            selectProteccion?.value === 'false' ? false : null;
+    datosActualizados.proteccionDeRecursos = selectProteccion?.value ? parseInt(selectProteccion.value) : null;
 
     const selectPPP = document.querySelector('select[name="ppp"]');
     datosActualizados.ppp = selectPPP?.value === 'true' ? true :
