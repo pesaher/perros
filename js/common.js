@@ -265,7 +265,7 @@ function crearSelectorProblemasSalud(valorActual) {
         html += `
             <label class="opcion-multiple">
                 <input type="checkbox" name="problemasSalud" value="${problema.id}" ${estaSeleccionado ? 'checked' : ''}>
-                ${problema.nombre}
+                <span>${problema.nombre}</span>
             </label>
         `;
     });
@@ -314,7 +314,7 @@ function crearSelectorInstintoPredacion(valorActual) {
         html += `
             <label class="opcion-multiple">
                 <input type="checkbox" name="instintoDePredacion" value="${instinto.id}" ${estaSeleccionado ? 'checked' : ''}>
-                ${instinto.nombre}
+                <span>${instinto.nombre}</span>
             </label>
         `;
     });
