@@ -68,26 +68,13 @@ function aplicarFiltros(nombrePerro) {
                 if (Array.isArray(valor)) {
                     // Convertir valores del filtro a números
                     const valoresConvertidos = valor.map(v => parseInt(v));
-
-                    // Lógica especial para protección de recursos
                     const valorPerro = datosPerro.proteccionDeRecursos;
 
                     // Si el perro no tiene valor, no pasa el filtro
                     if (valorPerro === null || valorPerro === undefined) return false;
 
-                    // Si el filtro incluye 0 y el perro es 0, pasa
-                    if (valoresConvertidos.includes(0) && valorPerro === 0) {
-                        // Pasa el filtro
-                    }
-                    // Si el filtro incluye 1 y el perro es 1 o 3, pasa
-                    else if (valoresConvertidos.includes(1) && (valorPerro === 1 || valorPerro === 3)) {
-                        // Pasa el filtro
-                    }
-                    // Si el filtro incluye 2 y el perro es 2 o 3, pasa
-                    else if (valoresConvertidos.includes(2) && (valorPerro === 2 || valorPerro === 3)) {
-                        // Pasa el filtro
-                    }
-                    else {
+                    // El perro pasa solo si su valor está incluido en los valores seleccionados del filtro
+                    if (!valoresConvertidos.includes(valorPerro)) {
                         return false;
                     }
                 }
@@ -260,6 +247,7 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 0) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="0">No</div>
                     <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 1) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="1">Con perros</div>
                     <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 2) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="2">Con personas</div>
+                    <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 3) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="3">Con perros y personas</div>
                 </div>
             </div>
 
