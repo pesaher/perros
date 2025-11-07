@@ -257,9 +257,9 @@ function mostrarModalFiltros() {
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Protección de Recursos</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 0) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="0">✅ No</div>
-                    <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 1) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="1">⚠️ Con perros</div>
-                    <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 2) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="2">⚠️ Con personas</div>
+                    <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 0) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="0">No</div>
+                    <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 1) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="1">Con perros</div>
+                    <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 2) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="2">Con personas</div>
                 </div>
             </div>
 
