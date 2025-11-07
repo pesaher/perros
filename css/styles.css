@@ -355,7 +355,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  width: 100%;
 }
 
 .opcion-multiple {
@@ -367,8 +366,6 @@ body {
   background: #f9f9f9;
   cursor: pointer;
   transition: background 0.2s;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -389,44 +386,6 @@ body {
 
 .opcion-multiple input[type="checkbox"] {
   margin: 0;
-  flex-shrink: 0;
-}
-
-/* Estilos específicos para móvil */
-@media (max-width: 768px) {
-  .selector-multiple {
-    gap: 0.3em;
-  }
-
-  .opcion-multiple {
-    padding: 0.8em 0.5em;
-    align-items: flex-start;
-    min-height: auto;
-  }
-
-  .opcion-multiple input[type="checkbox"] {
-    margin-top: 0.2em;
-    transform: scale(1.2); /* Hacer checkboxes más grandes en móvil */
-  }
-
-  /* Asegurar que el texto ocupe todo el ancho disponible */
-  .opcion-multiple label {
-    flex: 1;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-}
-
-/* Para pantallas muy pequeñas */
-@media (max-width: 360px) {
-  .opcion-multiple {
-    padding: 0.7em 0.4em;
-    font-size: 0.9em;
-  }
-
-  .opcion-multiple input[type="checkbox"] {
-    transform: scale(1.1);
-  }
 }
 
 /* Botón añadir */
