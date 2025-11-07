@@ -10,9 +10,10 @@
   "sociableConPerros": 1,
   "sociableConPersonas": 2,
   "sociableConGatos": false,
-  "proteccionDeRecursos": false,
+  "proteccionDeRecursos": 1,
   "ppp": false,
   "apadrinado": true,
+  "instintoDePredacion": [],
   "problemasDeSalud": [],
   "observacionesExtra": "Cuando ha convivido en una casa, no llevaba bien el quedarse solo. ",
   "protocoloParticular": "Trabajar reactividad con control de distancias. Reforzar calma al mirar de lejos. Si vemos que hay perfiles con los que reacciona bien (por ejemplo galgas hembras o así) valorar reducir distancias para que socialice. Aprovechar visitas de hombres desconocidos para que se acerquen y le den chuches (aún sin bozal)."

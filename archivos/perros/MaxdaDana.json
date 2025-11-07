@@ -10,9 +10,10 @@
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
   "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "proteccionDeRecursos": 1,
   "ppp": false,
   "apadrinado": false,
+  "instintoDePredacion": [],
   "problemasDeSalud": [],
   "observacionesExtra": "",
   "protocoloParticular": "<ul><li>Realizar ejercicios de olfateo y sembrado en momentos en que estén separados, para que se concentre en la actividad sin depender de Perci.</li><li>Probar con juegos de estimulación cognitiva (cajas, lickimat, masticables, ejercicios de pensar) y observar qué le motiva más, para que desarrolle su “personalidad” individual.</li><li>Reforzar cada muestra de confianza en actividades individuales.</li></ul>"

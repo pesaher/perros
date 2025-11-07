@@ -10,9 +10,10 @@
   "sociableConPerros": 1,
   "sociableConPersonas": 0,
   "sociableConGatos": false,
-  "proteccionDeRecursos": false,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": true,
+  "instintoDePredacion": [],
   "problemasDeSalud": [],
   "observacionesExtra": "",
   "protocoloParticular": ""
