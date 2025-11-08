@@ -1,8 +1,8 @@
 {
   "nombre": "Bruno Tala",
-  "estado": null,
+  "estado": 0,
   "nivelDeDificultad": null,
-  "nacimiento": "",
+  "nacimiento": "2021-10-01",
   "macho": true,
   "peso": null,
   "altura": null,
