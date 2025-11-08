@@ -1,8 +1,8 @@
 {
   "nombre": "Xoan Gali",
-  "estado": null,
+  "estado": 0,
   "nivelDeDificultad": null,
-  "nacimiento": "",
+  "nacimiento": "2018-10-31",
   "macho": true,
   "peso": null,
   "altura": null,
