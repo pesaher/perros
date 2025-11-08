@@ -1,9 +1,9 @@
 {
   "nombre": "Vento Gali",
-  "estado": null,
+  "estado": 0,
   "nivelDeDificultad": null,
-  "nacimiento": "",
-  "macho": true,
+  "nacimiento": "2018-08-09",
+  "macho": false,
   "peso": null,
   "altura": null,
   "paseo": null,
