@@ -35,6 +35,7 @@
   ],
   "chenil11": [
     "TimoMurcia",
+    "Siles",
     "Presidia"
   ],
   "chenil12": [
@@ -42,18 +43,22 @@
     "YasirMurcia"
   ],
   "chenil13": [
-    "Siles"
+    "AstridBite",
+    "NoemiBite",
+    "BelenBite",
+    "AlejoBite"
   ],
   "chenil14": [
     "MargotMika",
-    "IdunMika"
+    "IdunMika",
+    "PeperoniTala"
   ],
   "chenil15": [
     "BellaCity",
     "Patatin"
   ],
   "chenil16": [
-    ""
+    "ZapeTome"
   ],
   "chenil17": [
     "Pecas"
@@ -87,10 +92,7 @@
     "Penacu"
   ],
   "cuarentena26": [
-    "AstridBite",
-    "BelenBite",
-    "NoemiBite",
-    "AlejoBite"
+    ""
   ],
   "cuarentena27": [
     "GolfaCija",
@@ -108,9 +110,7 @@
     "VigoCija"
   ],
   "cuarentena31": [
-    "",
     "Ulli",
-    "ZapeTome",
     "GloriaTala",
     "BrunoTala",
     "FanyTala",
@@ -128,7 +128,7 @@
     "Manchega"
   ],
   "cachorrerra2": [
-    "PeperoniTala"
+    ""
   ],
   "cachorrerra4": [
     "Crisantemo"
