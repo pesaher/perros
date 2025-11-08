@@ -3,7 +3,7 @@
   "estado": null,
   "nivelDeDificultad": null,
   "nacimiento": "2023-10-10",
-  "macho": true,
+  "macho": false,
   "peso": null,
   "altura": null,
   "paseo": null,
