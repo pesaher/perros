@@ -1,9 +1,9 @@
 {
-  "nombre": "Michelle Gali",
-  "estado": null,
+  "nombre": "MichelleGali",
+  "estado": 2,
   "nivelDeDificultad": null,
-  "nacimiento": "",
-  "macho": true,
+  "nacimiento": "2018-08-09",
+  "macho": false,
   "peso": null,
   "altura": null,
   "paseo": null,
