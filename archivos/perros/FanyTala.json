@@ -3,7 +3,7 @@
   "estado": 0,
   "nivelDeDificultad": null,
   "nacimiento": "2019-01-01",
-  "macho": true,
+  "macho": false,
   "peso": 12,
   "altura": 39,
   "paseo": null,
