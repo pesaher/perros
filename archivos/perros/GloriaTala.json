@@ -1,6 +1,6 @@
 {
   "nombre": "Gloria Tala",
-  "estado": null,
+  "estado": 0,
   "nivelDeDificultad": null,
   "nacimiento": "2013-01-01",
   "macho": false,
