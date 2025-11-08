@@ -2,7 +2,7 @@
   "nombre": "Russell",
   "estado": 0,
   "nivelDeDificultad": null,
-  "nacimiento": "",
+  "nacimiento": "2025-01-01",
   "macho": true,
   "peso": null,
   "altura": null,
