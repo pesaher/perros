@@ -1,8 +1,8 @@
 {
   "nombre": "Bambín",
-  "estado": null,
+  "estado": 0,
   "nivelDeDificultad": null,
-  "nacimiento": "",
+  "nacimiento": "2020-11-24",
   "macho": true,
   "peso": null,
   "altura": null,
