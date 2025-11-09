@@ -1,7 +1,7 @@
 {
   "nombre": "Timo Murcia",
   "estado": 2,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 1,
   "nacimiento": "10/07/2021",
   "macho": true,
   "peso": 13.3,
