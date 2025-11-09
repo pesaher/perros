@@ -17,7 +17,7 @@ function cargarDatosPerro() {
 // Función para cargar y mostrar datos del perro
 function cargarYMostrarPerro(nombre, datosPerro) {
     datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-    document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre.toUpperCase() : 'JOHN DOGE'} 🐾`;
+    document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre : 'John Doge'} 🐾`;
     mostrarDatosPerro(nombre, datosPerro, false);
     configurarEventos();
 }
@@ -72,7 +72,7 @@ async function cargarDesdePlantilla(nombre) {
         };
 
         datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-        document.title = `${nombre.toUpperCase()} 🐾`;
+        document.title = `${nombre} 🐾`;
         mostrarDatosPerro(nombre, datosPerro, false);
         configurarEventos();
 
