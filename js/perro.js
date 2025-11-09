@@ -218,7 +218,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                 <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
                 <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('edad', calcularEdadEnAños(datos.nacimiento))}` : ''}">
                     ${modoEdicion ?
-                      `<input type="text" value="${datos.nacimiento || ''}" placeholder="YYYY, YYYY-MM o YYYY-MM-DD">` :
+                      `<input type="text" value="${datos.nacimiento || ''}" placeholder="DD/MM/YYYY, MM/YYYY o YYYY">` :
                       edadMostrar
                     }
                 </div>
