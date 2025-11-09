@@ -11,7 +11,7 @@
   "sociableConPersonas": 2,
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
-  "ppp": null,
+  "ppp": false,
   "apadrinado": true,
   "instintoDePredacion": [],
   "problemasDeSalud": [],
