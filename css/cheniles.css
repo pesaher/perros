@@ -149,6 +149,7 @@
 /* Estilos para perros filtrados */
 .marco.filtrado {
   opacity: 0.3;
+  border: none !important
 }
 
 .marco.cumple-filtro {
@@ -161,19 +162,19 @@
     background: #c8e6c9 !important; /* Verde claro */
     color: #000 !important;
     font-weight: bold;
-    border: 2px solid var(--estado-bueno) !important;
+    border: 2px solid var(--estado-bueno);
 }
 
 .marco.dificultad-medio {
     background: #fff9c4 !important; /* Amarillo claro */
     color: #000 !important;
     font-weight: bold;
-    border: 2px solid var(--estado-medio) !important;
+    border: 2px solid var(--estado-medio);
 }
 
 .marco.dificultad-malo {
     background: #ffcdd2 !important; /* Rojo claro */
     color: #000 !important;
     font-weight: bold;
-    border: 2px solid var(--estado-malo) !important;
+    border: 2px solid var(--estado-malo);
 }
