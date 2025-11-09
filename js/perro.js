@@ -86,10 +86,7 @@ async function cargarDesdePlantilla(nombre) {
 
 // Función para configurar eventos
 function configurarEventos() {
-    const btnEditar = document.getElementById('btnEditar');
-    if (btnEditar) {
-        btnEditar.addEventListener('click', activarModoEdicion);
-    }
+
 }
 
 // Función para mostrar datos del perro
@@ -417,21 +414,6 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     contenedor.innerHTML = html;
 }
 
-// Funciones de edición
-function activarModoEdicion() {
-    modoEdicion = true;
-    mostrarDatosPerro(nombrePerro, datosOriginales, true);
-
-    // Cambiar botones
-    document.getElementById('botonesInferiores').innerHTML = `
-        <button class="boton boton-cancelar" id="btnCancelar">✗ Cancelar</button>
-        <button class="boton boton-guardar" id="btnGuardar">💾 Guardar</button>
-    `;
-
-    document.getElementById('btnCancelar').addEventListener('click', cancelarEdicion);
-    document.getElementById('btnGuardar').addEventListener('click', guardarCambios);
-}
-
 function cancelarEdicion() {
     modoEdicion = false;
     mostrarDatosPerro(nombrePerro, datosOriginales, false);
@@ -441,7 +423,6 @@ function cancelarEdicion() {
 function restaurarBotonesNormales() {
     document.getElementById('botonesInferiores').innerHTML = `
         <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
-        <button class="boton boton-editar" id="btnEditar">✏️ Editar</button>
     `;
 
     // Re-configurar el evento del botón de editar
