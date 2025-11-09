@@ -1,10 +1,10 @@
 {
   "nombre": "Presidia",
-  "estado": 0,
+  "estado": 1,
   "nivelDeDificultad": 0,
   "nacimiento": "",
   "macho": false,
-  "peso": null,
+  "peso": 9.6,
   "altura": null,
   "paseo": 0,
   "sociableConPerros": 0,

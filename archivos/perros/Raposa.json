@@ -1,10 +1,10 @@
 {
   "nombre": "Raposa",
-  "estado": 0,
+  "estado": 1,
   "nivelDeDificultad": null,
   "nacimiento": "12/03/2025",
   "macho": false,
-  "peso": 13,
+  "peso": 12.5,
   "altura": 43,
   "paseo": null,
   "sociableConPerros": null,
