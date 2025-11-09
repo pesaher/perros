@@ -1,7 +1,7 @@
 {
   "nombre": "Aruba",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "2021-06-10",
   "macho": false,
   "peso": 28,

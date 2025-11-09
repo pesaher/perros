@@ -1,7 +1,7 @@
 {
   "nombre": "Idún Mika",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "2013-05-07",
   "macho": false,
   "peso": 24,

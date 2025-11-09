@@ -1,7 +1,7 @@
 {
   "nombre": "Calleja",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 2,
   "nacimiento": "2019-09-05",
   "macho": true,
   "peso": 31,

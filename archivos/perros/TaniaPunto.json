@@ -1,7 +1,7 @@
 {
   "nombre": "Tania Punto",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 2,
   "nacimiento": "2023-02-10",
   "macho": false,
   "peso": 19,

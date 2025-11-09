@@ -1,7 +1,7 @@
 {
   "nombre": "Pezuelo",
   "estado": 2,
-  "nivelDeDificultad": 1,
+  "nivelDeDificultad": 0,
   "nacimiento": "2022",
   "macho": true,
   "peso": 40,

@@ -1,7 +1,7 @@
 {
   "nombre": "Patatín",
   "estado": 2,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 1,
   "nacimiento": "2017-10-16",
   "macho": true,
   "peso": 7.7,

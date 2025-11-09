@@ -1,7 +1,7 @@
 {
   "nombre": "Yasir Murcia",
   "estado": 1,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "",
   "macho": true,
   "peso": null,

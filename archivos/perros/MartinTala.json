@@ -1,7 +1,7 @@
 {
   "nombre": "Martín Tala",
   "estado": 2,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "2016-01-01",
   "macho": true,
   "peso": 8,

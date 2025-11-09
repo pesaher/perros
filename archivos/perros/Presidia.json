@@ -1,7 +1,7 @@
 {
   "nombre": "Presidia",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "",
   "macho": false,
   "peso": null,

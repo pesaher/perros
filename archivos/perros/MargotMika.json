@@ -1,7 +1,7 @@
 {
   "nombre": "Margot Mika",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "2016-03-01",
   "macho": false,
   "peso": 38,

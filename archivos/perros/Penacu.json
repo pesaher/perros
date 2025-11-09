@@ -1,7 +1,7 @@
 {
   "nombre": "Peñacu",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 2,
   "nacimiento": "2021-03-27",
   "macho": true,
   "peso": 17,

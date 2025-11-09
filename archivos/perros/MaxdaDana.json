@@ -1,7 +1,7 @@
 {
   "nombre": "Maxda Dana",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 2,
   "nacimiento": "2020-06-10",
   "macho": false,
   "peso": 25,

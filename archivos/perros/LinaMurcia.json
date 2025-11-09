@@ -1,7 +1,7 @@
 {
   "nombre": "Lina Murcia",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "2023-06-10",
   "macho": false,
   "peso": 15,

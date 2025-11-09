@@ -1,7 +1,7 @@
 {
   "nombre": "Baztán",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 2,
   "nacimiento": "2021-05-15",
   "macho": true,
   "peso": 42,

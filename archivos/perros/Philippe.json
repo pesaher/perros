@@ -1,7 +1,7 @@
 {
   "nombre": "Philippe",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 2,
   "nacimiento": "2023-10-10",
   "macho": true,
   "peso": 40,

@@ -1,7 +1,7 @@
 {
   "nombre": "Luna Tala",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 1,
   "nacimiento": "2025-01-01",
   "macho": false,
   "peso": 15,
