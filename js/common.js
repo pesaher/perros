@@ -23,6 +23,12 @@ function formatearNombreChenil(nombre) {
     );
 }
 
+function obtenerSeccion(nombre) {
+    return nombre.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
+        letras.charAt(0).toUpperCase() + letras.toLowerCase() + 's'
+    );
+}
+
 // Funciones de cálculo de edad
 function calcularEdadEnAños(nacimiento) {
     if (!nacimiento) return null;

@@ -18,8 +18,18 @@ async function cargar() {
 function pintar() {
     const contenedor = document.getElementById('contenedor');
     contenedor.innerHTML = '';
+    let seccionAnterior = '';
 
     Object.entries(datos).forEach(([chenil, perros]) => {
+        const seccionActual = obtenerSeccion(chenil);
+        if (seccionActual && seccionActual !== seccionAnterior) {
+            const separador = document.createElement('div');
+            separador.className = 'separador-seccion';
+            separador.innerHTML = `<hr><div class="titulo-seccion">${seccionActual}</div>`;
+            contenedor.appendChild(separador);
+            seccionAnterior = seccionActual;
+        }
+        
         const caja = document.createElement('div');
         caja.className = 'chenil';
 
