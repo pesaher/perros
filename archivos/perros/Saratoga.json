@@ -9,12 +9,18 @@
   "paseo": 4,
   "sociableConPerros": 1,
   "sociableConPersonas": 0,
-  "sociableConGatos": null,
+  "sociableConGatos": false,
   "proteccionDeRecursos": null,
-  "ppp": null,
+  "ppp": true,
   "apadrinado": false,
-  "instintoDePredacion": [],
-  "problemasDeSalud": [0],
-  "observacionesExtra": "",
+  "instintoDePredacion": [
+    0,
+    1,
+    2
+  ],
+  "problemasDeSalud": [
+    0
+  ],
+  "observacionesExtra": "No tiene problema con personas, es sociable y cariñosa. Con niños muy pequeños entra en predación. \nTiene ansiedad por separación (estuvo en una casa y la devolvieron por estas dos cosas). Es apta con perros grandes, aunque no sabe socializar demasiado. Por la calle tendrá que ir con bozal ya que si coge un perro pequeño, no lo suelta. ",
   "protocoloParticular": "Avanzar en habituación al bozal, ya lo aguanta casi 1 minuto entero. En breve, cerrárselo y que empiece a acostumbrarse a tenerlo cerrado. Trabajar autocontrol con estímulos pequeños/niños a gran distancia, premiar si hay calma (si no se queda fijada y jadea / babea) y distracción con olfato o masticables."
 }
