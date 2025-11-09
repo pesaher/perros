@@ -1,6 +1,6 @@
 {
   "nombre": "Pulgarcito",
-  "estado": null,
+  "estado": 0,
   "nivelDeDificultad": null,
   "nacimiento": "",
   "macho": true,
