@@ -8,13 +8,16 @@
   "altura": 72,
   "paseo": 3,
   "sociableConPerros": 1,
-  "sociableConPersonas": 2,
-  "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "sociableConPersonas": 1,
+  "sociableConGatos": false,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": true,
-  "instintoDePredacion": [],
+  "instintoDePredacion": [
+    1,
+    2
+  ],
   "problemasDeSalud": [],
-  "observacionesExtra": "",
+  "observacionesExtra": "Es reactivo con algunos perros (pequeños, enérgicos, machos grandes) y algunas personas, sin demasiado criterio aunque suelen ser personas grandes, pero tanto hombres como mujeres (peor con hombres). Se deja manipular sin problema. Ha vivido en una casa y se portaba muy bien, el problema fue el paseo. No es fácil de manejar ni por tamaño ni por el nivel de \"violencia\" con el que intenta llegar al otro perro cuando reacciona. Necesitaría una casa alejada de los estímulos, porque también es inseguro y reacciona con vehículos, ruidos, bicis y así. ",
   "protocoloParticular": "<ul><li>Priorizar paseos de olfato y calma, dejando que explore con libertad el entorno sin presiones.</li><li>Mantener siempre una distancia de seguridad respecto a perros o personas. Utilizar la señal “mira (hay un perro)” seguida de un premio, reforzando la atención y asociación positiva.</li><li>Reducir gradualmente las distancias conforme vayamos observando que tolera mejor los estímulos.</li><li>Involucrar a desconocidos de manera controlada, pidiéndoles que ofrezcan chuches o que se acerquen a hablar casualmente con nosotros, para normalizar la interacción. En este punto observar a Baztán, si se tensa la persona NO se acerca, se queda a una distancia prudencial y trabajamos desde ahí. Si Baztán detona, NO reducimos distancias con el estímulo, solo se positiviza a distancia.</li></ul>"
 }
