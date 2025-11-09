@@ -13,8 +13,12 @@
   "proteccionDeRecursos": null,
   "ppp": false,
   "apadrinado": true,
-  "instintoDePredacion": [],
-  "problemasDeSalud": [0],
-  "observacionesExtra": "",
+  "instintoDePredacion": [
+    2
+  ],
+  "problemasDeSalud": [
+    0
+  ],
+  "observacionesExtra": "De primeras es un poco tímida, le cuesta acercarse sobre todo a hombres. Es muy buena y simpática cuando coge confianza. \nEn el paseo tira pero es manejable, eso sí, si hay mucha gente se agobia. Muy sociable con perros.",
   "protocoloParticular": ""
 }
