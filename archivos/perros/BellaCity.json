@@ -10,11 +10,11 @@
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
   "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
   "problemasDeSalud": [],
-  "observacionesExtra": "",
-  "protocoloParticular": "<ul><li>Trabajar con micro-avances: premiar cualquier acercamiento o interacción, por mínima que sea, en nuestra presencia.</li><li>Promover que vaya moviéndose poco a poco dentro del chenil mientras seguimos reforzando con comida y calma.</li><li>Introducir un perro motivador (sociable y tranquilo) para estimular el juego o la curiosidad compartida.</li><li>Si no se observan cambios en un tiempo razonable, valorar sacar al exterior de forma más dirigida, sabiendo que ya ha estado fuera en otras ocasiones y que la experiencia puede desbloquearla.</li></ul>"
+  "observacionesExtra": "En los últimos días ha empezado a mostrarse reactiva con perros, está más nerviosa y estresada. Si Patatín desaparece, lloriquea, pero si pasea con él, se intentan pegar. Pensamos que quizás se desquician entre sí, valorar si continúa si se cambia el compañero. Con personas es tímida, pero sociable y simpática.",
+  "protocoloParticular": "Trabajar reactividad y que salga más tranquila del chenil"
 }
