@@ -36,8 +36,6 @@ function calcularEdadEnAños(nacimiento) {
     const hoy = new Date();
     let fechaNacimiento;
 
-    const parsedNacimiento = nacimiento.replace('/', '-');
-
     // Reemplazar cualquier separador por guión para consistencia
     const parsedNacimiento = nacimiento.replace(/[\/\.]/g, '-');
 
