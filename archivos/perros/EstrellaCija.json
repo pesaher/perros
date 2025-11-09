@@ -1,7 +1,7 @@
 {
   "nombre": "Estrella Cija",
   "estado": 0,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "15/04/2016",
   "macho": false,
   "peso": 15.8,
