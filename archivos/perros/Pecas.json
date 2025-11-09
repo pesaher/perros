@@ -1,7 +1,7 @@
 {
   "nombre": "Pecas",
   "estado": 3,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "",
   "macho": true,
   "peso": null,
