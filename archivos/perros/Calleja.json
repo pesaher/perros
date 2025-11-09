@@ -9,12 +9,15 @@
   "paseo": 0,
   "sociableConPerros": 0,
   "sociableConPersonas": 1,
-  "sociableConGatos": null,
-  "proteccionDeRecursos": null,
-  "ppp": null,
+  "sociableConGatos": false,
+  "proteccionDeRecursos": 0,
+  "ppp": false,
   "apadrinado": false,
-  "instintoDePredacion": [],
+  "instintoDePredacion": [
+    1,
+    2
+  ],
   "problemasDeSalud": [],
-  "observacionesExtra": "",
+  "observacionesExtra": "Tiende a montar a las personas que no conoce cuando tiene picos de estrés. Es obediente, bueno, sociable y cariñoso, pero necesita una familia con experiencia con perros grandes que pueda ponerle límites claros sin tenerle miedo. Sabe ver cuando tiene las riendas de la situación. No creemos que sea buena idea que haya niños muy pequeños. Pasea bien por ciudad pero puede tender a \"proteger\" espacios una vez en una casa (sofá, cama, entrada a la casa). ",
   "protocoloParticular": "<ul><li>En paseos y en el chenil, trabajar la calma: sentarse juntos a observar, ofrecer juguetes masticables o un Kong para mantenerlo entretenido y relajado.</li><li>Tener en cuenta que en las últimas ocasiones ha mostrado exceso de activación (lanzando el hueso al suelo, no es capaz de masticarlo).</li><li>Continuar con la habituación al bozal: colocarlo durante periodos muy cortos mientras realizamos actividades normales y agradables, retirándolo antes de que aparezca incomodidad. Ir cronometrando el tiempo que aguanta con el bozal para ir incrementando los tiempos. Una vez aguante 1 minuto, dejárselo cerrado un par de segundos.</li></ul>"
 }
