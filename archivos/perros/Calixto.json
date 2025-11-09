@@ -1,0 +1,20 @@
+{
+  "nombre": "Calixto",
+  "estado": 2,
+  "nivelDeDificultad": null,
+  "nacimiento": "10/09/2023",
+  "macho": true,
+  "peso": 8,
+  "altura": 33,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

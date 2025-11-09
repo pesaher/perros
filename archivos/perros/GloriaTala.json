@@ -1,0 +1,20 @@
+{
+  "nombre": "Gloria Tala",
+  "estado": 0,
+  "nivelDeDificultad": null,
+  "nacimiento": "01/01/2013",
+  "macho": false,
+  "peso": 22,
+  "altura": 54,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

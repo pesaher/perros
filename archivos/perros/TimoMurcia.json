@@ -1,0 +1,22 @@
+{
+  "nombre": "Timo Murcia",
+  "estado": 2,
+  "nivelDeDificultad": 1,
+  "nacimiento": "10/07/2021",
+  "macho": true,
+  "peso": 13.3,
+  "altura": 47,
+  "paseo": 1,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 3,
+  "sociableConGatos": true,
+  "proteccionDeRecursos": 0,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [
+    0
+  ],
+  "observacionesExtra": "",
+  "protocoloParticular": "<p>Manipulación y normalizar paseo con correa.</p><ul><li>Ponerle la correa en el collar y animarle a que ande con comida, mismo procedimiento que Irta y Jerica. Intentar que se acerque para coger comida. Si la comida no le motiva suficiente como para andar detrás de nosotras, tendremos que empezar por promover que al menos se mueva con la correa para coger la comida en el suelo esparcida por el chenil.</li><li>Una vez ande por el chenil con la correa, aunque sea porque rastrea la comida, podemos intentar lo mismo con un camino por el pasillo. La correa puede ir a rastras del suelo hasta que se vaya acostumbrando, ya llegará el momento de cogerla. Tiene que ser una correa fina y que no pese, que no la note casi.</li><li>Si vemos que el arnés no le supone incomodidad podemos ponérselo, pero lo importante es que ande por el exterior, que investigue, y que se acerque a nosotras, ahora mismo da igual si lleva arnés.</li></ul>"
+}

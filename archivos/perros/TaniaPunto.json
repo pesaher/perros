@@ -1,0 +1,20 @@
+{
+  "nombre": "Tania Punto",
+  "estado": 0,
+  "nivelDeDificultad": 2,
+  "nacimiento": "10/02/2023",
+  "macho": false,
+  "peso": 19.3,
+  "altura": 42,
+  "paseo": 4,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 3,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": 0,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "Con su persona de referencia, es casi una perra \"normal\", pero ha tardado casi un año en desarrollar ese vínculo. Lo ideal sería alguien con mucho tiempo, que tenga jardín, para trabajar el paseo poco a poco. Tendría que venir bastantes veces al albergue. No puede estar en zonas con mucho jaleo, es sensible a los ruidos (aunque no tanto como sus hermanos)",
+  "protocoloParticular": "Manipulación y arnés de forma progresiva, siempre con comida. Reforzar vínculo con mordedor. No presionar."
+}

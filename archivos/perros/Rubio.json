@@ -1,0 +1,20 @@
+{
+  "nombre": "Rubio",
+  "estado": 3,
+  "nivelDeDificultad": null,
+  "nacimiento": "",
+  "macho": true,
+  "peso": null,
+  "altura": null,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

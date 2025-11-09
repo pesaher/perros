@@ -1,0 +1,20 @@
+{
+  "nombre": "Bambín",
+  "estado": 0,
+  "nivelDeDificultad": null,
+  "nacimiento": "24/11/2020",
+  "macho": true,
+  "peso": null,
+  "altura": null,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

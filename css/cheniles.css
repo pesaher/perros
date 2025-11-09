@@ -1,0 +1,180 @@
+#contenedor {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1em;
+  width: 100%;
+  padding: 0 0.5em;
+  box-sizing: border-box;
+}
+
+.chenil {
+  background: var(--card-bg-light);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px var(--shadow-light);
+  width: 100%;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transition: 0.2s;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  .chenil {
+    background: var(--card-bg-dark);
+    box-shadow: 0 2px 5px var(--shadow-dark);
+  }
+}
+
+@media (max-width: 768px) {
+  .chenil {
+    padding: 0.8em;
+  }
+}
+
+.chenil:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .chenil:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
+}
+
+.titulo {
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.7em;
+  font-size: 1.1em;
+  color: var(--text-light);
+  text-transform: capitalize;
+}
+
+@media (prefers-color-scheme: dark) {
+  .titulo {
+    color: var(--text-dark);
+  }
+}
+
+.contenedor-marcos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  min-height: 2em;
+  border: 2px dashed var(--border-light);
+  border-radius: 8px;
+  padding: 0.6em;
+  position: relative;
+  transition: background 0.3s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .contenedor-marcos {
+    border-color: var(--border-dark);
+  }
+}
+
+.contenedor-marcos.vacio {
+  background: #eee;
+}
+
+@media (prefers-color-scheme: dark) {
+  .contenedor-marcos.vacio {
+    background: #3a3a3a;
+  }
+}
+
+.mensaje-vacio {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  font-size: 0.9em;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mensaje-vacio {
+    color: #aaa;
+  }
+}
+
+.marco {
+  padding: 0.5em 0.6em;
+  border-radius: 6px;
+  cursor: grab;
+  text-align: center;
+  user-select: none;
+  font-weight: bold;
+  font-size: 1.05em;
+  text-transform: uppercase;
+  color: #000 !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .marco {
+    padding: 0.4em 0.5em;
+    font-size: 0.95em;
+  }
+}
+
+.marco:active {
+  cursor: grabbing;
+}
+
+/* Estilos para el modo clickable */
+.marco.clickable {
+  cursor: pointer;
+}
+
+.marco.clickable:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+  transition: transform 0.2s;
+}
+
+/* Estado deshabilitado para sortable */
+.sortable-disabled .marco {
+  cursor: default !important;
+}
+
+.sortable-disabled .marco:active {
+  cursor: default !important;
+}
+
+/* Estilos para perros filtrados */
+.marco.filtrado {
+  opacity: 0.3;
+  border: none !important
+}
+
+.marco.cumple-filtro {
+  opacity: 1;
+  border: 2px solid var(--success-color);
+}
+
+/* Estilos para niveles de dificultad en los marcos - COLOR DE FONDO */
+.marco.dificultad-bueno {
+    background: #c8e6c9 !important; /* Verde claro */
+    color: #000 !important;
+    font-weight: bold;
+    border: 2px solid var(--estado-bueno);
+}
+
+.marco.dificultad-medio {
+    background: #fff9c4 !important; /* Amarillo claro */
+    color: #000 !important;
+    font-weight: bold;
+    border: 2px solid var(--estado-medio);
+}
+
+.marco.dificultad-malo {
+    background: #ffcdd2 !important; /* Rojo claro */
+    color: #000 !important;
+    font-weight: bold;
+    border: 2px solid var(--estado-malo);
+}

@@ -1,0 +1,22 @@
+{
+  "nombre": "Margot Mika",
+  "estado": 0,
+  "nivelDeDificultad": 0,
+  "nacimiento": "01/03/2016",
+  "macho": false,
+  "peso": 38.7,
+  "altura": 67,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [
+    0
+  ],
+  "observacionesExtra": "Más tímida que Idún, un poco temerosa en algunos espacios y se agobia si hay mucha gente. ",
+  "protocoloParticular": ""
+}

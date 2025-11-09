@@ -1,0 +1,20 @@
+{
+  "nombre": "Philippe",
+  "estado": 0,
+  "nivelDeDificultad": 2,
+  "nacimiento": "10/10/2023",
+  "macho": true,
+  "peso": 40.4,
+  "altura": 65,
+  "paseo": 4,
+  "sociableConPerros": 3,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": 3,
+  "ppp": true,
+  "apadrinado": true,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "Necesita una familia con experiencia en perros grandes y mejor sin niños pequeños. Mejor que tampoco haya otros perros, por los recursos. Por lo demás, no es muy exigente pero requiere personas que puedan ponerle límites (de forma no violenta) sin tenerle miedo. ",
+  "protocoloParticular": "Ofrecer mordedores/juguetes para redirigir boca (cuidado con posible posesión). Empezar protocolo de PdR. Promover paseos tranquilos, con olfateo, que pueda estar sentado observando, con caricias profundas ya sea fuera o en el chenil (las busca mucho)."
+}

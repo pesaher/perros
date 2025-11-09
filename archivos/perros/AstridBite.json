@@ -1,0 +1,20 @@
+{
+  "nombre": "Astrid Bite",
+  "estado": 1,
+  "nivelDeDificultad": 2,
+  "nacimiento": "10/07/2023",
+  "macho": false,
+  "peso": 15.3,
+  "altura": null,
+  "paseo": 2,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "Los cuatro Bite tienen dificultad para salir al exterior. Son tímidos con personas, pero con comida se acercan y se les puede manipular.",
+  "protocoloParticular": ""
+}

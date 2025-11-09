@@ -1,0 +1,20 @@
+{
+  "nombre": "Golfa Cija",
+  "estado": 2,
+  "nivelDeDificultad": 0,
+  "nacimiento": "01/05/2018",
+  "macho": false,
+  "peso": 10.95,
+  "altura": 34,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

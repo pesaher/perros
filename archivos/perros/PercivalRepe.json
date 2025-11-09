@@ -1,0 +1,22 @@
+{
+  "nombre": "Percival Repe",
+  "estado": 1,
+  "nivelDeDificultad": 2,
+  "nacimiento": "2020",
+  "macho": true,
+  "peso": 26,
+  "altura": null,
+  "paseo": 3,
+  "sociableConPerros": 1,
+  "sociableConPersonas": 2,
+  "sociableConGatos": false,
+  "proteccionDeRecursos": 1,
+  "ppp": false,
+  "apadrinado": true,
+  "instintoDePredacion": [
+    2
+  ],
+  "problemasDeSalud": [],
+  "observacionesExtra": "Cuando ha convivido en una casa, no llevaba bien el quedarse solo y no sabía hacer sus necesidades fuera. \n\nEs reactivo con perros (sobre todo perros muy enérgicos, machos grandes y cualquier tipo de PPP). Tiene miedo a algunos hombres extraños. \n\nNecesitaría alguien que pueda trabajar su reactividad, preferiblemente en una zona tranquila sin muchos estímulos, aunque como tal no le importan. No parece tener problema con los niños, pero se puede volver \"protector\" con algunas personas (en la casa en la que estuvo protegía a la mujer del marido y no le dejaba acercarse). En algunas ocasiones puede redirigir cuando reacciona.",
+  "protocoloParticular": "Trabajar reactividad con control de distancias. Reforzar calma al mirar de lejos. Si vemos que hay perfiles con los que reacciona bien (por ejemplo galgas hembras o así) valorar reducir distancias para que socialice. Aprovechar visitas de hombres desconocidos para que se acerquen y le den chuches (aún sin bozal)."
+}

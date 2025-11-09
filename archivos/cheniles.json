@@ -3,7 +3,7 @@
     "Aruba"
   ],
   "chenil2": [
-    "Martin"
+    ""
   ],
   "chenil3": [
     "Colombino"
@@ -20,11 +20,10 @@
   "chenil7": [
     "Jerica",
     "Kowalski",
-    "Bandeira"
+    "BandeiraDina"
   ],
   "chenil8": [
-    "PaulDozo",
-    "RingoDozo"
+    "Raposa"
   ],
   "chenil9": [
     "LinaMurcia",
@@ -32,33 +31,36 @@
   ],
   "chenil10": [
     "PercivalRepe",
-    "Maxda"
+    "MaxdaDana"
   ],
   "chenil11": [
     "TimoMurcia",
-    "Presidia"
+    "Siles"
   ],
   "chenil12": [
     "TaniaPunto",
     "YasirMurcia"
   ],
   "chenil13": [
-    "Siles",
-    "Calixto"
+    "AstridBite",
+    "NoemiBite",
+    "BelenBite",
+    "AlejoBite"
   ],
   "chenil14": [
     "MargotMika",
-    "IdunMika"
+    "IdunMika",
+    "PeperoniTala"
   ],
   "chenil15": [
-    "BellaC",
+    "BellaCity",
     "Patatin"
   ],
   "chenil16": [
-    "Rubio"
+    ""
   ],
   "chenil17": [
-    "Pecas"
+    "Pulgarcito"
   ],
   "chenil18": [
     "Philippe"
@@ -76,61 +78,66 @@
   ],
   "chenil22": [
     "OportoPunto",
-    "Aveiro"
+    "AveiroPunto"
   ],
   "chenil23": [
-    "Cosme"
+    "CosmeTome"
   ],
   "chenil24": [
-    "LucasTala",
-    "LunaTala"
+    "LunaTala",
+    "Pecas"
   ],
   "chenil25": [
-    "Peñacu"
+    "Penacu"
   ],
   "cuarentena26": [
     ""
   ],
   "cuarentena27": [
-    ""
+    "GolfaCija",
+    "EstrellaCija"
   ],
   "cuarentena28": [
-    ""
+    "XoanGali",
+    "VentoGali",
+    "MichelleGali"
   ],
   "cuarentena29": [
-    ""
+    "Cejo"
   ],
   "cuarentena30": [
-    ""
+    "MangoCija"
+  ],
+  "cuarentena31": [
+    "Ulli"
+  ],
+  "cuarentena32": [
+    "Bambin"
+  ],
+  "cuarentena33": [
+    "GloriaTala",
+    "BrunoTala"
   ],
   "cachorrerra1": [
-    ""
+    "Manchega"
   ],
   "cachorrerra2": [
     ""
   ],
-  "cachorrerra3": [
-    ""
-  ],
   "cachorrerra4": [
-    ""
+    "Crisantemo"
   ],
   "cachorrerra5": [
-    ""
-  ],
-  "cachorrerra6": [
-    ""
-  ],
-  "cachorrerra7": [
-    ""
+    "GildaTala"
   ],
   "cachorrerra8": [
-    ""
+    "Russell"
   ],
   "cachorrerra9": [
-    ""
+    "Conguito"
   ],
-  "cachorrerra10": [
-    ""
+  "oficina": [
+    "Edmundo",
+    "Leprechaun"
   ]
 }

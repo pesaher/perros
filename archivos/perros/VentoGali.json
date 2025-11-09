@@ -1,0 +1,20 @@
+{
+  "nombre": "Vento Gali",
+  "estado": 0,
+  "nivelDeDificultad": null,
+  "nacimiento": "09/08/2018",
+  "macho": false,
+  "peso": null,
+  "altura": null,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

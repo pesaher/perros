@@ -1,0 +1,20 @@
+{
+  "nombre": "Ringo Dozo",
+  "estado": 2,
+  "nivelDeDificultad": null,
+  "nacimiento": "22/08/2024",
+  "macho": true,
+  "peso": 14,
+  "altura": 54,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": 1,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

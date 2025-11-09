@@ -1,0 +1,20 @@
+{
+  "nombre": "Luna Tala",
+  "estado": 0,
+  "nivelDeDificultad": 1,
+  "nacimiento": "01/01/2025",
+  "macho": false,
+  "peso": 15.4,
+  "altura": 50,
+  "paseo": 1,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": 0,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "Muy dependiente a perros y personas. Tiene miedo a las personas y al exterior, pero es curiosa. Necesita un perro de referencia para evolucionar. ",
+  "protocoloParticular": ""
+}

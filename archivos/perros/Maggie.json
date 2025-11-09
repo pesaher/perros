@@ -1,0 +1,20 @@
+{
+  "nombre": "Maggie",
+  "estado": 3,
+  "nivelDeDificultad": 0,
+  "nacimiento": "15/09/2024",
+  "macho": false,
+  "peso": 24,
+  "altura": null,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": 0,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": "<strong>Darle mucho amor.</strong>"
+}

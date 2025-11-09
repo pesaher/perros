@@ -1,0 +1,20 @@
+{
+  "nombre": "Xoan Gali",
+  "estado": 0,
+  "nivelDeDificultad": null,
+  "nacimiento": "31/10/2018",
+  "macho": true,
+  "peso": null,
+  "altura": null,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

@@ -1,0 +1,20 @@
+{
+  "nombre": "Gilda Tala",
+  "estado": 2,
+  "nivelDeDificultad": null,
+  "nacimiento": "01/10/2023",
+  "macho": false,
+  "peso": null,
+  "altura": null,
+  "paseo": null,
+  "sociableConPerros": 0,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}

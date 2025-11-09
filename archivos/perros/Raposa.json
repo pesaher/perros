@@ -1,0 +1,20 @@
+{
+  "nombre": "Raposa",
+  "estado": 0,
+  "nivelDeDificultad": null,
+  "nacimiento": "12/03/2025",
+  "macho": false,
+  "peso": 12.5,
+  "altura": 43,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": 1,
+  "ppp": false,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "No consigue hacer pis prácticamente nunca, creemos que es por estrés o miedo. ",
+  "protocoloParticular": ""
+}

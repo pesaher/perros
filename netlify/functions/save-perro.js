@@ -1,4 +1,4 @@
-// netlify/functions/save.js
+// netlify/functions/save-perro.js
 exports.handler = async (event) => {
   const { Octokit } = await import("@octokit/core");
 
@@ -8,13 +8,22 @@ exports.handler = async (event) => {
 
   try {
     const payload = JSON.parse(event.body);
+    const { nombrePerro, datosPerro } = payload;
+
+    if (!nombrePerro || !datosPerro) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ ok: false, error: 'Faltan nombrePerro o datosPerro' })
+      };
+    }
+
     const owner = "pesaher"; // tu usuario
     const repo  = "perros";  // tu repo
-    const path  = "archivos/cheniles.json";
+    const path  = `archivos/perros/${nombrePerro}.json`;
 
     const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
-    // Obtener sha actual
+    // Obtener sha actual si existe
     let sha = null;
     try {
       const res = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
@@ -25,13 +34,13 @@ exports.handler = async (event) => {
       if (err.status !== 404) throw err;
     }
 
-    const content = Buffer.from(JSON.stringify(payload, null, 2)).toString('base64');
+    const content = Buffer.from(JSON.stringify(datosPerro, null, 2)).toString('base64');
 
     const params = {
       owner,
       repo,
       path,
-      message: '[skip netlify] Actualiza cheniles vía web',
+      message: `[skip netlify] ${sha ? 'Actualiza' : 'Crea'} perro: ${nombrePerro}`,
       content,
       committer: { name: 'Web App', email: 'no-reply@webapp.local' },
       sha
@@ -41,11 +50,18 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ ok: true, commit: resp.data.commit.html_url })
+      body: JSON.stringify({
+        ok: true,
+        commit: resp.data.commit.html_url,
+        action: sha ? 'actualizado' : 'creado'
+      })
     };
 
   } catch (err) {
     console.error(err);
-    return { statusCode: 500, body: JSON.stringify({ ok: false, error: err.message }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ ok: false, error: err.message })
+    };
   }
 };
