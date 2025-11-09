@@ -1,7 +1,7 @@
 {
   "nombre": "Golfa Cija",
   "estado": 2,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "01/05/2018",
   "macho": false,
   "peso": 10.95,
