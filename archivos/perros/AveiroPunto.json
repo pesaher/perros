@@ -8,13 +8,13 @@
   "altura": 50,
   "paseo": 1,
   "sociableConPerros": 0,
-  "sociableConPersonas": 2,
+  "sociableConPersonas": 3,
   "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
   "problemasDeSalud": [],
-  "observacionesExtra": "",
+  "observacionesExtra": "Tiene mucho miedo a extraños, a aglomeraciones y a ruidos extraños. Solo pasea si no hay nadie fuera, y necesita sí o sí un perro de apoyo. Es juguetón, cariñoso, curioso y bueno cuando coge confianza, y se deja manipular. Muy sensible a ruidos, no puede vivir en una zona ajetreada. ",
   "protocoloParticular": "<ul><li>Aplicar contra-condicionamiento en la puerta: presentar premios de alto valor (lata húmeda, trozos de salchicha) cerca de la salida.</li><li>Reforzar con premios cada intento de acercarse a la puerta, cada gesto de curiosidad o incluso una simple mirada hacia el exterior.</li><li>Introducir un compañero nuevo (otro perro estable y seguro) que pueda ayudar a motivar la exploración y el cruce de la puerta.</li></ul>"
 }
