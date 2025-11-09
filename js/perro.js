@@ -370,7 +370,7 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                             </ul>
                         </li>
                         <li><strong>Predicción:</strong> "Mira, un perro/persona" → lo ve → premio.</li>
-                        <li><strong>Con personas:</strong> aprovechar visitas (adoptantes, padrinos, etc.) → pedir que tiren chuches desde lejos. Adaptar según perfil (ej. Pezu con hombres mayores, Saratoga con niños, etc.). También adaptar según perro (no pongamos a Light como figurante para Perci, etc).</li>
+                        <li><strong>Con personas:</strong> aprovechar visitas (adoptantes, padrinos, etc.) → pedir que tiren chuches desde lejos. Adaptar según perfil (ej. Pezu con hombres mayores, Saratoga con niños, etc.). También adaptar según perro (no pongamos a Light como figurante para Perci, etc.).</li>
                         <li><strong>Distracción:</strong> si no hay posibilidad de mantener distancias y la probabilidad de detonar es muy alta, distraemos y nos vamos cagando leches. Pero cuidado con usar esto todo el rato y no dar herramientas al perro por estar continuamente huyendo de todo.</li>
                     </ul>
                 </div>
@@ -388,8 +388,8 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
                     <p><strong>Protocolo de intercambio positivo</strong> (con barrera al inicio, por seguridad):</p>
                     <ol>
                         <li><strong>Paso 1:</strong> mientras come/mastica, tirar comida extra de alto valor desde fuera.</li>
-                        <li><strong>Paso 2:</strong> si coge chuches o suelta el objeto, reforzar mucho más → que asocie nuestra presencia a beneficios. (Dependiendo del grado de tensión, se puede valorar introducir el "muy bien").</li>
-                        <li><strong>Paso 3:</strong> cuando ya se aleje de su recurso (por ejemplo cogiendo chuches del fondo del chenil, con el hueso en la puerta), empezar a trabajarlo desde dentro en un espacio más amplio (más adelante, atado y con supervisión).</li>
+                        <li><strong>Paso 2:</strong> si coge chuches o suelta el objeto, reforzar mucho más → que asocie nuestra presencia a beneficios (dependiendo del grado de tensión se puede valorar introducir el "muy bien").</li>
+                        <li><strong>Paso 3:</strong> cuando ya se aleje de su recurso (por ejemplo, cogiendo chuches del fondo del chenil, con el hueso en la puerta) empezar a trabajarlo desde dentro en un espacio más amplio (más adelante, atado y con supervisión).</li>
                     </ol>
                     <p><strong>Complementar</strong> con positivar el bozal de manera progresiva y alternando (no meterlo todo el rato).</p>
                 </div>
