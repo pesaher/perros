@@ -132,6 +132,13 @@ function aplicarFiltros(nombrePerro) {
                 if (edadEnAños === null) return false;
                 if (Math.floor(edadEnAños) > valor) return false;
                 break;
+
+            case 'informacionIncompleta':
+                if (valor === true) {
+                    // Solo mostrar si el perro tiene información incompleta
+                    return tieneInformacionIncompleta(datosPerro);
+                }
+                break;
         }
     }
 
@@ -298,6 +305,14 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 3) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="3">🚫 Cáncer</div>
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 4) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="4">🚫 Displasia</div>
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 5) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="5">🚫 Tumor benigno</div>
+                </div>
+            </div>
+
+            <!-- Información incompleta -->
+            <div class="grupo-filtros">
+                <div class="titulo-filtro">Información</div>
+                <div class="opciones-filtro">
+                    <div class="opcion-filtro ${filtrosActivos.informacionIncompleta === true ? 'activa' : ''}" data-filtro="informacionIncompleta" data-valor="true">⚠️ Información Incompleta</div>
                 </div>
             </div>
         </div>

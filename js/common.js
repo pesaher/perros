@@ -484,3 +484,35 @@ function determinarColorDificultad(nivel) {
         default: return null;
     }
 }
+
+// Función para verificar si un perro tiene información incompleta
+function tieneInformacionIncompleta(datosPerro) {
+    if (!datosPerro) return false;
+
+    const camposRequeridos = [
+        'nombre',
+        'estado',
+        'macho',
+        'nacimiento',
+        'peso',
+        'altura',
+        'paseo',
+        'sociableConPerros',
+        'sociableConPersonas',
+        'proteccionDeRecursos',
+        'ppp',
+        'apadrinado',
+        'nivelDeDificultad'
+    ];
+
+    return camposRequeridos.some(campo => {
+        const valor = datosPerro[campo];
+
+        // Verificar si el campo es null, undefined, string vacío, o array vacío
+        if (valor === null || valor === undefined) return true;
+        if (typeof valor === 'string' && valor.trim() === '') return true;
+        if (Array.isArray(valor) && valor.length === 0) return true;
+
+        return false;
+    });
+}
