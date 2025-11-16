@@ -4,8 +4,8 @@
   "nivelDeDificultad": null,
   "nacimiento": "09/08/2018",
   "macho": false,
-  "peso": null,
-  "altura": null,
+  "peso": 8,
+  "altura": 37,
   "paseo": null,
   "sociableConPerros": null,
   "sociableConPersonas": null,
@@ -14,7 +14,9 @@
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
-  "problemasDeSalud": [],
+  "problemasDeSalud": [
+    0
+  ],
   "observacionesExtra": "",
   "protocoloParticular": ""
 }
