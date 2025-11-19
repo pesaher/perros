@@ -1,20 +1,22 @@
 {
   "nombre": "Noemi Bite",
-  "estado": 1,
+  "estado": 0,
   "nivelDeDificultad": 2,
   "nacimiento": "10/07/2023",
   "macho": false,
   "peso": 18.6,
-  "altura": 53,
+  "altura": 50,
   "paseo": 2,
   "sociableConPerros": 0,
-  "sociableConPersonas": 0,
+  "sociableConPersonas": 3,
   "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
-  "problemasDeSalud": [],
-  "observacionesExtra": "Los cuatro Bite tienen dificultad para salir al exterior. Son tímidos con personas, pero con comida se acercan y se les puede manipular.",
+  "problemasDeSalud": [
+    0
+  ],
+  "observacionesExtra": "Los cuatro Bite tienen dificultad para salir al exterior. Son tímidos con personas, pero con comida se acercan y se les puede manipular. Belén es la más compleja de los cuatro, es muy tímida, le cuesta acercarse más que al resto (aunque también es bastante curiosa y aprende por imitación). No la vemos viviendo sin otros perros, aunque tampoco es que se apoye excesivamente en ellos, está un poco ausente. No se deja manipular mucho de momento, pero lleva poco. ",
   "protocoloParticular": ""
 }
