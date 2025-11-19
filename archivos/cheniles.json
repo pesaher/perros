@@ -23,7 +23,8 @@
     "BandeiraDina"
   ],
   "chenil8": [
-    "Raposa"
+    "Raposa",
+    "MangoCija"
   ],
   "chenil9": [
     "LinaMurcia",
@@ -57,11 +58,11 @@
     "Patatin"
   ],
   "chenil16": [
-    "MangoCija",
-    "GolfaCija"
+    ""
   ],
   "chenil17": [
-    "Pulgarcito"
+    "Pulgarcito",
+    "GolfaCija"
   ],
   "chenil18": [
     "Philippe"
