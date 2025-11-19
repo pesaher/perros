@@ -1,6 +1,6 @@
 {
   "nombre": "Alejo Bite",
-  "estado": 1,
+  "estado": 0,
   "nivelDeDificultad": 1,
   "nacimiento": "10/07/2023",
   "macho": true,
@@ -10,11 +10,11 @@
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
   "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
   "problemasDeSalud": [],
-  "observacionesExtra": "Alejo es el más espabilado de los Bite, tiene interés por salir del chenil pero al ver que sus hermanas no le siguen, se echa para atrás",
+  "observacionesExtra": "Alejo es uno de los más espabilado de los Bite, tiene interés por salir del chenil pero al ver que sus hermanas no le siguen, se echa para atrás. Con compañía, se anima rápido a pasear, y se deja manipular con facilidad si tienes comida. ",
   "protocoloParticular": ""
 }
