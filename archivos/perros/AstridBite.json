@@ -1,7 +1,7 @@
 {
   "nombre": "Astrid Bite",
-  "estado": 1,
-  "nivelDeDificultad": 2,
+  "estado": 0,
+  "nivelDeDificultad": 0,
   "nacimiento": "10/07/2023",
   "macho": false,
   "peso": 15.3,
@@ -10,11 +10,11 @@
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
   "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
   "problemasDeSalud": [],
-  "observacionesExtra": "Los cuatro Bite tienen dificultad para salir al exterior. Son tímidos con personas, pero con comida se acercan y se les puede manipular.",
+  "observacionesExtra": "Los cuatro Bite tienen dificultad para salir al exterior. Son tímidos con personas, pero con comida se acercan y se les puede manipular. Astrid es, posiblemente, la más fácil de todas o la que menos experiencia requiere, aún así, prefieren estar con otros perros si pueden no estar solos. No lleva muy mal la manipulación ni las caricias, pero requiere delicadeza. ",
   "protocoloParticular": ""
 }
