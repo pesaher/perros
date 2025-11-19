@@ -1,22 +1,20 @@
 {
   "nombre": "Noemi Bite",
   "estado": 0,
-  "nivelDeDificultad": 2,
+  "nivelDeDificultad": 1,
   "nacimiento": "10/07/2023",
   "macho": false,
   "peso": 18.6,
-  "altura": 50,
-  "paseo": 2,
+  "altura": 53,
+  "paseo": 1,
   "sociableConPerros": 0,
-  "sociableConPersonas": 3,
+  "sociableConPersonas": 0,
   "sociableConGatos": null,
-  "proteccionDeRecursos": 0,
+  "proteccionDeRecursos": 1,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
-  "problemasDeSalud": [
-    0
-  ],
-  "observacionesExtra": "Los cuatro Bite tienen dificultad para salir al exterior. Son tímidos con personas, pero con comida se acercan y se les puede manipular. Belén es la más compleja de los cuatro, es muy tímida, le cuesta acercarse más que al resto (aunque también es bastante curiosa y aprende por imitación). No la vemos viviendo sin otros perros, aunque tampoco es que se apoye excesivamente en ellos, está un poco ausente. No se deja manipular mucho de momento, pero lleva poco. ",
+  "problemasDeSalud": [],
+  "observacionesExtra": "Los cuatro Bite tienen dificultad para salir al exterior. Son tímidos con personas, pero con comida se acercan y se les puede manipular. Noemí es la \"mandona\" del pack, con sus hermanos es quizás la más espabilada y la que más rápido roba la comida, pero de cara al exterior es más tímida que Astrid o Alejo. Requiere de sobornos con comida y a alguno de sus hermanos para animarse a salir. ",
   "protocoloParticular": ""
 }
