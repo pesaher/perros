@@ -1,6 +1,6 @@
 {
   "nombre": "Rosco Torri",
-  "estado": null,
+  "estado": 1,
   "nivelDeDificultad": null,
   "nacimiento": "",
   "macho": true,
