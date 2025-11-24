@@ -3,7 +3,6 @@
     "Aruba"
   ],
   "chenil2": [
-    "",
     "Rubio"
   ],
   "chenil3": [
@@ -20,8 +19,7 @@
   ],
   "chenil7": [
     "Jerica",
-    "Kowalski",
-    "BandeiraDina"
+    "Kowalski"
   ],
   "chenil8": [
     "Raposa",
@@ -44,10 +42,7 @@
     "YasirMurcia"
   ],
   "chenil13": [
-    "AstridBite",
-    "NoemiBite",
-    "BelenBite",
-    "AlejoBite"
+    "Patatin"
   ],
   "chenil14": [
     "MargotMika",
@@ -55,8 +50,7 @@
     "PeperoniTala"
   ],
   "chenil15": [
-    "BellaCity",
-    "Patatin"
+    "BellaCity"
   ],
   "chenil16": [
     ""
@@ -84,11 +78,13 @@
     "AveiroPunto"
   ],
   "chenil23": [
-    "RoscoTorri",
-    "DonutTorri"
+    "NoemiBite",
+    "AstridBite",
+    "BelenBite"
   ],
   "chenil24": [
-    "LunaTala"
+    "LunaTala",
+    "AlejoBite"
   ],
   "chenil25": [
     "Penacu"
@@ -144,7 +140,9 @@
     "Leprechaun"
   ],
   "acogida": [
-    "",
-    "EstrellaCija"
+    "EstrellaCija",
+    "BandeiraDina",
+    "RoscoTorri",
+    "DonutTorri"
   ]
 }
