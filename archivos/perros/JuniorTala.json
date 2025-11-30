@@ -1,0 +1,20 @@
+{
+  "nombre": "Junior Tala",
+  "estado": null,
+  "nivelDeDificultad": null,
+  "nacimiento": "",
+  "macho": true,
+  "peso": null,
+  "altura": null,
+  "paseo": null,
+  "sociableConPerros": null,
+  "sociableConPersonas": null,
+  "sociableConGatos": null,
+  "proteccionDeRecursos": null,
+  "ppp": null,
+  "apadrinado": false,
+  "instintoDePredacion": [],
+  "problemasDeSalud": [],
+  "observacionesExtra": "",
+  "protocoloParticular": ""
+}
