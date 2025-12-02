@@ -314,7 +314,9 @@ function crearSelectorProblemasSalud(valorActual) {
         {id: 2, nombre: 'Borrelia'},
         {id: 3, nombre: 'Cáncer'},
         {id: 4, nombre: 'Displasia'},
-        {id: 5, nombre: 'Tumor benigno'}
+        {id: 5, nombre: 'Tumor benigno'},
+        {id: 6, nombre: 'Filaria'},
+        {id: 7, nombre: 'Anaplasma'}
     ];
 
     let html = `<div class="selector-multiple">`;

@@ -305,6 +305,8 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 3) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="3">🚫 Cáncer</div>
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 4) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="4">🚫 Displasia</div>
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 5) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="5">🚫 Tumor benigno</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 6) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="6">🚫 Filaria</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 7) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="7">🚫 Anaplasma</div>
                 </div>
             </div>
 
