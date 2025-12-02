@@ -18,8 +18,9 @@ function colorPastel(nombre) {
 }
 
 function formatearNombreChenil(nombre) {
-    return nombre.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
-        letras.charAt(0).toUpperCase() + letras.slice(1).toLowerCase() + ' ' + num
+    const nombreModificado = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+    return nombreModificado.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
+        letras + ' ' + num
     );
 }
 
