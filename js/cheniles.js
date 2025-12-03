@@ -710,6 +710,14 @@ async function eliminarPerroDeCheniles() {
     }
 
     // Cerrar modal
+    if (datosCompletosPerros[nombrePerro]) {
+      datosCompletosPerros[nombrePerro] = {
+        ...datosCompletosPerros[nombrePerro],
+        chenil_id: null
+      };
+    }
+
+    // Cerrar modal y actualizar
     const modal = document.querySelector('.modal-eliminar-perro');
     document.body.removeChild(modal);
     modalEliminarAbierto = false;
