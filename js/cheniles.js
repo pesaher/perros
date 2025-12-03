@@ -697,25 +697,15 @@ async function eliminarPerroDeCheniles() {
   try {
     // Actualizar en Supabase (poner chenil_id a null)
     if (supabaseClient) {
-      const { data: perroActual } = await supabaseClient
+      const { error } = await supabaseClient
         .from('perros')
-        .select('datos')
-        .eq('id', nombrePerro)
-        .single();
-
-      if (perroActual) {
-        const nuevosDatos = {
-          ...perroActual.datos,
+        .update({
           chenil_id: null
-        };
+        })
+        .eq('id', nombrePerro);
 
-        await supabaseClient
-          .from('perros')
-          .update({
-            chenil_id: null,
-            datos: nuevosDatos
-          })
-          .eq('id', nombrePerro);
+      if (error) {
+        console.error('❌ Error actualizando chenil_id:', error);
       }
     }
 
