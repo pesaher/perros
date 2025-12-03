@@ -5,91 +5,99 @@ let nombrePerro = '';
 
 // Función principal de carga
 function cargarDatosPerro() {
-    nombrePerro = new URLSearchParams(window.location.search).get('nombre');
+  nombrePerro = new URLSearchParams(window.location.search).get('nombre');
 
-    if (!nombrePerro) {
-        document.getElementById('contenido-perro').innerHTML = '<p>Error: No se especificó el nombre del perro</p>';
-    } else {
-        cargarDatosPerroDesdeAPI(nombrePerro);
-    }
+  if (!nombrePerro) {
+    document.getElementById('contenido-perro').innerHTML = '<p>Error: No se especificó el nombre del perro</p>';
+  } else {
+    cargarDatosPerroDesdeAPI(nombrePerro);
+  }
 }
 
 // Función para cargar y mostrar datos del perro
 function cargarYMostrarPerro(nombre, datosPerro) {
-    datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-    document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre : 'John Doge'} 🐾`;
-    mostrarDatosPerro(nombre, datosPerro, false);
-    configurarEventos();
+  datosOriginales = { ...datosPerro };
+  document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre : 'John Doge'} 🐾`;
+  mostrarDatosPerro(nombre, datosPerro, false);
+  configurarEventos();
 }
 
-// Función para manejar la carga cuando GitHub falla
+// Función para manejar la carga cuando Supabase falla
 async function manejarCargaFallback(nombre) {
-    // Primero intentar con datosCompletosPerros
-    if (datosCompletosPerros[nombre]) {
-        const datosPerro = datosCompletosPerros[nombre];
-        cargarYMostrarPerro(nombre, datosPerro);
-        return;
-    }
+  // Primero intentar con datosCompletosPerros
+  if (datosCompletosPerros[nombre]) {
+    const datosPerro = datosCompletosPerros[nombre];
+    cargarYMostrarPerro(nombre, datosPerro);
+    return;
+  }
 
-    // Si no hay datos locales, usar plantilla
-    await cargarDesdePlantilla(nombre);
+  // Si no hay datos locales, usar plantilla
+  await cargarDesdePlantilla(nombre);
 }
 
 async function cargarDatosPerroDesdeAPI(nombre) {
+  // PRIMERO: Intentar cargar desde Supabase
+  if (supabaseClient) {
     try {
-        // PRIMERO: Intentar cargar desde GitHub (datos reales)
-        const url = urlSinCache(`https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`);
-        const respuesta = await fetch(url);
+      const { data, error } = await supabaseClient
+        .from('perros')
+        .select('datos')
+        .eq('id', nombre)
+        .single();
 
-        if (respuesta.ok) {
-            // Perro encontrado en GitHub
-            const datosPerro = await respuesta.json();
-            cargarYMostrarPerro(nombre, datosPerro);
-            return;
-        }
-
-        // SEGUNDO: Si no está en GitHub, buscar en datosCompletosPerros
-        await manejarCargaFallback(nombre);
-
+      if (!error && data) {
+        console.log(`✅ ${nombre} cargado desde Supabase`);
+        cargarYMostrarPerro(nombre, data.datos);
+        return;
+      }
     } catch (error) {
-        // TERCERO: Si hay error, usar el fallback
-        await manejarCargaFallback(nombre);
+      console.warn(`⚠️ Supabase falló para ${nombre}:`, error);
     }
+  }
+
+  // SEGUNDO: Si todo falla, usar el fallback
+  await manejarCargaFallback(nombre);
 }
 
-// Función auxiliar para cargar desde plantilla (igual que antes)
+// Función auxiliar para cargar desde plantilla
 async function cargarDesdePlantilla(nombre) {
-    try {
-        // Cargar plantilla de perro.json
-        const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
-        const respuesta = await fetch(plantillaUrl);
-        const plantilla = await respuesta.json();
+  try {
+    // Cargar plantilla de perro.json
+    const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
+    const respuesta = await fetch(plantillaUrl);
+    const plantilla = await respuesta.json();
 
-        // Crear datos del perro usando la plantilla + nombre
-        const datosPerro = {
-            ...plantilla,
-            nombre: nombre
-        };
+    // Crear datos del perro usando la plantilla + nombre
+    const nombreFormateado = nombre
+      .replace(/([A-Z])/g, ' $1')
+      .trim()
+      .split(' ')
+      .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase())
+      .join(' ');
 
-        datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-        document.title = `${nombre} 🐾`;
-        mostrarDatosPerro(nombre, datosPerro, false);
-        configurarEventos();
+    const datosPerro = {
+      ...plantilla,
+      nombre: nombreFormateado
+    };
 
-        console.warn(`Mostrando datos de plantilla para ${nombre} (no encontrado en GitHub)`);
+    datosOriginales = { ...datosPerro };
+    document.title = `${nombreFormateado} 🐾`;
+    mostrarDatosPerro(nombre, datosPerro, false);
+    configurarEventos();
 
-    } catch (error) {
-        // Si falla incluso la plantilla, mostrar error
-        document.getElementById('contenido-perro').innerHTML = `<p>Error: No se pudieron cargar los datos para el perro "${nombre}"</p>`;
-    }
+    console.warn(`⚠️ Mostrando datos de plantilla para ${nombre} (no encontrado)`);
+
+  } catch (error) {
+    document.getElementById('contenido-perro').innerHTML = `<p>Error: No se pudieron cargar los datos para el perro "${nombre}"</p>`;
+  }
 }
 
 // Función para configurar eventos
 function configurarEventos() {
-    const btnEditar = document.getElementById('btnEditar');
-    if (btnEditar) {
-        btnEditar.addEventListener('click', activarModoEdicion);
-    }
+  const btnEditar = document.getElementById('btnEditar');
+  if (btnEditar) {
+    btnEditar.addEventListener('click', activarModoEdicion);
+  }
 }
 
 // Función para mostrar datos del perro
@@ -417,41 +425,39 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     contenedor.innerHTML = html;
 }
 
+
 // Funciones de edición
 function activarModoEdicion() {
-    modoEdicion = true;
-    mostrarDatosPerro(nombrePerro, datosOriginales, true);
+  modoEdicion = true;
+  mostrarDatosPerro(nombrePerro, datosOriginales, true);
 
-    // Cambiar botones
-    document.getElementById('botonesInferiores').innerHTML = `
-        <button class="boton boton-cancelar" id="btnCancelar">✗ Cancelar</button>
-        <button class="boton boton-guardar" id="btnGuardar">💾 Guardar</button>
-    `;
+  document.getElementById('botonesInferiores').innerHTML = `
+    <button class="boton boton-cancelar" id="btnCancelar">✗ Cancelar</button>
+    <button class="boton boton-guardar" id="btnGuardar">💾 Guardar</button>
+  `;
 
-    document.getElementById('btnCancelar').addEventListener('click', cancelarEdicion);
-    document.getElementById('btnGuardar').addEventListener('click', guardarCambios);
+  document.getElementById('btnCancelar').addEventListener('click', cancelarEdicion);
+  document.getElementById('btnGuardar').addEventListener('click', guardarCambios);
 }
 
 function cancelarEdicion() {
-    modoEdicion = false;
-    mostrarDatosPerro(nombrePerro, datosOriginales, false);
-    restaurarBotonesNormales();
+  modoEdicion = false;
+  mostrarDatosPerro(nombrePerro, datosOriginales, false);
+  restaurarBotonesNormales();
 }
 
 function restaurarBotonesNormales() {
-    document.getElementById('botonesInferiores').innerHTML = `
-        <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
-        <button class="boton boton-editar" id="btnEditar">✏️ Editar</button>
-    `;
-
-    // Re-configurar el evento del botón de editar
-    configurarEventos();
+  document.getElementById('botonesInferiores').innerHTML = `
+    <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
+    <button class="boton boton-editar" id="btnEditar">✏️ Editar</button>
+  `;
+  configurarEventos();
 }
 
 async function guardarCambios() {
-    const datosActualizados = { ...datosOriginales };
+  const datosActualizados = { ...datosOriginales };
 
-    // Procesar campos
+  // Procesar campos
     datosActualizados.nombre = document.querySelector('.nombre-perro input')?.value || '';
     datosActualizados.nacimiento = document.querySelector('input[placeholder*="YYYY"]')?.value || '';
 
@@ -512,33 +518,28 @@ async function guardarCambios() {
     });
     datosActualizados.problemasDeSalud = problemasSaludSeleccionados;
 
-    try {
-        // Guardar en GitHub
-        const respuesta = await fetch('/.netlify/functions/save-perro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nombrePerro: nombrePerro,
-                datosPerro: datosActualizados
-            })
-        });
+  // Asegurar que mantiene el chenil_id si existía
+  if (datosOriginales.chenil_id) {
+    datosActualizados.chenil_id = datosOriginales.chenil_id;
+  }
 
-        const resultado = await respuesta.json();
+  try {
+    // Guardar en Supabase
+    const exito = await guardarPerroEnSupabase(nombrePerro, datosActualizados);
 
-        if (resultado.ok) {
-            // Actualizar datos locales
-            datosOriginales = datosActualizados;
-            cancelarEdicion();
-
-            // Actualizar datosCompletosPerros
-            datosCompletosPerros[nombrePerro] = datosActualizados;
-        }
-    } catch (error) {
-        console.error('Error al guardar:', error);
+    if (exito) {
+      // Actualizar datos locales
+      datosOriginales = datosActualizados;
+      datosCompletosPerros[nombrePerro] = datosActualizados;
+      cancelarEdicion();
+      console.log('✅ Cambios guardados en Supabase');
     }
+  } catch (error) {
+    console.error('Error al guardar:', error);
+  }
 }
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
-    cargarDatosPerro();
+  cargarDatosPerro();
 });
