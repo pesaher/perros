@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Migrar a Supabase</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+    input { width: 100%; padding: 10px; margin: 5px 0; }
+    button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    #log { background: #f5f5f5; padding: 15px; margin: 20px 0;
+           height: 400px; overflow-y: auto; font-family: monospace; }
+    .success { color: green; }
+    .error { color: red; }
+    .warning { color: orange; }
+  </style>
+</head>
+<body>
+  <h1>🚀 Migrar a Supabase</h1>
+
+  <div>
+    <h3>1. Configurar Supabase</h3>
+    <input id="url" placeholder="URL de Supabase (https://xxx.supabase.co)">
+    <input id="key" placeholder="Anon Key">
+    <button onclick="inicializar()">Conectar a Supabase</button>
+  </div>
+
+  <div>
+    <h3>2. Migrar Datos</h3>
+    <button onclick="migrarPerros()" id="btnMigrar" disabled>Migrar TODOS los perros</button>
+    <button onclick="limpiarTabla()" id="btnLimpiar" disabled>Limpiar tabla (peligroso)</button>
+  </div>
+
+  <div id="log"></div>
+
+  <script>
+    let supabase = null;
+    const log = document.getElementById('log');
+
+    function logMsg(mensaje, tipo = '') {
+      const p = document.createElement('p');
+      p.className = tipo;
+      p.textContent = `[${new Date().toLocaleTimeString()}] ${mensaje}`;
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function inicializar() {
+      const url = document.getElementById('url').value;
+      const key = document.getElementById('key').value;
+
+      if (!url || !key) {
+        logMsg('❌ Faltan URL o Key', 'error');
+        return;
+      }
+
+      supabase = window.supabase.createClient(url, key);
+      logMsg('✅ Supabase inicializado', 'success');
+
+      document.getElementById('btnMigrar').disabled = false;
+      document.getElementById('btnLimpiar').disabled = false;
+    }
+
+    async function migrarPerros() {
+      if (!supabase) {
+        logMsg('❌ Primero conecta a Supabase', 'error');
+        return;
+      }
+
+      logMsg('📂 Cargando datos de GitHub...', 'warning');
+
+      try {
+        // 1. Cargar cheniles.json
+        const chenilesResp = await fetch('https://raw.githubusercontent.com/pesaher/perros/main/archivos/cheniles.json');
+        const estructura = await chenilesResp.json();
+
+        // 2. Extraer todos los perros únicos
+        const todosPerros = new Set();
+        Object.values(estructura).forEach(perros => {
+          perros.forEach(perro => {
+            if (perro && perro.trim() !== '') {
+              todosPerros.add(perro);
+            }
+          });
+        });
+
+        logMsg(`📊 Encontrados ${todosPerros.size} perros`, 'warning');
+
+        // 3. Para cada perro, encontrar su chenil
+        const perrosConChenil = {};
+        Object.entries(estructura).forEach(([chenilId, perrosIds]) => {
+          perrosIds.forEach(perroId => {
+            if (perroId) {
+              perrosConChenil[perroId] = chenilId;
+            }
+          });
+        });
+
+        // 4. Migrar cada perro
+        let exitos = 0;
+        let fallos = 0;
+        const perrosArray = Array.from(todosPerros);
+
+        for (let i = 0; i < perrosArray.length; i++) {
+          const perroId = perrosArray[i];
+          const chenilId = perrosConChenil[perroId] || null;
+
+          logMsg(`🔄 Migrando ${perroId}... (${i+1}/${perrosArray.length})`);
+
+          try {
+            // Cargar datos del perro
+            const perroUrl = `https://raw.githubusercontent.com/pesaher/perros/main/archivos/perros/${encodeURIComponent(perroId)}.json`;
+            const perroResp = await fetch(perroUrl);
+
+            if (perroResp.ok) {
+              const datosPerro = await perroResp.json();
+
+              // Añadir chenil_id a los datos
+              datosPerro.chenil_id = chenilId;
+
+              // Guardar en Supabase
+              const { error } = await supabase
+                .from('perros')
+                .upsert({
+                  id: perroId,
+                  chenil_id: chenilId,
+                  datos: datosPerro
+                }, { onConflict: 'id' });
+
+              if (error) {
+                logMsg(`❌ ${perroId}: ${error.message}`, 'error');
+                fallos++;
+              } else {
+                logMsg(`✅ ${perroId} → ${chenilId || 'sin chenil'}`, 'success');
+                exitos++;
+              }
+            } else {
+              logMsg(`⚠️ ${perroId} no encontrado en GitHub`, 'warning');
+              fallos++;
+            }
+
+            // Pequeña pausa para no saturar
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+          } catch (error) {
+            logMsg(`❌ Error con ${perroId}: ${error.message}`, 'error');
+            fallos++;
+          }
+        }
+
+        logMsg(`🎉 MIGRACIÓN COMPLETADA: ${exitos} OK, ${fallos} fallos`, 'success');
+
+      } catch (error) {
+        logMsg(`❌ Error general: ${error.message}`, 'error');
+      }
+    }
+
+    async function limpiarTabla() {
+      if (!confirm('¿ESTÁS SEGURO? Esto borrará TODOS los perros de Supabase.')) return;
+
+      const { error } = await supabase
+        .from('perros')
+        .delete()
+        .neq('id', '');
+
+      if (error) {
+        logMsg(`❌ Error: ${error.message}`, 'error');
+      } else {
+        logMsg('🗑️ Tabla limpiada', 'success');
+      }
+    }
+  </script>
+</body>
+</html>
