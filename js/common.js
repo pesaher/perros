@@ -28,7 +28,7 @@ function cargarSupabase() {
   }
 
   const script = document.createElement('script');
-  script.src = 'js/supabase.js';
+  script.src = 'https://unpkg.com/@supabase/supabase-js@2.38.0/dist/umd/supabase.min.js';
   script.onload = () => {
     console.log('📦 Supabase SDK cargado');
     inicializarSupabase();
