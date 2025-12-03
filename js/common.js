@@ -7,41 +7,174 @@ const SUPABASE_CONFIG = {
 let supabaseClient = null;
 let datosCompletosPerros = {};
 
-// Inicializar Supabase
-function inicializarSupabase() {
-  if (window.supabase && SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey) {
-    supabaseClient = window.supabase.createClient(
-      SUPABASE_CONFIG.url,
-      SUPABASE_CONFIG.anonKey
-    );
-    console.log('✅ Supabase inicializado');
+// NUEVO: Esperar a que Supabase esté disponible
+function esperarSupabase() {
+  return new Promise((resolve) => {
+    // Si ya está cargado por skypack en el HTML
+    if (window.supabase && window.supabase.createClient) {
+      try {
+        supabaseClient = window.supabase.createClient(
+          SUPABASE_CONFIG.url,
+          SUPABASE_CONFIG.anonKey
+        );
+        console.log('✅ Supabase inicializado desde skypack');
+        resolve(true);
+      } catch (error) {
+        console.error('❌ Error creando cliente Supabase:', error);
+        resolve(false);
+      }
+      return;
+    }
+
+    // Si no está, esperar máximo 5 segundos
+    const startTime = Date.now();
+    const maxWait = 5000; // 5 segundos
+
+    const checkInterval = setInterval(() => {
+      if (window.supabase && window.supabase.createClient) {
+        clearInterval(checkInterval);
+        try {
+          supabaseClient = window.supabase.createClient(
+            SUPABASE_CONFIG.url,
+            SUPABASE_CONFIG.anonKey
+          );
+          console.log('✅ Supabase cargado después de esperar');
+          resolve(true);
+        } catch (error) {
+          console.error('❌ Error:', error);
+          resolve(false);
+        }
+      } else if (Date.now() - startTime > maxWait) {
+        clearInterval(checkInterval);
+        console.warn('⏰ Timeout: Supabase no se cargó en 5 segundos');
+        resolve(false);
+      }
+    }, 100); // Revisar cada 100ms
+  });
+}
+
+async function cargarPerrosAgrupados() {
+  // ESPERAR a que supabaseClient esté listo
+  if (!supabaseClient) {
+    const listo = await esperarSupabase();
+    if (!listo) {
+      console.warn('⚠️ No se pudo inicializar Supabase');
+      return {};
+    }
+  }
+
+  try {
+    console.log('🐕 Cargando perros desde Supabase...');
+
+    const { data: perros, error } = await supabaseClient
+      .from('perros')
+      .select('id, chenil_id, datos');
+
+    if (error) throw error;
+
+    const estructura = {};
+    datosCompletosPerros = {};
+
+    perros.forEach(perro => {
+      datosCompletosPerros[perro.id] = perro.datos;
+
+      if (perro.chenil_id) {
+        if (!estructura[perro.chenil_id]) {
+          estructura[perro.chenil_id] = [];
+        }
+        estructura[perro.chenil_id].push(perro.id);
+      }
+    });
+
+    console.log(`✅ ${perros.length} perros cargados`);
+    return estructura;
+
+  } catch (error) {
+    console.error('❌ Error cargando perros:', error.message);
+    return {};
+  }
+}
+
+async function guardarPerroEnSupabase(id, datos) {
+  if (!supabaseClient) {
+    const listo = await esperarSupabase();
+    if (!listo) {
+      console.warn('⚠️ No se pudo guardar - Supabase no disponible');
+      return false;
+    }
+  }
+
+  try {
+    const { error } = await supabaseClient
+      .from('perros')
+      .upsert({
+        id: id,
+        datos: datos,
+        chenil_id: datos.chenil_id || null
+      }, { onConflict: 'id' });
+
+    if (error) throw error;
+
+    console.log(`💾 ${id} guardado en Supabase`);
     return true;
+
+  } catch (error) {
+    console.error('❌ Error guardando:', error);
+    return false;
   }
-  return false;
 }
 
-// Cargar script de Supabase automáticamente
-function cargarSupabase() {
-  if (window.supabase) {
-    inicializarSupabase();
-    return;
+async function moverPerroChenil(perroId, nuevoChenilId) {
+  if (!supabaseClient) {
+    const listo = await esperarSupabase();
+    if (!listo) return false;
   }
 
-  const script = document.createElement('script');
-  script.src = 'https://unpkg.com/@supabase/supabase-js@2.38.0/dist/umd/supabase.min.js';
-  script.onload = () => {
-    console.log('📦 Supabase SDK cargado');
-    inicializarSupabase();
-  };
-  script.onerror = () => {
-    console.warn('❌ No se pudo cargar Supabase SDK');
-  };
-  document.head.appendChild(script);
+  try {
+    const { data: perroActual } = await supabaseClient
+      .from('perros')
+      .select('datos')
+      .eq('id', perroId)
+      .single();
+
+    if (!perroActual) return false;
+
+    const nuevosDatos = {
+      ...perroActual.datos,
+      chenil_id: nuevoChenilId
+    };
+
+    const { error } = await supabaseClient
+      .from('perros')
+      .update({
+        chenil_id: nuevoChenilId,
+        datos: nuevosDatos
+      })
+      .eq('id', perroId);
+
+    return !error;
+
+  } catch (error) {
+    console.error('❌ Error moviendo perro:', error);
+    return false;
+  }
 }
 
-// Llamar al cargar la página
-cargarSupabase();
-// ==================== FIN CONFIGURACIÓN ====================
+// ==================== INICIALIZACIÓN AUTOMÁTICA ====================
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📄 DOM cargado - Verificando Supabase...');
+
+  // Inicializar Supabase en segundo plano
+  esperarSupabase().then(exito => {
+    if (exito) {
+      console.log('🚀 Supabase listo para usar');
+    } else {
+      console.warn('⚠️ Aplicación funcionará en modo offline');
+    }
+  });
+});
 
 // ==================== FUNCIONES UTILIDAD ====================
 function urlSinCache(base) {
@@ -206,112 +339,6 @@ async function cargarListaCheniles() {
   } catch (error) {
     console.error('❌ Error cargando cheniles:', error);
     return [];
-  }
-}
-
-// Cargar perros desde Supabase y agrupar por chenil
-async function cargarPerrosAgrupados() {
-  if (!supabaseClient) {
-    console.warn('Supabase no disponible');
-    return {};
-  }
-
-  try {
-    console.log('🐕 Cargando perros desde Supabase...');
-
-    const { data: perros, error } = await supabaseClient
-      .from('perros')
-      .select('id, chenil_id, datos');
-
-    if (error) throw error;
-
-    // Resetear datos globales
-    datosCompletosPerros = {};
-    const estructura = {};
-
-    // Procesar cada perro
-    perros.forEach(perro => {
-      // Guardar datos completos
-      datosCompletosPerros[perro.id] = perro.datos;
-
-      // Agrupar por chenil
-      if (perro.chenil_id) {
-        if (!estructura[perro.chenil_id]) {
-          estructura[perro.chenil_id] = [];
-        }
-        estructura[perro.chenil_id].push(perro.id);
-      }
-    });
-
-    console.log(`✅ ${perros.length} perros cargados`);
-    return estructura;
-
-  } catch (error) {
-    console.error('❌ Error cargando perros:', error);
-    return {};
-  }
-}
-
-// Guardar/actualizar perro en Supabase
-async function guardarPerroEnSupabase(id, datos) {
-  if (!supabaseClient) {
-    console.warn('Supabase no disponible');
-    return false;
-  }
-
-  try {
-    const { error } = await supabaseClient
-      .from('perros')
-      .upsert({
-        id: id,
-        datos: datos,
-        chenil_id: datos.chenil_id || null
-      }, { onConflict: 'id' });
-
-    if (error) throw error;
-
-    console.log(`💾 ${id} guardado en Supabase`);
-    return true;
-
-  } catch (error) {
-    console.error('❌ Error guardando:', error);
-    return false;
-  }
-}
-
-// Mover perro a otro chenil
-async function moverPerroChenil(perroId, nuevoChenilId) {
-  if (!supabaseClient) return false;
-
-  try {
-    // Obtener datos actuales
-    const { data: perroActual } = await supabaseClient
-      .from('perros')
-      .select('datos')
-      .eq('id', perroId)
-      .single();
-
-    if (!perroActual) return false;
-
-    // Actualizar
-    const nuevosDatos = {
-      ...perroActual.datos,
-      chenil_id: nuevoChenilId
-    };
-
-    const { error } = await supabaseClient
-      .from('perros')
-      .update({
-        chenil_id: nuevoChenilId,
-        datos: nuevosDatos
-      })
-      .eq('id', perroId);
-
-    return !error;
-
-  } catch (error) {
-    console.error('❌ Error moviendo perro:', error);
-    return false;
   }
 }
 
