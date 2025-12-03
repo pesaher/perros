@@ -149,37 +149,44 @@ async function guardarPerroEnSupabase(id, datos) {
 }
 
 async function moverPerroChenil(perroId, nuevoChenilId) {
+  console.log(`🔄 Moviendo ${perroId} a ${nuevoChenilId}...`);
+
   if (!supabaseClient) {
     const listo = await esperarSupabase();
-    if (!listo) return false;
+    if (!listo) {
+      console.error('❌ Supabase no disponible');
+      return false;
+    }
   }
 
   try {
-    const { data: perroActual } = await supabaseClient
-      .from('perros')
-      .select('datos')
-      .eq('id', perroId)
-      .single();
-
-    if (!perroActual) return false;
-
-    const nuevosDatos = {
-      ...perroActual.datos,
-      chenil_id: nuevoChenilId
-    };
-
     const { error } = await supabaseClient
       .from('perros')
       .update({
-        chenil_id: nuevoChenilId,
-        datos: nuevosDatos
+        chenil_id: nuevoChenilId
       })
       .eq('id', perroId);
 
-    return !error;
+    if (error) {
+      console.error(`❌ Error actualizando chenil_id para ${perroId}:`, error);
+      return false;
+    }
+
+    console.log(`✅ ${perroId} movido exitosamente a ${nuevoChenilId}`);
+
+    // Actualizar datos locales (opcional, para consistencia)
+    if (datosCompletosPerros[perroId]) {
+      // Si quieres mantener consistencia local, actualiza también
+      datosCompletosPerros[perroId] = {
+        ...datosCompletosPerros[perroId],
+        chenil_id: nuevoChenilId
+      };
+    }
+
+    return true;
 
   } catch (error) {
-    console.error('❌ Error moviendo perro:', error);
+    console.error(`❌ Error moviendo perro ${perroId}:`, error);
     return false;
   }
 }
