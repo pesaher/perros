@@ -294,6 +294,8 @@ function mostrarModalAnadirPerro() {
 
   const modal = document.createElement('div');
   modal.className = 'modal-anadir-perro';
+
+  // Crear contenido inicial
   modal.innerHTML = `
     <div class="contenido-modal-anadir">
       <h3>Añadir Nuevo Perro</h3>
@@ -302,6 +304,7 @@ function mostrarModalAnadirPerro() {
         <label class="etiqueta-formulario" for="nombrePerro">Nombre del Perro</label>
         <input type="text" class="input-formulario" id="nombrePerro" placeholder="Ej: Maggie, Misade Domingo, Rex...">
         <div class="mensaje-error" id="errorNombre"></div>
+        <div class="sugerencias" id="sugerencias"></div>
       </div>
 
       <div class="grupo-formulario">
@@ -320,13 +323,123 @@ function mostrarModalAnadirPerro() {
 
   document.body.appendChild(modal);
 
+  // Referencias a elementos
+  const nombreInput = modal.querySelector('#nombrePerro');
+  const sugerenciasDiv = modal.querySelector('#sugerencias');
+  const btnCrear = modal.querySelector('#btnCrearPerro');
+
+  // Función para buscar y mostrar sugerencias
+  async function buscarSugerencias() {
+    const texto = nombreInput.value.trim();
+
+    if (texto.length < 2) {
+      sugerenciasDiv.innerHTML = '';
+      sugerenciasDiv.style.display = 'none';
+      return;
+    }
+
+    try {
+      // Buscar perros existentes
+      const perrosEncontrados = await buscarPerroPorNombre(texto);
+
+      if (!perrosEncontrados || perrosEncontrados.length === 0) {
+        sugerenciasDiv.innerHTML = '<div class="sugerencia-vacia">No se encontraron perros existentes</div>';
+        sugerenciasDiv.style.display = 'block';
+        return;
+      }
+
+      // Filtrar perros que no están en cheniles
+      const perrosDisponibles = perrosEncontrados.filter(perro =>
+        perro.chenil_id === null || perro.chenil_id === undefined
+      );
+
+      const perrosEnCheniles = perrosEncontrados.filter(perro =>
+        perro.chenil_id !== null && perro.chenil_id !== undefined
+      );
+
+      let html = '';
+
+      if (perrosDisponibles.length > 0) {
+        html += '<div class="grupo-sugerencias">';
+        html += '<div class="titulo-sugerencias">Perros disponibles (sin chenil):</div>';
+
+        perrosDisponibles.forEach(perro => {
+          const nombreMostrar = perro.datos?.nombre || perro.id;
+          html += `
+            <div class="sugerencia-item disponible" data-id="${perro.id}" data-nombre="${nombreMostrar}">
+              <span class="sugerencia-nombre">${nombreMostrar}</span>
+              <span class="sugerencia-estado">(sin chenil)</span>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+      }
+
+      if (perrosEnCheniles.length > 0) {
+        html += '<div class="grupo-sugerencias">';
+        html += '<div class="titulo-sugerencias">Perros ya asignados:</div>';
+
+        perrosEnCheniles.forEach(perro => {
+          const nombreMostrar = perro.datos?.nombre || perro.id;
+          html += `
+            <div class="sugerencia-item asignado" data-id="${perro.id}">
+              <span class="sugerencia-nombre">${nombreMostrar}</span>
+              <span class="sugerencia-estado">(en ${perro.chenil_id})</span>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+      }
+
+      sugerenciasDiv.innerHTML = html;
+      sugerenciasDiv.style.display = 'block';
+
+      // Agregar eventos a las sugerencias disponibles
+      sugerenciasDiv.querySelectorAll('.sugerencia-item.disponible').forEach(item => {
+        item.addEventListener('click', () => {
+          const id = item.dataset.id;
+          const nombre = item.dataset.nombre;
+
+          nombreInput.value = nombre;
+          sugerenciasDiv.innerHTML = '';
+          sugerenciasDiv.style.display = 'none';
+
+          // Cambiar texto del botón
+          btnCrear.textContent = 'Añadir al Chenil';
+        });
+      });
+
+    } catch (error) {
+      console.error('Error buscando sugerencias:', error);
+    }
+  }
+
+  // Event listener para búsqueda en tiempo real
+  let timeoutBusqueda;
+  nombreInput.addEventListener('input', () => {
+    clearTimeout(timeoutBusqueda);
+    timeoutBusqueda = setTimeout(buscarSugerencias, 300);
+  });
+
+  // Event listener para tecla Enter
+  nombreInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      crearNuevoPerro();
+    }
+  });
+
+  // Botón Cancelar
   modal.querySelector('#btnCancelarAnadir').addEventListener('click', () => {
     document.body.removeChild(modal);
     modalAnadirAbierto = false;
   });
 
-  modal.querySelector('#btnCrearPerro').addEventListener('click', crearNuevoPerro);
+  // Botón Crear/Añadir
+  btnCrear.addEventListener('click', crearNuevoPerro);
 
+  // Cerrar al hacer click fuera
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       document.body.removeChild(modal);
@@ -334,14 +447,9 @@ function mostrarModalAnadirPerro() {
     }
   });
 
-  modal.querySelector('#nombrePerro').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      crearNuevoPerro();
-    }
-  });
-
+  // Enfocar el input
   setTimeout(() => {
-    modal.querySelector('#nombrePerro').focus();
+    nombreInput.focus();
   }, 100);
 }
 
@@ -377,18 +485,67 @@ async function crearNuevoPerro() {
   try {
     // Verificar si el perro ya existe en Supabase
     if (supabaseClient) {
-      const { data: perroExistente } = await supabaseClient
+      const { data: perroExistente, error } = await supabaseClient
         .from('perros')
-        .select('id')
+        .select('id, chenil_id, datos')
         .eq('id', nombreArchivo)
         .single();
 
-      if (perroExistente) {
-        mostrarError(errorDiv, 'Este perro ya existe');
-        return;
+      if (!error && perroExistente) {
+        // El perro existe, verificar si ya está en un chenil
+        if (perroExistente.chenil_id !== null && perroExistente.chenil_id !== undefined) {
+          // El perro ya está en un chenil
+          mostrarError(errorDiv, `Este perro ya está en el chenil "${perroExistente.chenil_id}"`);
+          return;
+        } else {
+          // El perro existe pero no está en ningún chenil (chenil_id = null)
+          // Actualizar su chenil_id al seleccionado
+          const { error: updateError } = await supabaseClient
+            .from('perros')
+            .update({
+              chenil_id: chenil,
+              datos: {
+                ...perroExistente.datos,
+                chenil_id: chenil
+              }
+            })
+            .eq('id', nombreArchivo);
+
+          if (updateError) {
+            mostrarError(errorDiv, 'Error al actualizar el chenil del perro: ' + updateError.message);
+            return;
+          }
+
+          // Actualizar datos locales
+          if (perroExistente.datos) {
+            datosCompletosPerros[nombreArchivo] = {
+              ...perroExistente.datos,
+              chenil_id: chenil
+            };
+          } else {
+            datosCompletosPerros[nombreArchivo] = {
+              nombre: nombreParaMostrar,
+              chenil_id: chenil
+            };
+          }
+
+          // Añadir al chenil en la vista
+          if (!datos[chenil]) datos[chenil] = [];
+          datos[chenil].push(nombreArchivo);
+
+          // Cerrar modal y actualizar
+          const modal = document.querySelector('.modal-anadir-perro');
+          document.body.removeChild(modal);
+          modalAnadirAbierto = false;
+          pintar();
+
+          console.log(`✅ ${nombreArchivo} añadido al chenil ${chenil}`);
+          return;
+        }
       }
     }
 
+    // Si llegamos aquí, el perro no existe o no hay conexión a Supabase
     // Crear datos del perro
     const datosPerro = {
       nombre: nombreParaMostrar,
@@ -423,13 +580,29 @@ async function crearNuevoPerro() {
   }
 }
 
-// Función auxiliar para mostrar errores
-function mostrarError(elemento, mensaje) {
+// Función auxiliar para mostrar errores (actualizada)
+function mostrarError(elemento, mensaje, tipo = 'error') {
   elemento.textContent = mensaje;
   elemento.style.display = 'block';
-  setTimeout(() => {
-    elemento.style.display = 'none';
-  }, 5000);
+
+  // Remover clases anteriores
+  elemento.classList.remove('mensaje-error', 'mensaje-info', 'mensaje-error-basico');
+
+  // Agregar clase correcta según el tipo
+  if (tipo === 'error') {
+    elemento.classList.add('mensaje-error');
+  } else if (tipo === 'info') {
+    elemento.classList.add('mensaje-info');
+  } else {
+    elemento.classList.add('mensaje-error-basico');
+  }
+
+  // Auto-ocultar después de 5 segundos (solo para errores/info, no para validación)
+  if (tipo !== 'validation') {
+    setTimeout(() => {
+      elemento.style.display = 'none';
+    }, 5000);
+  }
 }
 
 // Función para mostrar modal de eliminar perro

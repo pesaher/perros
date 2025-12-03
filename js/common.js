@@ -53,6 +53,30 @@ function esperarSupabase() {
   });
 }
 
+// Función para buscar perros por nombre (no solo por ID)
+async function buscarPerroPorNombre(nombreBuscado) {
+  if (!supabaseClient) return null;
+
+  try {
+    // Buscar por nombre en el campo datos->nombre
+    const { data, error } = await supabaseClient
+      .from('perros')
+      .select('id, chenil_id, datos')
+      .ilike('datos->>nombre', `%${nombreBuscado}%`)
+      .limit(5);
+
+    if (error) {
+      console.error('Error buscando perro por nombre:', error);
+      return null;
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Error en búsqueda:', error);
+    return null;
+  }
+}
+
 async function cargarPerrosAgrupados() {
   // ESPERAR a que supabaseClient esté listo
   if (!supabaseClient) {
