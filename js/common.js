@@ -81,7 +81,7 @@ async function buscarPerroPorNombre(nombreBuscado) {
     }
 }
 
-async function cargarPerrosAgrupados() {
+async function cargarPerrosAgrupados(estructuraCheniles = null) {
     // ESPERAR a que supabaseClient esté listo
     if (!supabaseClient) {
         const listo = await esperarSupabase();
@@ -96,11 +96,12 @@ async function cargarPerrosAgrupados() {
 
         const { data: perros, error } = await supabaseClient
         .from('perros')
-        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->altura, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud');
+        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->altura, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud')
+        .order('id', { ascending: true });
 
         if (error) throw error;
 
-        const estructura = {};
+        const estructura = estructuraCheniles || {};
         datosCompletosPerros = {};
 
         perros.forEach(perro => {

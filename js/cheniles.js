@@ -1,32 +1,28 @@
 // Variables específicas de cheniles
-let datos = {}; // Estructura: { chenilA1: ["LunaBella", "Max12"], ... }
+let datosCheniles = {}; // Estructura: { chenilA1: ["LunaBella", "Max12"], ... }
 let sortableInstances = [];
 let modoReordenar = false;
-let modalAnadirAbierto = false;
-let modalEliminarAbierto = false;
 
 // Función principal de carga
 async function cargar() {
-    console.log('🔄 Cargando estructura híbrida...');
+    datosCheniles = {};
 
-    // 1. Cargar LISTA de cheniles desde GitHub
+    // 1. Cargar lista de cheniles desde GitHub
     const listaCheniles = await cargarListaCheniles();
-
     if (listaCheniles.length === 0) {
         document.getElementById('contenedor').innerHTML = '<p>Error cargando cheniles</p>';
         return;
     }
 
-    // 2. Cargar perros AGRUPADOS desde Supabase
-    const perrosAgrupados = await cargarPerrosAgrupados();
+    const estructuraInicial = listaCheniles.reduce((obj, chenil) => {
+        obj[chenil] = []; // Chenil vacío por defecto
+        return obj;
+    }, {});
 
-    // 3. Combinar: para cada chenil, usar perros de Supabase o array vacío
-    datos = {};
-    listaCheniles.forEach(chenil => {
-        datos[chenil] = perrosAgrupados[chenil] || [];
-    });
+    // 2. Cargar perros con una query desde Supabase
+    datosCheniles = await cargarPerrosAgrupados(estructuraInicial);
 
-    // 4. Pintar
+    // 3. Pintar
     pintar();
 }
 
@@ -36,7 +32,7 @@ function pintar() {
     contenedor.innerHTML = '';
     let seccionAnterior = '';
 
-    Object.entries(datos).forEach(([chenil, perros]) => {
+    Object.entries(datosCheniles).forEach(([chenil, perros]) => {
         const seccionActual = obtenerSeccion(chenil);
         if (seccionActual && seccionActual !== seccionAnterior) {
             if (seccionAnterior !== '') {
@@ -197,7 +193,7 @@ function actualizarDatos() {
         const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.dataset.nombreOriginal);
         nuevo[chenil] = perros.length ? perros : [];
     });
-    datos = nuevo;
+    datosCheniles = nuevo;
 }
 
 function agregarEventosBotones() {
@@ -209,7 +205,7 @@ async function guardarOrdenEnSupabase() {
         console.log('💾 Guardando cambios en Supabase...');
 
         // Para cada chenil y sus perros, actualizar en Supabase
-        for (const [chenilId, perrosIds] of Object.entries(datos)) {
+        for (const [chenilId, perrosIds] of Object.entries(datosCheniles)) {
             for (const perroId of perrosIds) {
                 if (perroId && perroId.trim() !== '') {
                     await moverPerroChenil(perroId, chenilId);
@@ -228,7 +224,7 @@ async function guardarOrdenEnSupabase() {
 
 // Generar opciones de cheniles para el select
 function generarOpcionesCheniles() {
-    return Object.keys(datos).map(chenil =>
+    return Object.keys(datosCheniles).map(chenil =>
         `<option value="${chenil}">${formatearNombreChenil(chenil)}</option>`
     ).join('');
 }
@@ -262,4 +258,9 @@ function mostrarError(elemento, mensaje, tipo = 'error') {
 document.addEventListener('DOMContentLoaded', function() {
     agregarEventosBotones();
     cargar();
+
+    // Recargar al volver con back/forward
+    window.addEventListener('pageshow', function(event) {
+        cargar();
+    });
 });
