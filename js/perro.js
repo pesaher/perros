@@ -504,7 +504,7 @@ async function guardarCambios() {
                 }
             );
 
-            if (!error)
+            if (data && data.success === true)
             {
                 nombrePerro = nombreNuevo;
                 const exito = await guardarPerroEnSupabase(nombrePerro, datosActualizados);
