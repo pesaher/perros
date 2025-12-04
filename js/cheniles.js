@@ -258,15 +258,6 @@ async function guardarOrdenEnSupabase() {
     }
 }
 
-// Función para capitalizar nombres
-function capitalizarNombre(nombre) {
-    return nombre
-    .toLowerCase()
-    .split(' ')
-    .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase())
-    .join('');
-}
-
 // Función para mostrar modal de añadir perro
 function mostrarModalAnadirPerro() {
     if (modalAnadirAbierto) return;

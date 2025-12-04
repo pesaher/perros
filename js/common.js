@@ -262,6 +262,15 @@ function obtenerSeccion(nombre) {
 );
 }
 
+// Función para capitalizar nombres
+function capitalizarNombre(nombre) {
+    return nombre
+    .toLowerCase()
+    .split(' ')
+    .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase())
+    .join('');
+}
+
 // ==================== FUNCIONES DE EDAD ====================
 function calcularEdadEnAños(nacimiento) {
     if (!nacimiento) return null;

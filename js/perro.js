@@ -431,7 +431,8 @@ async function guardarCambios() {
     const datosActualizados = { ...datosOriginales };
 
     // Procesar campos
-    nombrePerro = document.querySelector('.nombre-perro input')?.value || '';
+    const nombreAntiguo = nombrePerro;
+    nombreNuevo = capitalizarNombre(document.querySelector('.nombre-perro input')?.value) || '';
     datosActualizados.nacimiento = document.querySelector('input[placeholder*="YYYY"]')?.value || '';
 
     const pesoInput = document.querySelector('input[placeholder*="Peso"]');
@@ -493,13 +494,28 @@ async function guardarCambios() {
 
     try {
         // Guardar en Supabase
-        const exito = await guardarPerroEnSupabase(nombrePerro, datosActualizados);
+        if (nombreNuevo !== nombreAntiguo)
+        {
+            const { data, error } = await supabaseClient.rpc(
+                'renombrar_perro',
+                {
+                    id_actual: nombreAntiguo,
+                    id_nuevo: nombreNuevo
+                }
+            );
+        }
 
-        if (exito) {
-            // Actualizar datos locales
-            datosOriginales = datosActualizados;
-            cancelarEdicion();
-            console.log('✅ Cambios guardados en Supabase');
+        if (!error)
+        {
+            nombrePerro = nombreNuevo;
+            const exito = await guardarPerroEnSupabase(nombrePerro, datosActualizados);
+
+            if (exito) {
+                // Actualizar datos locales
+                datosOriginales = datosActualizados;
+                cancelarEdicion();
+                console.log('✅ Cambios guardados en Supabase');
+            }
         }
     } catch (error) {
         console.error('Error al guardar:', error);
