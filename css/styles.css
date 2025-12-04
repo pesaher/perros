@@ -616,16 +616,3 @@ body {
   background: var(--danger-color);
   color: white;
 }
-
-/* Responsive para móviles */
-@media (max-width: 480px) {
-  .botones-modal-anadir,
-  .botones-modal-eliminar {
-    flex-direction: column;
-    gap: 0.8em;
-  }
-
-  .boton-modal {
-    width: 100%;
-  }
-}
