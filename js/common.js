@@ -96,7 +96,7 @@ async function cargarPerrosAgrupados() {
 
         const { data: perros, error } = await supabaseClient
         .from('perros')
-        .select('id, chenil_id, datos (estado, nivelDeDificultad, nacimiento, macho, peso, altura, paseo, sociableConPerros, sociableConPersonas, sociableConGatos, proteccionDeRecursos, ppp, apadrinado, instintoDePredacion, problemasDeSalud)');
+        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->altura, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud');
 
         if (error) throw error;
 
@@ -104,7 +104,23 @@ async function cargarPerrosAgrupados() {
         datosCompletosPerros = {};
 
         perros.forEach(perro => {
-            datosCompletosPerros[perro.id] = perro.datos;
+            datosCompletosPerros[perro.id] =  {
+                estado: perro.estado,
+                nivelDeDificultad: perro.nivelDeDificultad,
+                nacimiento: perro.nacimiento,
+                macho: perro.macho,
+                peso: perro.peso,
+                altura: perro.altura,
+                paseo: perro.paseo,
+                sociableConPerros: perro.sociableConPerros,
+                sociableConPersonas: perro.sociableConPersonas,
+                sociableConGatos: perro.sociableConGatos,
+                proteccionDeRecursos: perro.proteccionDeRecursos,
+                ppp: perro.ppp,
+                apadrinado: perro.apadrinado,
+                instintoDePredacion: perro.instintoDePredacion || [],
+                problemasDeSalud: perro.problemasDeSalud || []
+            };
 
             if (perro.chenil_id) {
                 if (!estructura[perro.chenil_id]) {
