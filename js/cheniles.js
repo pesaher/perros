@@ -463,8 +463,8 @@ async function crearNuevoPerro() {
                     datosCompletosPerros[nombreCapitalizado] = perroExistente.datos;
 
                     // Añadir al chenil en la vista
-                    if (!datos[chenil]) datos[chenil] = [];
-                    datos[chenil].push(nombreCapitalizado);
+                    if (!datosCheniles[chenil]) datosCheniles[chenil] = [];
+                    datosCheniles[chenil].push(nombreCapitalizado);
 
                     // Cerrar modal y actualizar
                     const modal = document.querySelector('.modal-anadir-perro');
@@ -487,8 +487,8 @@ async function crearNuevoPerro() {
             datosCompletosPerros[nombreCapitalizado] = {};
 
             // Añadir al chenil en la vista
-            if (!datos[chenil]) datos[chenil] = [];
-            datos[chenil].push(nombreCapitalizado);
+            if (!datosCheniles[chenil]) datosCheniles[chenil] = [];
+            datosCheniles[chenil].push(nombreCapitalizado);
 
             // Cerrar modal y actualizar
             const modal = document.querySelector('.modal-anadir-perro');
@@ -540,7 +540,7 @@ function mostrarModalEliminarPerro() {
     modal.className = 'modal-eliminar-perro';
 
     const todosLosPerros = [];
-    Object.values(datos).forEach(perros => {
+    Object.values(datosCheniles).forEach(perros => {
         perros.forEach(nombre => {
             if (nombre && nombre.trim() !== '') {
                 todosLosPerros.push(nombre);
@@ -597,10 +597,10 @@ async function eliminarPerroDeCheniles() {
     // Buscar y eliminar el perro de todos los cheniles
     let perroEncontrado = false;
 
-    Object.keys(datos).forEach(chenil => {
-        const index = datos[chenil].indexOf(nombrePerro);
+    Object.keys(datosCheniles).forEach(chenil => {
+        const index = datosCheniles[chenil].indexOf(nombrePerro);
         if (index > -1) {
-            datos[chenil].splice(index, 1);
+            datosCheniles[chenil].splice(index, 1);
             perroEncontrado = true;
         }
     });
