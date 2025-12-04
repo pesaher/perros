@@ -439,14 +439,6 @@ function mostrarModalAnadirPerro() {
   // Botón Crear/Añadir
   btnCrear.addEventListener('click', crearNuevoPerro);
 
-  // Cerrar al hacer click fuera
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      document.body.removeChild(modal);
-      modalAnadirAbierto = false;
-    }
-  });
-
   // Enfocar el input
   setTimeout(() => {
     nombreInput.focus();
@@ -659,13 +651,6 @@ function mostrarModalEliminarPerro() {
   });
 
   modal.querySelector('#btnConfirmarEliminar').addEventListener('click', eliminarPerroDeCheniles);
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      document.body.removeChild(modal);
-      modalEliminarAbierto = false;
-    }
-  });
 }
 
 // Función para eliminar perro de cheniles

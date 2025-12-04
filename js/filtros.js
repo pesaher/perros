@@ -442,11 +442,4 @@ function mostrarModalFiltros() {
         });
         // No cerramos el modal después de limpiar
     });
-
-    // Cerrar modal al hacer click fuera
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            document.body.removeChild(modal);
-        }
-    });
 }
