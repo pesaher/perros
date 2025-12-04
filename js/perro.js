@@ -43,7 +43,6 @@ async function cargarDatosPerroDesdeAPI() {
 function cargarYMostrarPerro(datosPerro) {
     datosOriginales = { ...datosPerro };
     mostrarDatosPerro();
-    configurarEventos();
 }
 
 // Función auxiliar para cargar desde plantilla
@@ -57,7 +56,6 @@ async function cargarDesdePlantilla() {
         // Crear datos del perro usando la plantilla + nombre
         datosOriginales = { ...plantilla };
         mostrarDatosPerro();
-        configurarEventos();
 
         console.warn(`⚠️ Mostrando datos de plantilla para ${nombrePerro} (no encontrado)`);
 
@@ -401,7 +399,6 @@ function restaurarBotonesNormales() {
     document.getElementById('botonesInferiores').innerHTML = `
     <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
     `;
-    configurarEventos();
 }
 
 async function guardarCambios() {
