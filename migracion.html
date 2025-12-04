@@ -263,11 +263,6 @@
           if (perroResp.ok) {
             const datosPerro = await perroResp.json();
 
-            // Añadir chenil_id a los datos si corresponde
-            if (chenilId) {
-              datosPerro.chenil_id = chenilId;
-            }
-
             // Guardar en Supabase
             const { error } = await supabase
               .from('perros')
@@ -348,9 +343,6 @@
 
           if (perroResp.ok) {
             const datosPerro = await perroResp.json();
-
-            // Marcar como huérfano (chenil_id = null)
-            datosPerro.chenil_id = null;
 
             const { error } = await supabase
               .from('perros')
