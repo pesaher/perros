@@ -96,7 +96,7 @@ async function cargarPerrosAgrupados() {
 
         const { data: perros, error } = await supabaseClient
         .from('perros')
-        .select('id, chenil_id, datos');
+        .select('id, chenil_id, datos (estado, nivelDeDificultad, nacimiento, macho, peso, altura, paseo, sociableConPerros, sociableConPersonas, sociableConGatos, proteccionDeRecursos, ppp, apadrinado, instintoDePredacion, problemasDeSalud)');
 
         if (error) throw error;
 
@@ -139,7 +139,7 @@ async function guardarPerroEnSupabase(id, datos, chenil_id = null) {
         };
 
         // Agregar chenil_id solo si se proporciona (no es null)
-        if (chenil_id !== null) {
+        if (chenil_id !== null && chenil_id !== undefined) {
             datosUpsert.chenil_id = chenil_id;
         }
 
@@ -376,18 +376,11 @@ async function cargarListaCheniles() {
     try {
         const resp = await fetch('https://raw.githubusercontent.com/pesaher/perros/main/archivos/cheniles.json?v=' + Date.now());
         const estructura = await resp.json();
-        return Object.keys(estructura); // Devuelve array: ["chenilA1", "chenilA2", ...]
+        return Object.keys(estructura); // Devuelve array: ["chenil1", "chenil2", ...]
     } catch (error) {
         console.error('❌ Error cargando cheniles:', error);
         return [];
     }
-}
-
-// Cargar datos completos de perros (para compatibilidad)
-async function cargarDatosCompletosPerros(datosEstructura) {
-    // Esta función ya no es necesaria con Supabase,
-    // pero la mantenemos por compatibilidad
-    console.log('📋 Datos ya cargados via cargarPerrosAgrupados()');
 }
 
 // ==================== FUNCIONES DE SELECTORES ====================

@@ -150,11 +150,11 @@ function activarModoReordenar() {
     <button class="boton-flotante boton-cancelar" id="btnCancelar">✗</button>
   `;
 
-  document.getElementById('btnGuardar').addEventListener('click', () => desactivarModoReordenar(true));
+  document.getElementById('btnGuardar').addEventListener('click', () => desactivarModoReordenar());
   document.getElementById('btnCancelar').addEventListener('click', cancelarReordenar);
 }
 
-function desactivarModoReordenar(guardarEnSupabase = false) {
+function desactivarModoReordenar() {
   modoReordenar = false;
 
   sortableInstances.forEach(sortable => {
@@ -176,9 +176,7 @@ function desactivarModoReordenar(guardarEnSupabase = false) {
 
   agregarEventosBotones();
 
-  if (guardarEnSupabase) {
-    pushToGithub();
-  }
+  guardarOrdenEnSupabase();
 }
 
 function cancelarReordenar() {
@@ -231,11 +229,6 @@ function actualizarDatos() {
     nuevo[chenil] = perros.length ? perros : [];
   });
   datos = nuevo;
-
-  // Guardar cambios en Supabase después de un breve delay
-  setTimeout(() => {
-    pushToGithub();
-  }, 300);
 }
 
 function agregarEventosBotones() {
@@ -245,7 +238,7 @@ function agregarEventosBotones() {
   document.getElementById('btnEliminarPerro').addEventListener('click', mostrarModalEliminarPerro);
 }
 
-async function pushToGithub() {
+async function guardarOrdenEnSupabase() {
   try {
     console.log('💾 Guardando cambios en Supabase...');
 

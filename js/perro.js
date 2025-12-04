@@ -36,7 +36,7 @@ async function cargarDatosPerroDesdeAPI() {
   }
 
   // SEGUNDO: Si todo falla, usar el fallback
-  await manejarCargaFallback();
+  await cargarDesdePlantilla();
 }
 
 // Función para cargar y mostrar datos del perro
@@ -44,19 +44,6 @@ function cargarYMostrarPerro(datosPerro) {
   datosOriginales = { ...datosPerro };
   mostrarDatosPerro();
   configurarEventos();
-}
-
-// Función para manejar la carga cuando Supabase falla
-async function manejarCargaFallback() {
-  // Primero intentar con datosCompletosPerros
-  if (datosCompletosPerros[nombrePerro]) {
-    const datosPerro = datosCompletosPerros[nombrePerro];
-    cargarYMostrarPerro(datosPerro);
-    return;
-  }
-
-  // Si no hay datos locales, usar plantilla
-  await cargarDesdePlantilla();
 }
 
 // Función auxiliar para cargar desde plantilla
