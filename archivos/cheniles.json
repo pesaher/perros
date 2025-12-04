@@ -20,10 +20,11 @@
   "chenil7": [
     "Jerica",
     "Kowalski",
-    "BandeiraDina"
+    "BelenBite"
   ],
   "chenil8": [
-    "Raposa"
+    "Raposa",
+    "MangoCija"
   ],
   "chenil9": [
     "LinaMurcia",
@@ -34,18 +35,15 @@
     "MaxdaDana"
   ],
   "chenil11": [
-    "TimoMurcia",
-    "Siles"
+    "Siles",
+    "FannyTala"
   ],
   "chenil12": [
     "TaniaPunto",
     "YasirMurcia"
   ],
   "chenil13": [
-    "AstridBite",
-    "NoemiBite",
-    "BelenBite",
-    "AlejoBite"
+    "GloriaTala"
   ],
   "chenil14": [
     "MargotMika",
@@ -54,13 +52,15 @@
   ],
   "chenil15": [
     "BellaCity",
-    "Patatin"
+    "Ulli"
   ],
   "chenil16": [
-    ""
+    "VentoGali",
+    "MichelleGali"
   ],
   "chenil17": [
-    "Pulgarcito"
+    "Pulgarcito",
+    "GolfaCija"
   ],
   "chenil18": [
     "Philippe"
@@ -73,50 +73,47 @@
     "Baztan"
   ],
   "chenil21": [
-    "Irta",
-    "Pezuelo"
+    "Irta"
   ],
   "chenil22": [
     "OportoPunto",
     "AveiroPunto"
   ],
   "chenil23": [
-    "CosmeTome"
+    "NoemiBite",
+    "AstridBite"
   ],
   "chenil24": [
     "LunaTala",
-    "Pecas"
+    "AlejoBite"
   ],
   "chenil25": [
     "Penacu"
   ],
   "cuarentena26": [
-    ""
+    "JuniorTala",
+    "ZendaTala"
   ],
   "cuarentena27": [
-    "GolfaCija",
-    "EstrellaCija"
+    ""
   ],
   "cuarentena28": [
-    "XoanGali",
-    "VentoGali",
-    "MichelleGali"
+    ""
   ],
   "cuarentena29": [
     "Cejo"
   ],
   "cuarentena30": [
-    "MangoCija"
+    ""
   ],
   "cuarentena31": [
-    "Ulli"
+    ""
   ],
   "cuarentena32": [
     "Bambin"
   ],
   "cuarentena33": [
-    "GloriaTala",
-    "BrunoTala"
+    ""
   ],
   "cachorrerra1": [
     "Manchega"
@@ -125,19 +122,25 @@
     ""
   ],
   "cachorrerra4": [
-    "Crisantemo"
+    ""
   ],
   "cachorrerra5": [
-    "GildaTala"
+    ""
   ],
   "cachorrerra8": [
-    "Russell"
+    ""
   ],
   "cachorrerra9": [
-    "Conguito"
+    ""
   ],
   "oficina": [
     "Edmundo",
     "Leprechaun"
+  ],
+  "acogida": [
+    "EstrellaCija",
+    "BandeiraDina",
+    "RoscoTorri",
+    "DonutTorri"
   ]
 }

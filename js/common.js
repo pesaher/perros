@@ -1,7 +1,239 @@
-// Variables globales compartidas
+// ==================== CONFIGURACIÓN SUPABASE ====================
+const SUPABASE_CONFIG = {
+    url: 'https://qduokhbrlfhjvbtaylud.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFkdW9raGJybGZoanZidGF5bHVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NjY1NzYsImV4cCI6MjA4MDM0MjU3Nn0.lLUH2pB9S9uWRsRN4Yo6Vqypdr1qROQT-6rwyMjxLpM'
+};
+
+let supabaseClient = null;
 let datosCompletosPerros = {};
 
-// Funciones de utilidad
+// NUEVO: Esperar a que Supabase esté disponible
+function esperarSupabase() {
+    return new Promise((resolve) => {
+        // Si ya está cargado por skypack en el HTML
+        if (window.supabase && window.supabase.createClient) {
+            try {
+                supabaseClient = window.supabase.createClient(
+                    SUPABASE_CONFIG.url,
+                    SUPABASE_CONFIG.anonKey
+                );
+                console.log('✅ Supabase inicializado desde skypack');
+                resolve(true);
+            } catch (error) {
+                console.error('❌ Error creando cliente Supabase:', error);
+                resolve(false);
+            }
+            return;
+        }
+
+        // Si no está, esperar máximo 5 segundos
+        const startTime = Date.now();
+        const maxWait = 5000; // 5 segundos
+
+        const checkInterval = setInterval(() => {
+            if (window.supabase && window.supabase.createClient) {
+                clearInterval(checkInterval);
+                try {
+                    supabaseClient = window.supabase.createClient(
+                        SUPABASE_CONFIG.url,
+                        SUPABASE_CONFIG.anonKey
+                    );
+                    console.log('✅ Supabase cargado después de esperar');
+                    resolve(true);
+                } catch (error) {
+                    console.error('❌ Error:', error);
+                    resolve(false);
+                }
+            } else if (Date.now() - startTime > maxWait) {
+                clearInterval(checkInterval);
+                console.warn('⏰ Timeout: Supabase no se cargó en 5 segundos');
+                resolve(false);
+            }
+        }, 100); // Revisar cada 100ms
+    });
+}
+
+// Función para buscar perros por nombre (no solo por ID)
+async function buscarPerroPorNombre(nombreBuscado) {
+    if (!supabaseClient) return null;
+
+    try {
+        // Buscar por nombre
+        const { data, error } = await supabaseClient
+        .from('perros')
+        .select('id, chenil_id')
+        .ilike('id', `%${nombreBuscado}%`)
+        .order('chenil_id', {
+            ascending: true,
+            nullsFirst: true
+        })
+        .limit(5);
+
+        if (error) {
+            console.error('Error buscando perro por nombre:', error);
+            return null;
+        }
+
+        return data || [];
+    } catch (error) {
+        console.error('Error en búsqueda:', error);
+        return null;
+    }
+}
+
+async function cargarPerrosAgrupados() {
+    // ESPERAR a que supabaseClient esté listo
+    if (!supabaseClient) {
+        const listo = await esperarSupabase();
+        if (!listo) {
+            console.warn('⚠️ No se pudo inicializar Supabase');
+            return {};
+        }
+    }
+
+    try {
+        console.log('🐕 Cargando perros desde Supabase...');
+
+        const { data: perros, error } = await supabaseClient
+        .from('perros')
+        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->altura, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud');
+
+        if (error) throw error;
+
+        const estructura = {};
+        datosCompletosPerros = {};
+
+        perros.forEach(perro => {
+            datosCompletosPerros[perro.id] =  {
+                estado: perro.estado,
+                nivelDeDificultad: perro.nivelDeDificultad,
+                nacimiento: perro.nacimiento,
+                macho: perro.macho,
+                peso: perro.peso,
+                altura: perro.altura,
+                paseo: perro.paseo,
+                sociableConPerros: perro.sociableConPerros,
+                sociableConPersonas: perro.sociableConPersonas,
+                sociableConGatos: perro.sociableConGatos,
+                proteccionDeRecursos: perro.proteccionDeRecursos,
+                ppp: perro.ppp,
+                apadrinado: perro.apadrinado,
+                instintoDePredacion: perro.instintoDePredacion || [],
+                problemasDeSalud: perro.problemasDeSalud || []
+            };
+
+            if (perro.chenil_id) {
+                if (!estructura[perro.chenil_id]) {
+                    estructura[perro.chenil_id] = [];
+                }
+                estructura[perro.chenil_id].push(perro.id);
+            }
+        });
+
+        console.log(`✅ ${perros.length} perros cargados`);
+        return estructura;
+
+    } catch (error) {
+        console.error('❌ Error cargando perros:', error.message);
+        return {};
+    }
+}
+
+async function guardarPerroEnSupabase(id, datos, chenil_id = null) {
+    if (!supabaseClient) {
+        const listo = await esperarSupabase();
+        if (!listo) {
+            console.warn('⚠️ No se pudo guardar - Supabase no disponible');
+            return false;
+        }
+    }
+
+    try {
+        const datosUpsert = {
+            id: id,
+            datos: datos
+        };
+
+        // Agregar chenil_id solo si se proporciona (no es null)
+        if (chenil_id !== null && chenil_id !== undefined) {
+            datosUpsert.chenil_id = chenil_id;
+        }
+
+        const { error } = await supabaseClient
+        .from('perros')
+        .upsert(datosUpsert, { onConflict: 'id' });
+
+        if (error) throw error;
+
+        console.log(`💾 ${id} guardado en Supabase`);
+        return true;
+
+    } catch (error) {
+        console.error('❌ Error guardando:', error);
+        return false;
+    }
+}
+
+async function moverPerroChenil(perroId, nuevoChenilId) {
+    console.log(`🔄 Moviendo ${perroId} a ${nuevoChenilId}...`);
+
+    if (!supabaseClient) {
+        const listo = await esperarSupabase();
+        if (!listo) {
+            console.error('❌ Supabase no disponible');
+            return false;
+        }
+    }
+
+    try {
+        const { error } = await supabaseClient
+        .from('perros')
+        .update({
+            chenil_id: nuevoChenilId
+        })
+        .eq('id', perroId);
+
+        if (error) {
+            console.error(`❌ Error actualizando chenil_id para ${perroId}:`, error);
+            return false;
+        }
+
+        console.log(`✅ ${perroId} movido exitosamente a ${nuevoChenilId}`);
+
+        // Actualizar datos locales (opcional, para consistencia)
+        if (datosCompletosPerros[perroId]) {
+            // Si quieres mantener consistencia local, actualiza también
+            datosCompletosPerros[perroId] = {
+                ...datosCompletosPerros[perroId],
+                chenil_id: nuevoChenilId
+            };
+        }
+
+        return true;
+
+    } catch (error) {
+        console.error(`❌ Error moviendo perro ${perroId}:`, error);
+        return false;
+    }
+}
+
+// ==================== INICIALIZACIÓN AUTOMÁTICA ====================
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM cargado - Verificando Supabase...');
+
+    // Inicializar Supabase en segundo plano
+    esperarSupabase().then(exito => {
+        if (exito) {
+            console.log('🚀 Supabase listo para usar');
+        } else {
+            console.warn('⚠️ Aplicación funcionará en modo offline');
+        }
+    });
+});
+
+// ==================== FUNCIONES UTILIDAD ====================
 function urlSinCache(base) {
     return base + '?v=' + Date.now();
 }
@@ -18,58 +250,55 @@ function colorPastel(nombre) {
 }
 
 function formatearNombreChenil(nombre) {
-    return nombre.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
-        letras.charAt(0).toUpperCase() + letras.slice(1).toLowerCase() + ' ' + num
-    );
+    const nombreModificado = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+    return nombreModificado.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
+    letras + ' ' + num
+);
 }
 
 function obtenerSeccion(nombre) {
     return nombre.replace(/([a-zA-Z]+)(\d+)/, (_, letras, num) =>
-        letras.toLowerCase()
-    );
+    letras.toLowerCase()
+);
 }
 
-// Funciones de cálculo de edad
+// Función para capitalizar nombres
+function capitalizarNombre(nombre) {
+    return nombre
+    .toLowerCase()
+    .split(' ')
+    .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase())
+    .join(' ');
+}
+
+// ==================== FUNCIONES DE EDAD ====================
 function calcularEdadEnAños(nacimiento) {
     if (!nacimiento) return null;
-
     const hoy = new Date();
     let fechaNacimiento;
 
-    // Reemplazar cualquier separador por guión para consistencia
-    const parsedNacimiento = nacimiento.replace(/[\/\.]/g, '-');
+    const parsed = nacimiento.replace(/[\/\.]/g, '-');
 
-    // Detectar el formato de la fecha
-    if (parsedNacimiento.match(/^\d{4}$/)) {
-        // Formato YYYY - considerar como 1 de enero
-        fechaNacimiento = new Date(parseInt(parsedNacimiento), 0, 1);
-    } else if (parsedNacimiento.match(/^\d{1,2}-\d{4}$/)) {
-        // Formato MM-YYYY - considerar como primer día del mes
-        const [mes, año] = parsedNacimiento.split('-');
+    if (parsed.match(/^\d{4}$/)) {
+        fechaNacimiento = new Date(parseInt(parsed), 0, 1);
+    } else if (parsed.match(/^\d{1,2}-\d{4}$/)) {
+        const [mes, año] = parsed.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
-    } else if (parsedNacimiento.match(/^\d{4}-\d{1,2}$/)) {
-        // Formato YYYY-MM - considerar como primer día del mes
-        const [año, mes] = parsedNacimiento.split('-');
+    } else if (parsed.match(/^\d{4}-\d{1,2}$/)) {
+        const [año, mes] = parsed.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
-    } else if (parsedNacimiento.match(/^\d{1,2}-\d{1,2}-\d{4}$/)) {
-        // Formato DD-MM-YYYY - fecha exacta
-        const [dia, mes, año] = parsedNacimiento.split('-');
+    } else if (parsed.match(/^\d{1,2}-\d{1,2}-\d{4}$/)) {
+        const [dia, mes, año] = parsed.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, parseInt(dia));
-    } else if (parsedNacimiento.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
-        // Formato YYYY-MM-DD - fecha exacta
-        const [año, mes, dia] = parsedNacimiento.split('-');
+    } else if (parsed.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
+        const [año, mes, dia] = parsed.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, parseInt(dia));
     } else {
-        // Formato no reconocido
         return null;
     }
 
-    // Calcular diferencia en milisegundos
     const diffTiempo = hoy - fechaNacimiento;
-    // Convertir a años con decimales para mayor precisión
-    const edadEnAños = diffTiempo / (1000 * 60 * 60 * 24 * 365.25);
-
-    return Math.max(0, edadEnAños);
+    return diffTiempo / (1000 * 60 * 60 * 24 * 365.25);
 }
 
 function calcularEdad(nacimiento) {
@@ -78,18 +307,14 @@ function calcularEdad(nacimiento) {
     const hoy = new Date();
     let fechaNacimiento;
 
-    // Reemplazar cualquier separador por guión para consistencia
     const parsedNacimiento = nacimiento.replace(/[\/\.]/g, '-');
 
-    // Detectar el formato de la fecha
     if (parsedNacimiento.match(/^\d{4}$/)) {
-        // Formato YYYY
         fechaNacimiento = new Date(parseInt(parsedNacimiento), 0, 1);
         const años = hoy.getFullYear() - fechaNacimiento.getFullYear();
         return `Unos ${años} años`;
 
     } else if (parsedNacimiento.match(/^\d{1,2}-\d{4}$/)) {
-        // Formato MM-YYYY
         const [mes, año] = parsedNacimiento.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
         const diffMeses = (hoy.getFullYear() - fechaNacimiento.getFullYear()) * 12 + (hoy.getMonth() - fechaNacimiento.getMonth());
@@ -105,7 +330,6 @@ function calcularEdad(nacimiento) {
         }
 
     } else if (parsedNacimiento.match(/^\d{4}-\d{1,2}$/)) {
-        // Formato YYYY-MM
         const [año, mes] = parsedNacimiento.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, 1);
         const diffMeses = (hoy.getFullYear() - fechaNacimiento.getFullYear()) * 12 + (hoy.getMonth() - fechaNacimiento.getMonth());
@@ -121,7 +345,6 @@ function calcularEdad(nacimiento) {
         }
 
     } else if (parsedNacimiento.match(/^\d{1,2}-\d{1,2}-\d{4}$/)) {
-        // Formato DD-MM-YYYY
         const [dia, mes, año] = parsedNacimiento.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, parseInt(dia));
         const diffTiempo = hoy - fechaNacimiento;
@@ -145,7 +368,6 @@ function calcularEdad(nacimiento) {
         }
 
     } else if (parsedNacimiento.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
-        // Formato YYYY-MM-DD
         const [año, mes, dia] = parsedNacimiento.split('-');
         fechaNacimiento = new Date(parseInt(año), parseInt(mes) - 1, parseInt(dia));
         const diffTiempo = hoy - fechaNacimiento;
@@ -169,50 +391,31 @@ function calcularEdad(nacimiento) {
         }
 
     } else {
-        // Formato no reconocido
         return nacimiento;
     }
 }
 
-// Función para cargar datos completos de perros
-async function cargarDatosCompletosPerros(datos) {
-    datosCompletosPerros = {};
-    const nombresPerros = new Set();
-
-    // Recoger todos los nombres únicos de perros
-    Object.values(datos).forEach(perros => {
-        perros.forEach(nombre => {
-            if (nombre && nombre.trim() !== '') {
-                nombresPerros.add(nombre);
-            }
-        });
-    });
-
-    // Cargar datos de cada perro
-    for (let nombre of nombresPerros) {
-        try {
-            const url = `https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json?v=${Date.now()}`;
-            const respuesta = await fetch(url);
-            if (respuesta.ok) {
-                const datosPerro = await respuesta.json();
-                datosCompletosPerros[nombre] = datosPerro;
-            }
-        } catch (error) {
-            console.warn(`No se pudieron cargar los datos de ${nombre}:`, error);
-        }
+// ==================== FUNCIONES SUPABASE ====================
+// Cargar lista de cheniles desde GitHub (estructura fija)
+async function cargarListaCheniles() {
+    try {
+        const resp = await fetch('https://raw.githubusercontent.com/pesaher/perros/main/archivos/cheniles.json?v=' + Date.now());
+        const estructura = await resp.json();
+        return Object.keys(estructura); // Devuelve array: ["chenil1", "chenil2", ...]
+    } catch (error) {
+        console.error('❌ Error cargando cheniles:', error);
+        return [];
     }
 }
 
-// Funciones para crear selectores en modo edición
+// ==================== FUNCIONES DE SELECTORES ====================
 function crearSelectorGenerico(nombre, opciones, valorActual) {
     let html = `<select name="${nombre}">`;
 
     for (const [valor, texto] of Object.entries(opciones)) {
-        // Convertir el valor actual a string para comparar correctamente
         let valorActualStr;
 
         if (valorActual === null || valorActual === undefined) {
-            // Si el valor actual es null/undefined, seleccionar la opción "???" (valor vacío)
             valorActualStr = '';
         } else {
             valorActualStr = String(valorActual);
@@ -267,12 +470,10 @@ function crearSelectorBooleano(nombre, valorActual, permitirNull = true) {
     let html = `<select name="${nombre}">`;
 
     if (permitirNull) {
-        // Opciones con "???"
         html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
         html += `<option value="false" ${valorActual === false ? 'selected' : ''}>❌ No</option>`;
         html += `<option value="" ${(valorActual === null || valorActual === undefined) ? 'selected' : ''}>???</option>`;
     } else {
-        // Opciones sin "???" - no pueden ser null
         html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
         html += `<option value="false" ${valorActual === false || valorActual === null || valorActual === undefined ? 'selected' : ''}>❌ No</option>`;
     }
@@ -302,9 +503,7 @@ function crearSelectorEstado(valorActual) {
     return crearSelectorGenerico('estado', opciones, valorActual);
 }
 
-// Función para crear selector de problemas de salud
 function crearSelectorProblemasSalud(valorActual) {
-    // ValorActual debe ser un array de integers
     let problemasArray = Array.isArray(valorActual) ? valorActual : [];
 
     const problemas = [
@@ -313,7 +512,9 @@ function crearSelectorProblemasSalud(valorActual) {
         {id: 2, nombre: 'Borrelia'},
         {id: 3, nombre: 'Cáncer'},
         {id: 4, nombre: 'Displasia'},
-        {id: 5, nombre: 'Tumor benigno'}
+        {id: 5, nombre: 'Tumor benigno'},
+        {id: 6, nombre: 'Filaria'},
+        {id: 7, nombre: 'Anaplasma'}
     ];
 
     let html = `<div class="selector-multiple">`;
@@ -321,10 +522,10 @@ function crearSelectorProblemasSalud(valorActual) {
     problemas.forEach(problema => {
         const estaSeleccionado = problemasArray.includes(problema.id);
         html += `
-            <label class="opcion-multiple">
-                <input type="checkbox" name="problemasSalud" value="${problema.id}" ${estaSeleccionado ? 'checked' : ''}>
-                ${problema.nombre}
-            </label>
+        <label class="opcion-multiple">
+        <input type="checkbox" name="problemasSalud" value="${problema.id}" ${estaSeleccionado ? 'checked' : ''}>
+        ${problema.nombre}
+        </label>
         `;
     });
 
@@ -356,7 +557,6 @@ function crearSelectorProteccionRecursos(valorActual) {
 }
 
 function crearSelectorInstintoPredacion(valorActual) {
-    // ValorActual debe ser un array de integers
     let instintoArray = Array.isArray(valorActual) ? valorActual : [];
 
     const instintos = [
@@ -370,10 +570,10 @@ function crearSelectorInstintoPredacion(valorActual) {
     instintos.forEach(instinto => {
         const estaSeleccionado = instintoArray.includes(instinto.id);
         html += `
-            <label class="opcion-multiple">
-                <input type="checkbox" name="instintoDePredacion" value="${instinto.id}" ${estaSeleccionado ? 'checked' : ''}>
-                ${instinto.nombre}
-            </label>
+        <label class="opcion-multiple">
+        <input type="checkbox" name="instintoDePredacion" value="${instinto.id}" ${estaSeleccionado ? 'checked' : ''}>
+        ${instinto.nombre}
+        </label>
         `;
     });
 
@@ -381,96 +581,71 @@ function crearSelectorInstintoPredacion(valorActual) {
     return html;
 }
 
-// Función para determinar el color del estado según condiciones
+// ==================== FUNCIONES DE COLOR ====================
 function determinarColorEstado(campo, valor, datosCompletos = {}) {
-    // Si el valor es null, undefined o vacío, gris
     if (valor === null || valor === undefined || valor === '') {
         return 'neutral';
     }
 
     switch (campo) {
         case 'estado':
-            // 0: Disponible (verde), 1: Chip preguntar (amarillo), 2: Reservado (rojo), 3: Residencia (rojo)
-            if (valor === 0) return 'bueno';
-            if (valor === 1) return 'medio';
-            if (valor === 2 || valor === 3) return 'malo';
-            break;
+        if (valor === 0) return 'bueno';
+        if (valor === 1) return 'medio';
+        if (valor === 2 || valor === 3) return 'malo';
+        break;
 
         case 'paseo':
-            // 0: Pasea bien (verde), 1-2: Miedo (amarillo), 3-4: Reactivo/Tira (rojo)
-            if (valor === 0) return 'bueno';
-            if (valor === 1) return 'medio';
-            if (valor === 2 || valor === 3 || valor === 4) return 'malo';
-            break;
+        if (valor === 0) return 'bueno';
+        if (valor === 1) return 'medio';
+        if (valor === 2 || valor === 3 || valor === 4) return 'malo';
+        break;
 
         case 'sociableConPerros':
-            // 0: Sí (verde), 1: Selectivo (amarillo), 2-3: No/No sabe (rojo)
-            if (valor === 0) return 'bueno';
-            if (valor === 1) return 'medio';
-            if (valor === 2 || valor === 3) return 'malo';
-            break;
+        if (valor === 0) return 'bueno';
+        if (valor === 1) return 'medio';
+        if (valor === 2 || valor === 3) return 'malo';
+        break;
 
         case 'sociableConPersonas':
-            // 0: Sí (verde), 1: Selectivo (amarillo), 2-3: Mal con hombres/No (rojo)
-            if (valor === 0) return 'bueno';
-            if (valor === 1) return 'medio';
-            if (valor === 2 || valor === 3) return 'malo';
-            break;
+        if (valor === 0) return 'bueno';
+        if (valor === 1) return 'medio';
+        if (valor === 2 || valor === 3) return 'malo';
+        break;
 
         case 'sociableConGatos':
-            // true: Sí (verde), false: No (rojo)
-            if (valor === true) return 'bueno';
-            if (valor === false) return 'malo';
-            break;
+        if (valor === true) return 'bueno';
+        if (valor === false) return 'malo';
+        break;
 
         case 'proteccionDeRecursos':
-            // 0: No (verde), 1-3: Sí en diferentes situaciones (rojo)
-            if (valor === 0) return 'bueno';
-            if (valor === 1 || valor === 2 || valor === 3) return 'malo';
-            break;
+        if (valor === 0) return 'bueno';
+        if (valor === 1 || valor === 2 || valor === 3) return 'malo';
+        break;
 
         case 'ppp':
-            // true: Sí (rojo - requiere más cuidados), false: No (verde)
-            if (valor === true) return 'malo';
-            if (valor === false) return 'bueno';
-            break;
+        if (valor === true) return 'malo';
+        if (valor === false) return 'bueno';
+        break;
 
         case 'apadrinado':
-            // true: Sí (verde - tiene apoyo), false: No (rojo - necesita apoyo)
-            if (valor === true) return 'bueno';
-            if (valor === false) return 'malo';
-            break;
+        if (valor === true) return 'bueno';
+        if (valor === false) return 'malo';
+        break;
 
         case 'instintoDePredacion':
-            // Array vacío: Ninguno (verde), con elementos: según gravedad
-            if (!Array.isArray(valor) || valor.length === 0) return 'bueno';
-
-            // Tiene instintos de predación -> rojo
-            return 'malo';
-            break;
+        if (!Array.isArray(valor) || valor.length === 0) return 'bueno';
+        return 'malo';
 
         case 'problemasDeSalud':
-            // Array vacío: Ninguno (verde), con elementos: según gravedad
-            if (!Array.isArray(valor) || valor.length === 0) return 'bueno';
-
-            // Otros problemas -> rojo
-            return 'malo';
-            break;
+        if (!Array.isArray(valor) || valor.length === 0) return 'bueno';
+        return 'malo';
 
         case 'peso':
-            return 'bueno';
-            break;
-
         case 'altura':
-            return 'bueno';
-            break;
-
         case 'edad':
-            return 'bueno';
-            break;
+        return 'bueno';
     }
 
-    // Valor por defecto si no coincide con ningún caso
     return 'neutral';
 }
 
@@ -478,19 +653,17 @@ function determinarColorDificultad(nivel) {
     if (nivel === null || nivel === undefined) return null;
 
     switch(nivel) {
-        case 0: return 'bueno';    // Verde - Fácil
-        case 1: return 'medio';    // Amarillo - Medio
-        case 2: return 'malo';     // Rojo - Difícil
+        case 0: return 'bueno';
+        case 1: return 'medio';
+        case 2: return 'malo';
         default: return null;
     }
 }
 
-// Función para verificar si un perro tiene información incompleta
 function tieneInformacionIncompleta(datosPerro) {
     if (!datosPerro) return false;
 
     const camposRequeridos = [
-        'nombre',
         'estado',
         'macho',
         'nacimiento',
@@ -507,12 +680,9 @@ function tieneInformacionIncompleta(datosPerro) {
 
     return camposRequeridos.some(campo => {
         const valor = datosPerro[campo];
-
-        // Verificar si el campo es null, undefined, string vacío, o array vacío
         if (valor === null || valor === undefined) return true;
         if (typeof valor === 'string' && valor.trim() === '') return true;
         if (Array.isArray(valor) && valor.length === 0) return true;
-
         return false;
     });
 }

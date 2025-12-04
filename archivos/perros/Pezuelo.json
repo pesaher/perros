@@ -9,7 +9,7 @@
   "paseo": 0,
   "sociableConPerros": 0,
   "sociableConPersonas": 0,
-  "sociableConGatos": null,
+  "sociableConGatos": true,
   "proteccionDeRecursos": 1,
   "ppp": false,
   "apadrinado": true,

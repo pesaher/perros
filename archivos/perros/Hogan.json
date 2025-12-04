@@ -1,16 +1,16 @@
 {
   "nombre": "Hogan",
   "estado": 1,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "01/10/2014",
   "macho": true,
   "peso": null,
   "altura": null,
   "paseo": 0,
   "sociableConPerros": null,
-  "sociableConPersonas": 1,
+  "sociableConPersonas": 0,
   "sociableConGatos": null,
-  "proteccionDeRecursos": null,
+  "proteccionDeRecursos": 0,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
@@ -18,6 +18,6 @@
     0,
     5
   ],
-  "observacionesExtra": "Muy mal estado de salud. ",
+  "observacionesExtra": "Muy mal estado de salud. \nPara cualquier listillo que pueda preguntar, los Bull Terrier NO se consideran PPP, tenga sentido o no. ",
   "protocoloParticular": "Es supercariñoso, muy mimoso y apegado. No le gusta estar solo. \nIr despacio y con cariño, se deja manipular bien pero está muy dolorido. Se deja poner arnés y collar bien. Pasea despacio y muy bien. No busca bronca con otros perros. "
 }

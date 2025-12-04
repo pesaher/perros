@@ -10,55 +10,44 @@ function cargarDatosPerro() {
     if (!nombrePerro) {
         document.getElementById('contenido-perro').innerHTML = '<p>Error: No se especificó el nombre del perro</p>';
     } else {
-        cargarDatosPerroDesdeAPI(nombrePerro);
+        document.title = `${nombrePerro} 🐾`;
+        cargarDatosPerroDesdeAPI();
     }
+}
+
+async function cargarDatosPerroDesdeAPI() {
+    // PRIMERO: Intentar cargar desde Supabase
+    if (supabaseClient) {
+        try {
+            const { data, error } = await supabaseClient
+            .from('perros')
+            .select('datos')
+            .eq('id', nombrePerro)
+            .single();
+
+            if (!error && data) {
+                console.log(`✅ ${nombrePerro} cargado desde Supabase`);
+                cargarYMostrarPerro(data.datos);
+                return;
+            }
+        } catch (error) {
+            console.warn(`⚠️ Supabase falló para ${nombrePerro}:`, error);
+        }
+    }
+
+    // SEGUNDO: Si todo falla, usar el fallback
+    await cargarDesdePlantilla();
 }
 
 // Función para cargar y mostrar datos del perro
-function cargarYMostrarPerro(nombre, datosPerro) {
-    datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-    document.title = `${datosPerro.nombre && datosPerro.nombre.trim() !== '' ? datosPerro.nombre : 'John Doge'} 🐾`;
-    mostrarDatosPerro(nombre, datosPerro, false);
+function cargarYMostrarPerro(datosPerro) {
+    datosOriginales = { ...datosPerro };
+    mostrarDatosPerro();
     configurarEventos();
 }
 
-// Función para manejar la carga cuando GitHub falla
-async function manejarCargaFallback(nombre) {
-    // Primero intentar con datosCompletosPerros
-    if (datosCompletosPerros[nombre]) {
-        const datosPerro = datosCompletosPerros[nombre];
-        cargarYMostrarPerro(nombre, datosPerro);
-        return;
-    }
-
-    // Si no hay datos locales, usar plantilla
-    await cargarDesdePlantilla(nombre);
-}
-
-async function cargarDatosPerroDesdeAPI(nombre) {
-    try {
-        // PRIMERO: Intentar cargar desde GitHub (datos reales)
-        const url = urlSinCache(`https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perros/${encodeURIComponent(nombre)}.json`);
-        const respuesta = await fetch(url);
-
-        if (respuesta.ok) {
-            // Perro encontrado en GitHub
-            const datosPerro = await respuesta.json();
-            cargarYMostrarPerro(nombre, datosPerro);
-            return;
-        }
-
-        // SEGUNDO: Si no está en GitHub, buscar en datosCompletosPerros
-        await manejarCargaFallback(nombre);
-
-    } catch (error) {
-        // TERCERO: Si hay error, usar el fallback
-        await manejarCargaFallback(nombre);
-    }
-}
-
-// Función auxiliar para cargar desde plantilla (igual que antes)
-async function cargarDesdePlantilla(nombre) {
+// Función auxiliar para cargar desde plantilla
+async function cargarDesdePlantilla() {
     try {
         // Cargar plantilla de perro.json
         const plantillaUrl = 'https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/perro.json';
@@ -66,31 +55,19 @@ async function cargarDesdePlantilla(nombre) {
         const plantilla = await respuesta.json();
 
         // Crear datos del perro usando la plantilla + nombre
-        const datosPerro = {
-            ...plantilla,
-            nombre: nombre
-        };
-
-        datosOriginales = JSON.parse(JSON.stringify(datosPerro));
-        document.title = `${nombre} 🐾`;
-        mostrarDatosPerro(nombre, datosPerro, false);
+        datosOriginales = { ...plantilla };
+        mostrarDatosPerro();
         configurarEventos();
 
-        console.warn(`Mostrando datos de plantilla para ${nombre} (no encontrado en GitHub)`);
+        console.warn(`⚠️ Mostrando datos de plantilla para ${nombrePerro} (no encontrado)`);
 
     } catch (error) {
-        // Si falla incluso la plantilla, mostrar error
-        document.getElementById('contenido-perro').innerHTML = `<p>Error: No se pudieron cargar los datos para el perro "${nombre}"</p>`;
+        document.getElementById('contenido-perro').innerHTML = `<p>Error: No se pudieron cargar los datos para el perro "${nombrePerro}"</p>`;
     }
 }
 
-// Función para configurar eventos
-function configurarEventos() {
-
-}
-
 // Función para mostrar datos del perro
-function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
+function mostrarDatosPerro() {
     const contenedor = document.getElementById('contenido-perro');
 
     // Mapeos de valores
@@ -138,276 +115,276 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
     };
 
     // Valores formateados para modo visual
-    const textoEstado = estados.hasOwnProperty(datos.estado) ? estados[datos.estado] : '???';
-    const textoPaseo = nivelesPaseo.hasOwnProperty(datos.paseo) ? nivelesPaseo[datos.paseo] : '???';
-    const textoSociablePerros = sociablePerros.hasOwnProperty(datos.sociableConPerros) ? sociablePerros[datos.sociableConPerros] : '???';
-    const textoSociablePersonas = sociablePersonas.hasOwnProperty(datos.sociableConPersonas) ? sociablePersonas[datos.sociableConPersonas] : '???';
-    const textoSociableGatos = getEstadoBooleano(datos.sociableConGatos, 'Sí', 'No');
-    const textoProteccionRecursos = proteccionRecursos.hasOwnProperty(datos.proteccionDeRecursos) ? proteccionRecursos[datos.proteccionDeRecursos] : '???';
-    const textoPPP = getEstadoBooleano(datos.ppp, 'Sí', 'No');
-    const textoApadrinado = getEstadoBooleano(datos.apadrinado, 'Sí', 'No');
+    const textoEstado = estados.hasOwnProperty(datosOriginales.estado) ? estados[datosOriginales.estado] : '???';
+    const textoPaseo = nivelesPaseo.hasOwnProperty(datosOriginales.paseo) ? nivelesPaseo[datosOriginales.paseo] : '???';
+    const textoSociablePerros = sociablePerros.hasOwnProperty(datosOriginales.sociableConPerros) ? sociablePerros[datosOriginales.sociableConPerros] : '???';
+    const textoSociablePersonas = sociablePersonas.hasOwnProperty(datosOriginales.sociableConPersonas) ? sociablePersonas[datosOriginales.sociableConPersonas] : '???';
+    const textoSociableGatos = getEstadoBooleano(datosOriginales.sociableConGatos, 'Sí', 'No');
+    const textoProteccionRecursos = proteccionRecursos.hasOwnProperty(datosOriginales.proteccionDeRecursos) ? proteccionRecursos[datosOriginales.proteccionDeRecursos] : '???';
+    const textoPPP = getEstadoBooleano(datosOriginales.ppp, 'Sí', 'No');
+    const textoApadrinado = getEstadoBooleano(datosOriginales.apadrinado, 'Sí', 'No');
 
     // Problemas de salud
-    const textoProblemasSalud = Array.isArray(datos.problemasDeSalud) && datos.problemasDeSalud.length > 0 ? datos.problemasDeSalud.map(id => {
-        const problemas = ['Leishmania', 'Ehrlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno'];
+    const textoProblemasSalud = Array.isArray(datosOriginales.problemasDeSalud) && datosOriginales.problemasDeSalud.length > 0 ? datosOriginales.problemasDeSalud.map(id => {
+        const problemas = ['Leishmania', 'Ehrlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno', 'Filaria', 'Anaplasma'];
         return problemas[id] || 'Desconocido';
     }).join(', ') : 'Ninguno';
 
     // Mapeo de instinto de predación
-    const textoInstintoPredacion = Array.isArray(datos.instintoDePredacion) && datos.instintoDePredacion.length > 0 ? datos.instintoDePredacion.map(id => {
+    const textoInstintoPredacion = Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0 ? datosOriginales.instintoDePredacion.map(id => {
         const instintos = ['Niños', 'Perros pequeños', 'Gatos'];
         return instintos[id] || 'Desconocido';
     }).join(', ') : 'Ninguno';
 
     // Valores por defecto y formateo
-    const nombreMostrar = datos.nombre && datos.nombre.trim() !== '' ? datos.nombre.toUpperCase() : 'JOHN DOGE';
-    const edadMostrar = datos.nacimiento ? calcularEdad(datos.nacimiento) : '???';
-    const pesoMostrar = datos.peso !== null && datos.peso !== undefined ? `${datos.peso} kg` : '???';
-    const alturaMostrar = datos.altura !== null && datos.altura !== undefined ? `${datos.altura} cm` : '???';
+    const nombreMostrar = nombrePerro && nombrePerro.trim() !== '' ? nombrePerro.toUpperCase() : 'JOHN DOGE';
+    const edadMostrar = datosOriginales.nacimiento ? calcularEdad(datosOriginales.nacimiento) : '???';
+    const pesoMostrar = datosOriginales.peso !== null && datosOriginales.peso !== undefined ? `${datosOriginales.peso} kg` : '???';
+    const alturaMostrar = datosOriginales.altura !== null && datosOriginales.altura !== undefined ? `${datosOriginales.altura} cm` : '???';
 
     // Icono de sexo
-    const iconoSexo = datos.macho === true ? '♂️' : datos.macho === false ? '♀️' : '';
+    const iconoSexo = datosOriginales.macho === true ? '♂️' : datosOriginales.macho === false ? '♀️' : '';
 
     // Determinar color de dificultad
-    const colorDificultad = determinarColorDificultad(datos.nivelDeDificultad);
+    const colorDificultad = determinarColorDificultad(datosOriginales.nivelDeDificultad);
     const claseDificultad = colorDificultad ? `dificultad-${colorDificultad}` : '';
 
     let html = `
-        <div class="campos-grid">
-            <!-- Nombre ocupa toda la fila con iconos -->
-            <div class="campo-completo">
-                <div class="valor nombre-perro ${!modoEdicion ? claseDificultad : ''}">
-                    <div class="nombre-contenedor">
-                        ${modoEdicion ?
-                          `<input type="text" value="${datos.nombre || ''}" placeholder="Nombre del perro">` :
-                          nombreMostrar
-                        }
-                        ${!modoEdicion && iconoSexo ? `<span class="icono-sexo">${iconoSexo}</span>` : ''}
-                    </div>
-                </div>
-            </div>
+    <div class="campos-grid">
+    <!-- Nombre ocupa toda la fila con iconos -->
+    <div class="campo-completo">
+    <div class="valor nombre-perro ${!modoEdicion ? claseDificultad : ''}">
+    <div class="nombre-contenedor">
+    ${modoEdicion ?
+        `<input type="text" value="${nombrePerro || ''}" placeholder="Nombre del perro">` :
+        nombreMostrar
+    }
+    ${!modoEdicion && iconoSexo ? `<span class="icono-sexo">${iconoSexo}</span>` : ''}
+    </div>
+    </div>
+    </div>
 
-            <!-- Campos en dos columnas -->
-            ${modoEdicion ? `
-                <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                    <div class="etiqueta">Nivel de Dificultad</div>
-                    <div class="valor">
-                        ${modoEdicion ? crearSelectorDificultad(datos.nivelDeDificultad) : ''}
-                    </div>
-                </div>
+    <!-- Campos en dos columnas -->
+    ${modoEdicion ? `
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Nivel de Dificultad</div>
+    <div class="valor">
+    ${modoEdicion ? crearSelectorDificultad(datosOriginales.nivelDeDificultad) : ''}
+    </div>
+    </div>
 
-                <div class="campo campo-editable">
-                    <div class="etiqueta">Sexo</div>
-                    <div class="valor">
-                        ${crearSelectorSexo(datos.macho)}
-                    </div>
-                </div>
-            ` : ''}
+    <div class="campo campo-editable">
+    <div class="etiqueta">Sexo</div>
+    <div class="valor">
+    ${crearSelectorSexo(datosOriginales.macho)}
+    </div>
+    </div>
+    ` : ''}
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Estado</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('estado', datos.estado)}` : ''}">
-                    ${modoEdicion ? crearSelectorEstado(datos.estado) : textoEstado}
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Estado</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('estado', datosOriginales.estado)}` : ''}">
+    ${modoEdicion ? crearSelectorEstado(datosOriginales.estado) : textoEstado}
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('edad', calcularEdadEnAños(datos.nacimiento))}` : ''}">
-                    ${modoEdicion ?
-                      `<input type="text" value="${datos.nacimiento || ''}" placeholder="DD/MM/YYYY, MM/YYYY o YYYY">` :
-                      edadMostrar
-                    }
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('edad', calcularEdadEnAños(datosOriginales.nacimiento))}` : ''}">
+    ${modoEdicion ?
+        `<input type="text" value="${datosOriginales.nacimiento || ''}" placeholder="DD/MM/YYYY, MM/YYYY o YYYY">` :
+        edadMostrar
+    }
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Peso (kg)</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('peso', datos.peso)}` : ''}">
-                    ${modoEdicion ?
-                      `<input type="number" value="${datos.peso || ''}" placeholder="Peso en kg" step="0.1" min="0">` :
-                      pesoMostrar
-                    }
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Peso (kg)</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('peso', datosOriginales.peso)}` : ''}">
+    ${modoEdicion ?
+        `<input type="number" value="${datosOriginales.peso || ''}" placeholder="Peso en kg" step="0.1" min="0">` :
+        pesoMostrar
+    }
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Altura (cm)</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('altura', datos.altura)}` : ''}">
-                    ${modoEdicion ?
-                      `<input type="number" value="${datos.altura || ''}" placeholder="Altura en cm" step="1" min="0">` :
-                      alturaMostrar
-                    }
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Altura (cm)</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('altura', datosOriginales.altura)}` : ''}">
+    ${modoEdicion ?
+        `<input type="number" value="${datosOriginales.altura || ''}" placeholder="Altura en cm" step="1" min="0">` :
+        alturaMostrar
+    }
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Nivel de Paseo</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('paseo', datos.paseo)}` : ''}">
-                    ${modoEdicion ? crearSelectorPaseo(datos.paseo) : textoPaseo}
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Nivel de Paseo</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('paseo', datosOriginales.paseo)}` : ''}">
+    ${modoEdicion ? crearSelectorPaseo(datosOriginales.paseo) : textoPaseo}
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Sociable con Perros</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPerros', datos.sociableConPerros)}` : ''}">
-                    ${modoEdicion ? crearSelectorSociablePerros(datos.sociableConPerros) : textoSociablePerros}
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Sociable con Perros</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPerros', datosOriginales.sociableConPerros)}` : ''}">
+    ${modoEdicion ? crearSelectorSociablePerros(datosOriginales.sociableConPerros) : textoSociablePerros}
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Sociable con Personas</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPersonas', datos.sociableConPersonas)}` : ''}">
-                    ${modoEdicion ? crearSelectorSociablePersonas(datos.sociableConPersonas) : textoSociablePersonas}
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Sociable con Personas</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPersonas', datosOriginales.sociableConPersonas)}` : ''}">
+    ${modoEdicion ? crearSelectorSociablePersonas(datosOriginales.sociableConPersonas) : textoSociablePersonas}
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Sociable con Gatos</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConGatos', datos.sociableConGatos)}` : ''}">
-                    ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datos.sociableConGatos, true) : textoSociableGatos}
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Sociable con Gatos</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConGatos', datosOriginales.sociableConGatos)}` : ''}">
+    ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datosOriginales.sociableConGatos, true) : textoSociableGatos}
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Protección de Recursos</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('proteccionDeRecursos', datos.proteccionDeRecursos)}` : ''}">
-                    ${modoEdicion ? crearSelectorProteccionRecursos(datos.proteccionDeRecursos) : textoProteccionRecursos
-                    }
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Protección de Recursos</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('proteccionDeRecursos', datosOriginales.proteccionDeRecursos)}` : ''}">
+    ${modoEdicion ? crearSelectorProteccionRecursos(datosOriginales.proteccionDeRecursos) : textoProteccionRecursos
+    }
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">PPP</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('ppp', datos.ppp)}` : ''}">
-                    ${modoEdicion ? crearSelectorBooleano('ppp', datos.ppp, true) : textoPPP}
-                </div>
-            </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">PPP</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('ppp', datosOriginales.ppp)}` : ''}">
+    ${modoEdicion ? crearSelectorBooleano('ppp', datosOriginales.ppp, true) : textoPPP}
+    </div>
+    </div>
 
-            <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Apadrinado</div>
-                <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('apadrinado', datos.apadrinado)}` : ''}">
-                    ${modoEdicion ? crearSelectorBooleano('apadrinado', datos.apadrinado, false) : textoApadrinado}
-                </div>
-            </div>
-        </div>
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Apadrinado</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('apadrinado', datosOriginales.apadrinado)}` : ''}">
+    ${modoEdicion ? crearSelectorBooleano('apadrinado', datosOriginales.apadrinado, false) : textoApadrinado}
+    </div>
+    </div>
+    </div>
 
-        <!-- Instinto de Predación -->
-        <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
-            <div class="etiqueta">Instinto de Predación</div>
-            <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('instintoDePredacion', datos.instintoDePredacion)}` : ''}">
-                ${modoEdicion ?
-                  crearSelectorInstintoPredacion(datos.instintoDePredacion) :
-                  textoInstintoPredacion
-                }
-            </div>
-        </div>
+    <!-- Instinto de Predación -->
+    <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Instinto de Predación</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('instintoDePredacion', datosOriginales.instintoDePredacion)}` : ''}">
+    ${modoEdicion ?
+        crearSelectorInstintoPredacion(datosOriginales.instintoDePredacion) :
+        textoInstintoPredacion
+    }
+    </div>
+    </div>
 
-        <!-- Problemas de Salud -->
-        <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
-            <div class="etiqueta">Problemas de Salud</div>
-            <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('problemasDeSalud', datos.problemasDeSalud)}` : ''}">
-                ${modoEdicion ?
-                  crearSelectorProblemasSalud(datos.problemasDeSalud) :
-                  textoProblemasSalud
-                }
-            </div>
-        </div>
+    <!-- Problemas de Salud -->
+    <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Problemas de Salud</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('problemasDeSalud', datosOriginales.problemasDeSalud)}` : ''}">
+    ${modoEdicion ?
+        crearSelectorProblemasSalud(datosOriginales.problemasDeSalud) :
+        textoProblemasSalud
+    }
+    </div>
+    </div>
     `;
 
     // Observaciones Extra
-    if (modoEdicion || (datos.observacionesExtra && datos.observacionesExtra.toString().trim() !== '')) {
+    if (modoEdicion || (datosOriginales.observacionesExtra && datosOriginales.observacionesExtra.toString().trim() !== '')) {
         html += `
-            <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Observaciones Extra</div>
-                <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
-                    ${modoEdicion ?
-                      `<textarea placeholder="Observaciones extra...">${datos.observacionesExtra || ''}</textarea>` :
-                      (datos.observacionesExtra ? datos.observacionesExtra.replace(/\n/g, '<br>') : '')
-                    }
-                </div>
-            </div>
+        <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
+        <div class="etiqueta">Observaciones Extra</div>
+        <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
+        ${modoEdicion ?
+            `<textarea placeholder="Observaciones extra...">${datosOriginales.observacionesExtra || ''}</textarea>` :
+            (datosOriginales.observacionesExtra ? datosOriginales.observacionesExtra.replace(/\n/g, '<br>') : '')
+        }
+        </div>
+        </div>
         `;
     }
 
     // Protocolo particular
-    if (modoEdicion || (datos.protocoloParticular && datos.protocoloParticular.toString().trim() !== '')) {
+    if (modoEdicion || (datosOriginales.protocoloParticular && datosOriginales.protocoloParticular.toString().trim() !== '')) {
         html += `
-            <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
-                <div class="etiqueta">Protocolo Particular</div>
-                <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
-                    ${modoEdicion ?
-                      `<textarea placeholder="Protocolo particular...">${datos.protocoloParticular || ''}</textarea>` :
-                      (datos.protocoloParticular ? datos.protocoloParticular.replace(/\n/g, '<br>') : '')
-                    }
-                </div>
-            </div>
+        <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
+        <div class="etiqueta">Protocolo Particular</div>
+        <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
+        ${modoEdicion ?
+            `<textarea placeholder="Protocolo particular...">${datosOriginales.protocoloParticular || ''}</textarea>` :
+            (datosOriginales.protocoloParticular ? datosOriginales.protocoloParticular.replace(/\n/g, '<br>') : '')
+        }
+        </div>
+        </div>
         `;
     }
 
     // Verificar si debe mostrar el Protocolo de Reactividad
-    const debeMostrarProtocolo = datos.paseo === 3; // Reactivo
+    const debeMostrarProtocolo = datosOriginales.paseo === 3; // Reactivo
 
     // Protocolo de Reactividad (solo en modo visual)
     if (!modoEdicion && debeMostrarProtocolo) {
         html += `
-            <div class="campo-completo">
-                <div class="etiqueta">Protocolo de Reactividad</div>
-                <div class="valor protocolo-particular">
-                    <p><strong>Objetivo:</strong> que el perro aprenda a mantener la calma en presencia del estímulo.</p>
-                    <ul>
-                        <li><strong>Preparación:</strong> dar un paseo previo con olfateo para reducir activación. Evitar correa tensa.</li>
-                        <li><strong>Distancia segura:</strong> trabajar en el punto donde detecta el estímulo sin reaccionar.</li>
-                        <li><strong>Si detona:</strong> retirarnos sin hablarle ni regañar.</li>
-                        <li><strong>Refuerzo:</strong>
-                            <ul>
-                                <li>Mira al estímulo → señal ("bien") + chuche.</li>
-                                <li>Mira sin reaccionar → chuche.</li>
-                                <li>Con práctica, reducir gradualmente la distancia. Reducir la distancia en cuestión de semanas, no en el mismo día.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Predicción:</strong> "Mira, un perro/persona" → lo ve → premio.</li>
-                        <li><strong>Con personas:</strong> aprovechar visitas (adoptantes, padrinos, etc.) → pedir que tiren chuches desde lejos. Adaptar según perfil (ej. Pezu con hombres mayores, Saratoga con niños, etc.). También adaptar según perro (no pongamos a Light como figurante para Perci, etc.).</li>
-                        <li><strong>Distracción:</strong> si no hay posibilidad de mantener distancias y la probabilidad de detonar es muy alta, distraemos y nos vamos cagando leches. Pero cuidado con usar esto todo el rato y no dar herramientas al perro por estar continuamente huyendo de todo.</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="campo-completo">
+        <div class="etiqueta">Protocolo de Reactividad</div>
+        <div class="valor protocolo-particular">
+        <p><strong>Objetivo:</strong> que el perro aprenda a mantener la calma en presencia del estímulo.</p>
+        <ul>
+        <li><strong>Preparación:</strong> dar un paseo previo con olfateo para reducir activación. Evitar correa tensa.</li>
+        <li><strong>Distancia segura:</strong> trabajar en el punto donde detecta el estímulo sin reaccionar.</li>
+        <li><strong>Si detona:</strong> retirarnos sin hablarle ni regañar.</li>
+        <li><strong>Refuerzo:</strong>
+        <ul>
+        <li>Mira al estímulo → señal ("bien") + chuche.</li>
+        <li>Mira sin reaccionar → chuche.</li>
+        <li>Con práctica, reducir gradualmente la distancia. Reducir la distancia en cuestión de semanas, no en el mismo día.</li>
+        </ul>
+        </li>
+        <li><strong>Predicción:</strong> "Mira, un perro/persona" → lo ve → premio.</li>
+        <li><strong>Con personas:</strong> aprovechar visitas (adoptantes, padrinos, etc.) → pedir que tiren chuches desde lejos. Adaptar según perfil (ej. Pezu con hombres mayores, Saratoga con niños, etc.). También adaptar según perro (no pongamos a Light como figurante para Perci, etc.).</li>
+        <li><strong>Distracción:</strong> si no hay posibilidad de mantener distancias y la probabilidad de detonar es muy alta, distraemos y nos vamos cagando leches. Pero cuidado con usar esto todo el rato y no dar herramientas al perro por estar continuamente huyendo de todo.</li>
+        </ul>
+        </div>
+        </div>
         `;
     }
 
     // Protocolo de Protección de Recursos (solo en modo visual)
-    if (!modoEdicion && datos.proteccionDeRecursos !== null && datos.proteccionDeRecursos !== undefined && datos.proteccionDeRecursos !== 0) {
+    if (!modoEdicion && datosOriginales.proteccionDeRecursos !== null && datosOriginales.proteccionDeRecursos !== undefined && datosOriginales.proteccionDeRecursos !== 0) {
         html += `
-            <div class="campo-completo">
-                <div class="etiqueta">Protocolo de Protección de Recursos (PdR)</div>
-                <div class="valor protocolo-particular">
-                    <p><strong>Objetivo:</strong> que la presencia humana se asocie siempre a algo positivo, nunca se quitan las cosas bruscamente.</p>
-                    <p><strong>Protocolo de intercambio positivo</strong> (con barrera al inicio, por seguridad):</p>
-                    <ol>
-                        <li><strong>Paso 1:</strong> mientras come/mastica, tirar comida extra de alto valor desde fuera.</li>
-                        <li><strong>Paso 2:</strong> si coge chuches o suelta el objeto, reforzar mucho más → que asocie nuestra presencia a beneficios (dependiendo del grado de tensión se puede valorar introducir el "muy bien").</li>
-                        <li><strong>Paso 3:</strong> cuando ya se aleje de su recurso (por ejemplo, cogiendo chuches del fondo del chenil, con el hueso en la puerta) empezar a trabajarlo desde dentro en un espacio más amplio (más adelante, atado y con supervisión).</li>
-                    </ol>
-                    <p><strong>Complementar</strong> con positivar el bozal de manera progresiva y alternando (no meterlo todo el rato).</p>
-                </div>
-            </div>
+        <div class="campo-completo">
+        <div class="etiqueta">Protocolo de Protección de Recursos (PdR)</div>
+        <div class="valor protocolo-particular">
+        <p><strong>Objetivo:</strong> que la presencia humana se asocie siempre a algo positivo, nunca se quitan las cosas bruscamente.</p>
+        <p><strong>Protocolo de intercambio positivo</strong> (con barrera al inicio, por seguridad):</p>
+        <ol>
+        <li><strong>Paso 1:</strong> mientras come/mastica, tirar comida extra de alto valor desde fuera.</li>
+        <li><strong>Paso 2:</strong> si coge chuches o suelta el objeto, reforzar mucho más → que asocie nuestra presencia a beneficios (dependiendo del grado de tensión se puede valorar introducir el "muy bien").</li>
+        <li><strong>Paso 3:</strong> cuando ya se aleje de su recurso (por ejemplo, cogiendo chuches del fondo del chenil, con el hueso en la puerta) empezar a trabajarlo desde dentro en un espacio más amplio (más adelante, atado y con supervisión).</li>
+        </ol>
+        <p><strong>Complementar</strong> con positivar el bozal de manera progresiva y alternando (no meterlo todo el rato).</p>
+        </div>
+        </div>
         `;
     }
 
     // Protocolo de Instinto de Predación (solo en modo visual)
-    if (!modoEdicion && Array.isArray(datos.instintoDePredacion) && datos.instintoDePredacion.length > 0) {
+    if (!modoEdicion && Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0) {
         html += `
-            <div class="campo-completo">
-                <div class="etiqueta">Protocolo de Instinto de Predación</div>
-                <div class="valor protocolo-particular">
-                    <ul>
-                        <li><strong>Obediencia básica:</strong> reforzar “mírame”, “quieta”, “sienta” (por seguridad).</li>
-                        <li><strong>Exposición controlada:</strong> ver estímulos a gran distancia, reforzar cuando veamos que están tranquilos.</li>
-                        <li><strong>Alternativas seguras:</strong> ofrecer mordedores/juguetes/hueso suave (tipo snacks) para redirigir energía.</li>
-                        <li><strong>Siempre premiar la calma.</strong></li>
-                    </ul>
-                </div>
-            </div>
+        <div class="campo-completo">
+        <div class="etiqueta">Protocolo de Instinto de Predación</div>
+        <div class="valor protocolo-particular">
+        <ul>
+        <li><strong>Obediencia básica:</strong> reforzar “mírame”, “quieta”, “sienta” (por seguridad).</li>
+        <li><strong>Exposición controlada:</strong> ver estímulos a gran distancia, reforzar cuando veamos que están tranquilos.</li>
+        <li><strong>Alternativas seguras:</strong> ofrecer mordedores/juguetes/hueso suave (tipo snacks) para redirigir energía.</li>
+        <li><strong>Siempre premiar la calma.</strong></li>
+        </ul>
+        </div>
+        </div>
         `;
     }
 
@@ -416,16 +393,14 @@ function mostrarDatosPerro(nombre, datos, modoEdicion = false) {
 
 function cancelarEdicion() {
     modoEdicion = false;
-    mostrarDatosPerro(nombrePerro, datosOriginales, false);
+    mostrarDatosPerro();
     restaurarBotonesNormales();
 }
 
 function restaurarBotonesNormales() {
     document.getElementById('botonesInferiores').innerHTML = `
-        <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
+    <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
     `;
-
-    // Re-configurar el evento del botón de editar
     configurarEventos();
 }
 
@@ -433,7 +408,8 @@ async function guardarCambios() {
     const datosActualizados = { ...datosOriginales };
 
     // Procesar campos
-    datosActualizados.nombre = document.querySelector('.nombre-perro input')?.value || '';
+    const nombreAntiguo = nombrePerro;
+    nombreNuevo = capitalizarNombre(document.querySelector('.nombre-perro input')?.value) || '';
     datosActualizados.nacimiento = document.querySelector('input[placeholder*="YYYY"]')?.value || '';
 
     const pesoInput = document.querySelector('input[placeholder*="Peso"]');
@@ -457,21 +433,21 @@ async function guardarCambios() {
 
     const selectSociableGatos = document.querySelector('select[name="sociableConGatos"]');
     datosActualizados.sociableConGatos = selectSociableGatos?.value === 'true' ? true :
-                                        selectSociableGatos?.value === 'false' ? false : null;
+    selectSociableGatos?.value === 'false' ? false : null;
 
     const selectProteccion = document.querySelector('select[name="proteccionDeRecursos"]');
     datosActualizados.proteccionDeRecursos = selectProteccion?.value ? parseInt(selectProteccion.value) : null;
 
     const selectPPP = document.querySelector('select[name="ppp"]');
     datosActualizados.ppp = selectPPP?.value === 'true' ? true :
-                           selectPPP?.value === 'false' ? false : null;
+    selectPPP?.value === 'false' ? false : null;
 
     const selectApadrinado = document.querySelector('select[name="apadrinado"]');
     datosActualizados.apadrinado = selectApadrinado?.value === 'true' ? true : false;
 
     const selectSexo = document.querySelector('select[name="macho"]');
     datosActualizados.macho = selectSexo?.value === 'true' ? true :
-                             selectSexo?.value === 'false' ? false : null;
+    selectSexo?.value === 'false' ? false : null;
 
     const selectEstado = document.querySelector('select[name="estado"]');
     datosActualizados.estado = selectEstado?.value ? parseInt(selectEstado.value) : null;
@@ -494,25 +470,29 @@ async function guardarCambios() {
     datosActualizados.problemasDeSalud = problemasSaludSeleccionados;
 
     try {
-        // Guardar en GitHub
-        const respuesta = await fetch('/.netlify/functions/save-perro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nombrePerro: nombrePerro,
-                datosPerro: datosActualizados
-            })
-        });
+        // Guardar en Supabase
+        if (nombreNuevo !== nombreAntiguo)
+        {
+            const { data, error } = await supabaseClient.rpc(
+                'renombrar_perro',
+                {
+                    id_actual: nombreAntiguo,
+                    id_nuevo: nombreNuevo
+                }
+            );
 
-        const resultado = await respuesta.json();
+            if (data && data.success === true)
+            {
+                nombrePerro = nombreNuevo;
+            }
+        }
 
-        if (resultado.ok) {
+        const exito = await guardarPerroEnSupabase(nombrePerro, datosActualizados);
+        if (exito) {
             // Actualizar datos locales
             datosOriginales = datosActualizados;
             cancelarEdicion();
-
-            // Actualizar datosCompletosPerros
-            datosCompletosPerros[nombrePerro] = datosActualizados;
+            console.log('✅ Cambios guardados en Supabase');
         }
     } catch (error) {
         console.error('Error al guardar:', error);

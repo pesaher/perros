@@ -1,7 +1,7 @@
 {
   "nombre": "Cosme Tome",
   "estado": 2,
-  "nivelDeDificultad": null,
+  "nivelDeDificultad": 0,
   "nacimiento": "10/06/2016",
   "macho": true,
   "peso": 4.8,

@@ -1,20 +1,22 @@
 {
   "nombre": "Michelle Gali",
-  "estado": 2,
+  "estado": 0,
   "nivelDeDificultad": null,
   "nacimiento": "09/08/2018",
   "macho": false,
-  "peso": null,
-  "altura": null,
-  "paseo": null,
-  "sociableConPerros": null,
-  "sociableConPersonas": null,
+  "peso": 8,
+  "altura": 37,
+  "paseo": 0,
+  "sociableConPerros": 0,
+  "sociableConPersonas": 0,
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
-  "problemasDeSalud": [],
-  "observacionesExtra": "",
+  "problemasDeSalud": [
+    0
+  ],
+  "observacionesExtra": "Es bastante simpática y sociable, no le encantan las multitudes pero tampoco tiene pánico. Como cualquier pomerania, ladra bastante. No veo fundamental que se vaya con otro perro, pero lo ideal sería que se fuese con su hermana  ",
   "protocoloParticular": ""
 }

@@ -1,6 +1,6 @@
 {
   "nombre": "Madrazo",
-  "estado": 2,
+  "estado": 0,
   "nivelDeDificultad": 2,
   "nacimiento": "15/05/2020",
   "macho": true,
@@ -14,7 +14,9 @@
   "ppp": true,
   "apadrinado": true,
   "instintoDePredacion": [],
-  "problemasDeSalud": [0],
+  "problemasDeSalud": [
+    0
+  ],
   "observacionesExtra": "",
   "protocoloParticular": "Fomentar paseos de olfato y socialización usando perros equilibrados como compañeros de paseo, que aprenda a comunicarse y a leerles. En este caso, proponemos empezar por Bandeira y Chelva."
 }

@@ -1,7 +1,7 @@
 {
   "nombre": "Raposa",
-  "estado": 0,
-  "nivelDeDificultad": null,
+  "estado": 2,
+  "nivelDeDificultad": 0,
   "nacimiento": "12/03/2025",
   "macho": false,
   "peso": 12.5,

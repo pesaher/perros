@@ -1,16 +1,32 @@
 // Variables específicas de cheniles
-let datos = {};
+let datos = {}; // Estructura: { chenilA1: ["LunaBella", "Max12"], ... }
 let sortableInstances = [];
 let modoReordenar = false;
 let modalAnadirAbierto = false;
 let modalEliminarAbierto = false;
-let datosOriginales = {};
 
 // Función principal de carga
 async function cargar() {
-    const resp = await fetch(urlSinCache('https://raw.githubusercontent.com/pesaher/perros/refs/heads/main/archivos/cheniles.json'));
-    datos = await resp.json();
-    await cargarDatosCompletosPerros(datos);
+    console.log('🔄 Cargando estructura híbrida...');
+
+    // 1. Cargar LISTA de cheniles desde GitHub
+    const listaCheniles = await cargarListaCheniles();
+
+    if (listaCheniles.length === 0) {
+        document.getElementById('contenedor').innerHTML = '<p>Error cargando cheniles</p>';
+        return;
+    }
+
+    // 2. Cargar perros AGRUPADOS desde Supabase
+    const perrosAgrupados = await cargarPerrosAgrupados();
+
+    // 3. Combinar: para cada chenil, usar perros de Supabase o array vacío
+    datos = {};
+    listaCheniles.forEach(chenil => {
+        datos[chenil] = perrosAgrupados[chenil] || [];
+    });
+
+    // 4. Pintar
     pintar();
 }
 
@@ -55,14 +71,10 @@ function pintar() {
                     const marco = document.createElement('div');
                     marco.className = 'marco clickable';
 
-                    // Guardar el nombre original en un atributo data
                     marco.dataset.nombreOriginal = nombreOriginal;
 
-                    // Usar el nombre del JSON si está disponible, si no usar el original
                     const datosPerro = datosCompletosPerros[nombreOriginal];
-                    const nombreAMostrar = datosPerro && datosPerro.nombre && datosPerro.nombre.trim() !== ''
-                        ? datosPerro.nombre.toUpperCase()
-                        : nombreOriginal.toUpperCase();
+                    const nombreAMostrar = nombreOriginal.toUpperCase();
 
                     marco.textContent = nombreAMostrar;
 
@@ -77,13 +89,11 @@ function pintar() {
                         marco.style.backgroundColor = colorPastel(nombreOriginal);
                     }
 
-                    // Aplicar filtros si existen
                     if (Object.keys(filtrosActivos).length > 0) {
                         const cumpleFiltro = aplicarFiltros(nombreOriginal);
                         if (!cumpleFiltro) {
                             marco.classList.add('filtrado');
                         } else {
-                            // Solo añadir borde verde si el perro NO tiene nivel de dificultad
                             const datosPerro = datosCompletosPerros[nombreOriginal];
                             if (!datosPerro || datosPerro.nivelDeDificultad === null || datosPerro.nivelDeDificultad === undefined) {
                                 marco.classList.add('cumple-filtro');
@@ -91,10 +101,8 @@ function pintar() {
                         }
                     }
 
-                    // Agregar evento de click para los nombres
                     marco.addEventListener('click', () => {
                         if (!modoReordenar) {
-                            // Usar el nombre original (camelCase) para la redirección
                             window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}`;
                         }
                     });
@@ -107,11 +115,10 @@ function pintar() {
         caja.appendChild(zona);
         contenedor.appendChild(caja);
 
-        // Crear instancia de Sortable pero deshabilitada inicialmente
         const sortable = new Sortable(zona, {
             group: 'cheniles',
             animation: 150,
-            disabled: true, // Deshabilitado por defecto
+            disabled: true,
             onEnd: () => {
                 limpiarVacios();
                 actualizarDatos();
@@ -122,54 +129,40 @@ function pintar() {
     });
 }
 
-function desactivarModoReordenar(guardarEnGitHub = false) {
+function desactivarModoReordenar() {
     modoReordenar = false;
 
-    // Desactivar todas las instancias de Sortable
     sortableInstances.forEach(sortable => {
         sortable.option("disabled", true);
     });
 
-    // Restaurar cursores y clases
     document.querySelectorAll('.marco').forEach(marco => {
         marco.classList.add('clickable');
         marco.style.cursor = 'pointer';
     });
 
-    // Actualizar botones flotantes
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
         <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
     `;
 
-    // Agregar eventos a los botones
     agregarEventosBotones();
 
-    // Guardar cambios en GitHub solo si se especifica
-    if (guardarEnGitHub) {
-        pushToGithub();
-    }
+    guardarOrdenEnSupabase();
 }
 
 function cancelarReordenar() {
     modoReordenar = false;
 
-    // Restaurar datos originales
-    datos = JSON.parse(JSON.stringify(datosOriginales));
-
-    // Limpiar instancias de Sortable antes de repintar
     sortableInstances = [];
 
-    // Volver a pintar con los datos originales
     pintar();
 
-    // Restaurar cursores y clases
     document.querySelectorAll('.marco').forEach(marco => {
         marco.classList.add('clickable');
         marco.style.cursor = 'pointer';
     });
 
-    // Desactivar modo reordenar sin guardar - Y RESTAURAR BOTÓN AÑADIR
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
         <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
@@ -202,55 +195,35 @@ function actualizarDatos() {
     document.querySelectorAll('.contenedor-marcos').forEach(zona => {
         const chenil = zona.dataset.chenil;
         const perros = Array.from(zona.querySelectorAll('.marco')).map(m => m.dataset.nombreOriginal);
-        nuevo[chenil] = perros.length ? perros : [""];
+        nuevo[chenil] = perros.length ? perros : [];
     });
     datos = nuevo;
-    localStorage.setItem('chenilesDrag', JSON.stringify(datos));
 }
 
 function agregarEventosBotones() {
     document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
 }
 
-async function pushToGithub() {
+async function guardarOrdenEnSupabase() {
     try {
-        const resp = await fetch('/.netlify/functions/save', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datos)
-        });
-        const result = await resp.json();
-        if (resp.ok && result.ok) {
-            console.log('✅ Cheniles guardados correctamente');
-            return true;
-        } else {
-            console.error('❌ Error guardando cheniles:', result.error);
-            return false;
+        console.log('💾 Guardando cambios en Supabase...');
+
+        // Para cada chenil y sus perros, actualizar en Supabase
+        for (const [chenilId, perrosIds] of Object.entries(datos)) {
+            for (const perroId of perrosIds) {
+                if (perroId && perroId.trim() !== '') {
+                    await moverPerroChenil(perroId, chenilId);
+                }
+            }
         }
+
+        console.log('✅ Cambios guardados en Supabase');
+        return true;
+
     } catch (error) {
-        console.error('❌ Error de conexión:', error);
+        console.error('❌ Error guardando:', error);
         return false;
     }
-}
-
-// Función para capitalizar nombres (CadaPalabraConMayúscula)
-function capitalizarNombre(nombre) {
-    return nombre
-        .toLowerCase() // Primero todo a minúsculas
-        .split(' ') // Dividir por espacios
-        .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)) // Capitalizar cada palabra
-        .join(''); // Unir sin espacios
-}
-
-// Función para normalizar nombre de archivo
-function normalizarNombreArchivo(nombre) {
-    const nombreCapitalizado = capitalizarNombre(nombre);
-
-    return nombreCapitalizado
-        .normalize("NFD") // Separar acentos
-        .replace(/[\u0300-\u036f]/g, "") // Quitar acentos
-        .replace(/ñ/g, "n") // ñ -> n
-        .replace(/[^a-zA-Z0-9]/g, ""); // quitar caracteres especiales
 }
 
 // Generar opciones de cheniles para el select
@@ -261,12 +234,28 @@ function generarOpcionesCheniles() {
 }
 
 // Función auxiliar para mostrar errores
-function mostrarError(elemento, mensaje) {
+function mostrarError(elemento, mensaje, tipo = 'error') {
     elemento.textContent = mensaje;
     elemento.style.display = 'block';
-    setTimeout(() => {
-        elemento.style.display = 'none';
-    }, 5000);
+
+    // Remover clases anteriores
+    elemento.classList.remove('mensaje-error', 'mensaje-info', 'mensaje-error-basico');
+
+    // Agregar clase correcta según el tipo
+    if (tipo === 'error') {
+        elemento.classList.add('mensaje-error');
+    } else if (tipo === 'info') {
+        elemento.classList.add('mensaje-info');
+    } else {
+        elemento.classList.add('mensaje-error-basico');
+    }
+
+    // Auto-ocultar después de 5 segundos (solo para errores/info, no para validación)
+    if (tipo !== 'validation') {
+        setTimeout(() => {
+            elemento.style.display = 'none';
+        }, 5000);
+    }
 }
 
 // Inicialización

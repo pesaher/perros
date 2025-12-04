@@ -1,20 +1,22 @@
 {
-  "nombre": "Cejo",
-  "estado": 2,
+  "nombre": "Fanny Tala",
+  "estado": null,
   "nivelDeDificultad": null,
-  "nacimiento": "15/09/2023",
-  "macho": true,
+  "nacimiento": "01/01/2019",
+  "macho": false,
   "peso": 12,
-  "altura": 49,
+  "altura": 39,
   "paseo": null,
-  "sociableConPerros": null,
+  "sociableConPerros": 0,
   "sociableConPersonas": null,
   "sociableConGatos": null,
   "proteccionDeRecursos": null,
   "ppp": false,
   "apadrinado": false,
   "instintoDePredacion": [],
-  "problemasDeSalud": [],
-  "observacionesExtra": "",
+  "problemasDeSalud": [
+    0
+  ],
+  "observacionesExtra": "Tiene cataratas en un ojo, intentarán operar",
   "protocoloParticular": ""
 }

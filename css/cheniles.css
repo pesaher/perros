@@ -178,3 +178,161 @@
     font-weight: bold;
     border: 2px solid var(--estado-malo);
 }
+
+/* ============ ESTILOS PARA SUGERENCIAS EN MODAL AÑADIR PERRO ============ */
+.sugerencias {
+  display: none;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  margin-top: 5px;
+  background: var(--card-bg-light);
+  box-shadow: 0 2px 4px var(--shadow-light);
+  position: absolute;
+  width: calc(100% - 4px);
+  z-index: 1000;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sugerencias {
+    background: var(--card-bg-dark);
+    border-color: var(--border-dark);
+    box-shadow: 0 2px 4px var(--shadow-dark);
+  }
+}
+
+.grupo-sugerencias {
+  padding: 8px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .grupo-sugerencias {
+    border-bottom-color: var(--border-dark);
+  }
+}
+
+.grupo-sugerencias:last-child {
+  border-bottom: none;
+}
+
+.titulo-sugerencias {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .titulo-sugerencias {
+    color: #aaa;
+  }
+}
+
+.sugerencia-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 2px 0;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.sugerencia-item:hover {
+  background-color: rgba(33, 150, 243, 0.1);
+  transform: translateX(2px);
+}
+
+.sugerencia-item.disponible:hover {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-left-color: var(--success-color);
+}
+
+.sugerencia-item.disponible .sugerencia-estado {
+  color: var(--success-color);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.sugerencia-item.asignado {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: rgba(158, 158, 158, 0.1);
+}
+
+.sugerencia-item.asignado .sugerencia-estado {
+  color: var(--danger-color);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.sugerencia-nombre {
+  font-weight: 500;
+  margin-right: 8px;
+  color: var(--text-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sugerencia-nombre {
+    color: var(--text-dark);
+  }
+}
+
+.sugerencia-vacia {
+  padding: 12px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sugerencia-vacia {
+    color: #aaa;
+  }
+}
+
+/* Mejorar mensajes de error/info específicos para modal añadir perro */
+.mensaje-error {
+  color: var(--danger-color);
+  font-size: 13px;
+  margin-top: 5px;
+  display: none;
+  padding: 8px 12px;
+  background: rgba(244, 67, 54, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid var(--danger-color);
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mensaje-error {
+    background: rgba(244, 67, 54, 0.15);
+  }
+}
+
+.mensaje-info {
+  color: var(--primary-color);
+  font-size: 13px;
+  margin-top: 5px;
+  display: none;
+  padding: 8px 12px;
+  background: rgba(33, 150, 243, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid var(--primary-color);
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .mensaje-info {
+    background: rgba(33, 150, 243, 0.15);
+  }
+}
+
+.grupo-formulario {
+  margin-bottom: 1.5em;
+  position: relative;
+}
