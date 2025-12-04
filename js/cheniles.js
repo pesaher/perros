@@ -364,9 +364,9 @@ function mostrarModalAnadirPerro() {
         html += '<div class="titulo-sugerencias">Perros disponibles (sin chenil):</div>';
 
         perrosDisponibles.forEach(perro => {
-          const nombreMostrar = perro.datos?.nombre || perro.id;
+          const nombreMostrar = perro.id;
           html += `
-            <div class="sugerencia-item disponible" data-id="${perro.id}" data-nombre="${nombreMostrar}">
+            <div class="sugerencia-item disponible" data-id="${nombreMostrar}" data-nombre="${nombreMostrar}">
               <span class="sugerencia-nombre">${nombreMostrar}</span>
               <span class="sugerencia-estado">(sin chenil)</span>
             </div>
@@ -381,11 +381,11 @@ function mostrarModalAnadirPerro() {
         html += '<div class="titulo-sugerencias">Perros ya asignados:</div>';
 
         perrosEnCheniles.forEach(perro => {
-          const nombreMostrar = perro.datos?.nombre || perro.id;
+          const nombreMostrar = perro.id;
           html += `
-            <div class="sugerencia-item asignado" data-id="${perro.id}">
+            <div class="sugerencia-item asignado" data-id="${nombreMostrar}">
               <span class="sugerencia-nombre">${nombreMostrar}</span>
-              <span class="sugerencia-estado">(en ${perro.chenil_id})</span>
+              <span class="sugerencia-estado">(en ${formatearNombreChenil(perro.chenil_id)})</span>
             </div>
           `;
         });
