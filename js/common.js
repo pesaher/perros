@@ -655,7 +655,6 @@ function tieneInformacionIncompleta(datosPerro) {
     if (!datosPerro) return false;
 
     const camposRequeridos = [
-        'nombre',
         'estado',
         'macho',
         'nacimiento',
