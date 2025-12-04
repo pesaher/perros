@@ -58,7 +58,7 @@ async function buscarPerroPorNombre(nombreBuscado) {
     if (!supabaseClient) return null;
 
     try {
-        // Buscar por nombre en el campo datos->nombre
+        // Buscar por nombre
         const { data, error } = await supabaseClient
         .from('perros')
         .select('id, chenil_id')

@@ -74,9 +74,7 @@ function pintar() {
                     marco.dataset.nombreOriginal = nombreOriginal;
 
                     const datosPerro = datosCompletosPerros[nombreOriginal];
-                    const nombreAMostrar = datosPerro && datosPerro.nombre && datosPerro.nombre.trim() !== ''
-                    ? datosPerro.nombre.toUpperCase()
-                    : nombreOriginal.toUpperCase();
+                    const nombreAMostrar = nombreOriginal.toUpperCase();
 
                     marco.textContent = nombreAMostrar;
 
@@ -382,9 +380,8 @@ function mostrarModalAnadirPerro() {
             sugerenciasDiv.querySelectorAll('.sugerencia-item.disponible').forEach(item => {
                 item.addEventListener('click', () => {
                     const id = item.dataset.id;
-                    const nombre = item.dataset.nombre;
 
-                    nombreInput.value = nombre;
+                    nombreInput.value = id;
                     sugerenciasDiv.innerHTML = '';
                     sugerenciasDiv.style.display = 'none';
 
@@ -563,9 +560,7 @@ function mostrarModalEliminarPerro() {
     });
 
     todosLosPerros.sort((a, b) => {
-        const nombreA = datosCompletosPerros[a]?.nombre || a;
-        const nombreB = datosCompletosPerros[b]?.nombre || b;
-        return nombreA.localeCompare(nombreB);
+        return a.localeCompare(b);
     });
 
     modal.innerHTML = `
@@ -578,8 +573,7 @@ function mostrarModalEliminarPerro() {
     <option value="">-- Selecciona un perro --</option>
     ${todosLosPerros.map(nombre => {
         const datosPerro = datosCompletosPerros[nombre];
-        const nombreMostrar = datosPerro?.nombre || nombre;
-        return `<option value="${nombre}">${nombreMostrar}</option>`;
+        return `<option value="${nombre}">${nombre}</option>`;
     }).join('')}
     </select>
     </div>
@@ -642,14 +636,6 @@ async function eliminarPerroDeCheniles() {
             }
         }
 
-        // Cerrar modal
-        if (datosCompletosPerros[nombrePerro]) {
-            datosCompletosPerros[nombrePerro] = {
-                ...datosCompletosPerros[nombrePerro],
-                chenil_id: null
-            };
-        }
-
         // Cerrar modal y actualizar
         const modal = document.querySelector('.modal-eliminar-perro');
         document.body.removeChild(modal);
@@ -659,8 +645,7 @@ async function eliminarPerroDeCheniles() {
         pintar();
 
         const datosPerro = datosCompletosPerros[nombrePerro];
-        const nombreMostrar = datosPerro?.nombre || nombrePerro;
-        console.log(`✅ Perro "${nombreMostrar}" eliminado de los cheniles`);
+        console.log(`✅ Perro "${nombrePerro}" eliminado de los cheniles`);
 
     } catch (error) {
         console.error('❌ Error al eliminar perro:', error);
