@@ -2,6 +2,8 @@
 let datosCheniles = {}; // Estructura: { chenilA1: ["LunaBella", "Max12"], ... }
 let sortableInstances = [];
 let modoReordenar = false;
+let modalAnadirAbierto = false;
+let modalEliminarAbierto = false;
 
 // Función principal de carga
 async function cargar() {
