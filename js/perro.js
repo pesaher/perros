@@ -503,18 +503,18 @@ async function guardarCambios() {
                     id_nuevo: nombreNuevo
                 }
             );
-        }
 
-        if (!error)
-        {
-            nombrePerro = nombreNuevo;
-            const exito = await guardarPerroEnSupabase(nombrePerro, datosActualizados);
+            if (!error)
+            {
+                nombrePerro = nombreNuevo;
+                const exito = await guardarPerroEnSupabase(nombrePerro, datosActualizados);
 
-            if (exito) {
-                // Actualizar datos locales
-                datosOriginales = datosActualizados;
-                cancelarEdicion();
-                console.log('✅ Cambios guardados en Supabase');
+                if (exito) {
+                    // Actualizar datos locales
+                    datosOriginales = datosActualizados;
+                    cancelarEdicion();
+                    console.log('✅ Cambios guardados en Supabase');
+                }
             }
         }
     } catch (error) {
