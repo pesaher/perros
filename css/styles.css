@@ -600,7 +600,7 @@ body {
 
 .boton-modal:hover {
   opacity: 0.9;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
