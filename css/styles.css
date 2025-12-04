@@ -543,13 +543,6 @@ body {
   transform: translateY(-1px);
 }
 
-.mensaje-error-basico {
-  color: var(--danger-color);
-  font-size: 0.9em;
-  margin-top: 0.5em;
-  display: none;
-}
-
 /* Botón eliminar */
 .boton-eliminar {
   background: var(--danger-color);

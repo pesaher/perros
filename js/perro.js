@@ -498,7 +498,6 @@ function mostrarDatosPerro() {
             if (exito) {
                 // Actualizar datos locales
                 datosOriginales = datosActualizados;
-                datosCompletosPerros[nombrePerro] = datosActualizados;
                 cancelarEdicion();
                 console.log('✅ Cambios guardados en Supabase');
             }
@@ -506,8 +505,9 @@ function mostrarDatosPerro() {
             console.error('Error al guardar:', error);
         }
     }
+}
 
-    // Inicialización
-    document.addEventListener('DOMContentLoaded', function() {
-        cargarDatosPerro();
-    });
+// Inicialización
+document.addEventListener('DOMContentLoaded', function() {
+    cargarDatosPerro();
+});
