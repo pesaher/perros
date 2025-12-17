@@ -1,5 +1,6 @@
 // Variables específicas de cheniles
 let datosCheniles = {}; // Estructura: { chenilA1: ["LunaBella", "Max12"], ... }
+let copiaDatosCheniles = {};
 let sortableInstances = [];
 let modoReordenar = false;
 let modalAnadirAbierto = false;
@@ -130,6 +131,7 @@ function pintar() {
 // Funciones de reordenamiento
 function activarModoReordenar() {
     modoReordenar = true;
+    copiaDatosCheniles = JSON.parse(JSON.stringify(datosCheniles));
 
     sortableInstances.forEach(sortable => {
         sortable.option("disabled", false);
@@ -152,6 +154,7 @@ function activarModoReordenar() {
 
 function desactivarModoReordenar() {
     modoReordenar = false;
+    copiaDatosCheniles = {};
 
     sortableInstances.forEach(sortable => {
         sortable.option("disabled", true);
@@ -177,10 +180,12 @@ function desactivarModoReordenar() {
 
 function cancelarReordenar() {
     modoReordenar = false;
+    datosCheniles = JSON.parse(JSON.stringify(copiaDatosCheniles));
+    copiaDatosCheniles = {};
 
     sortableInstances = [];
 
-    cargar();
+    pintar();
 
     document.querySelectorAll('.marco').forEach(marco => {
         marco.classList.add('clickable');
