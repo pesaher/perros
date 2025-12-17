@@ -238,9 +238,9 @@ function actualizarDatos() {
 }
 
 function agregarEventosBotones() {
-    document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
+    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
     if (window.APP_CONFIG.MODO_ADMIN) {
-        document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
+        document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
         document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
         document.getElementById('btnEliminarPerro').addEventListener('click', mostrarModalEliminarPerro);
     }
