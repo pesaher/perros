@@ -102,7 +102,7 @@ function pintar() {
 
                     marco.addEventListener('click', () => {
                         if (!modoReordenar) {
-                            if (window.CONFIG.MODO_ADMIN) {
+                            if (window.APP_CONFIG.MODO_ADMIN) {
                                 window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}&admin`;
                             } else {
                                 window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}`;

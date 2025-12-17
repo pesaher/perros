@@ -404,6 +404,7 @@ function configurarEventos() {
 
 // Funciones de edición
 function activarModoEdicion() {
+    if (!window.APP_CONFIG.MODO_ADMIN) return;
     modoEdicion = true;
     mostrarDatosPerro();
 
