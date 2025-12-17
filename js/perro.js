@@ -426,7 +426,7 @@ function cancelarEdicion() {
 function restaurarBotonesNormales() {
     document.getElementById('botonesInferiores').innerHTML = `
     <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
-    <button class="boton boton-editar boton-admin" id="btnEditar">✏️ Editar</button>
+    <button class="boton boton-editar" id="btnEditar">✏️ Editar</button>
     `;
     configurarEventos();
 }

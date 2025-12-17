@@ -27,14 +27,12 @@
     window.APP_CONFIG = {
         MODO_ADMIN: new URLSearchParams(window.location.search).has('admin')
     };
-    if (!window.APP_CONFIG.MODO_ADMIN) {
-      // Ocultar solo botones de admin en modo solo lectura
-      document.addEventListener('DOMContentLoaded', function() {
-        const botonesAdmin = document.querySelectorAll('.boton-admin');
-        botonesAdmin.forEach(boton => {
-          boton.style.display = 'none';
+    if (window.APP_CONFIG.MODO_ADMIN) {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.boton-admin').forEach(boton => {
+                boton.classList.remove('boton-admin');
+            });
         });
-      });
     }
   </script>
 

@@ -12,21 +12,6 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2.39.7"></script>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/perro.css">
-
-    <script>
-    window.APP_CONFIG = {
-        MODO_ADMIN: new URLSearchParams(window.location.search).has('admin')
-    };
-    if (!window.APP_CONFIG.MODO_ADMIN) {
-        // Ocultar solo botones de admin en modo solo lectura
-        document.addEventListener('DOMContentLoaded', function() {
-            const botonesAdmin = document.querySelectorAll('.boton-admin');
-            botonesAdmin.forEach(boton => {
-                boton.style.display = 'none';
-            });
-        });
-    }
-</script>
 </head>
 <body>
     <div class="contenedor-perro">
@@ -39,6 +24,19 @@
             <button class="boton boton-editar boton-admin" id="btnEditar">✏️ Editar</button>
         </div>
     </div>
+
+    <script>
+    window.APP_CONFIG = {
+        MODO_ADMIN: new URLSearchParams(window.location.search).has('admin')
+    };
+    if (window.APP_CONFIG.MODO_ADMIN) {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.boton-admin').forEach(boton => {
+                boton.classList.remove('boton-admin');
+            });
+        });
+    }
+    </script>
 
     <script src="js/common.js" defer></script>
     <script src="js/perro.js" defer></script>

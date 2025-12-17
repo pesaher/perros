@@ -173,9 +173,9 @@ function desactivarModoReordenar() {
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
     <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
-    <button class="boton-flotante boton-reordenar boton-admin" id="btnReordenar">🔃</button>
-    <button class="boton-flotante boton-anadir boton-admin" id="btnAnadirPerro">➕</button>
-    <button class="boton-flotante boton-eliminar boton-admin" id="btnEliminarPerro">🗑️</button>
+    <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
+    <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
+    <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
     `;
 
     agregarEventosBotones();
@@ -200,9 +200,9 @@ function cancelarReordenar() {
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
     <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
-    <button class="boton-flotante boton-reordenar boton-admin" id="btnReordenar">🔃</button>
-    <button class="boton-flotante boton-anadir boton-admin" id="btnAnadirPerro">➕</button>
-    <button class="boton-flotante boton-eliminar boton-admin" id="btnEliminarPerro">🗑️</button>
+    <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
+    <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
+    <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
     `;
 
     agregarEventosBotones();

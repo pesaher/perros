@@ -616,3 +616,8 @@ body {
   background: var(--danger-color);
   color: white;
 }
+
+/* Ocultar botones admin por defecto */
+.boton-admin {
+    display: none !important;
+}
