@@ -1,31 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perritos 🐾</title>
-  <link rel="icon" type="image/png" href="archivos/iconos/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="archivos/iconos/favicon.svg" />
-  <link rel="shortcut icon" href="archivos/iconos/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="archivos/iconos/apple-touch-icon.png" />
-  <link rel="manifest" href="archivos/iconos/site.webmanifest" />
-  <script src="https://unpkg.com/@supabase/supabase-js@2.39.7"></script>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/cheniles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perritos 🐾</title>
+    <link rel="icon" type="image/png" href="archivos/iconos/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="archivos/iconos/favicon.svg" />
+    <link rel="shortcut icon" href="archivos/iconos/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="archivos/iconos/apple-touch-icon.png" />
+    <link rel="manifest" href="archivos/iconos/site.webmanifest" />
+    <script src="https://unpkg.com/@supabase/supabase-js@2.39.7"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/cheniles.css">
 </head>
 <body>
-  <div id="contenedor"></div>
+    <div id="contenedor"></div>
 
-  <div class="botones-flotantes" id="botonesFlotantes">
-  <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
-    <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
-    <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
-    <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
-  </div>
+    <div class="botones-flotantes" id="botonesFlotantes">
+        <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
+        <button class="boton-flotante boton-reordenar boton-admin" id="btnReordenar">🔃</button>
+        <button class="boton-flotante boton-anadir boton-admin" id="btnAnadirPerro">➕</button>
+        <button class="boton-flotante boton-eliminar boton-admin" id="btnEliminarPerro">🗑️</button>
+    </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-  <script src="js/common.js" defer></script>
-  <script src="js/filtros.js" defer></script>
-  <script src="js/cheniles.js" defer></script>
+    <script>
+    window.APP_CONFIG = {
+        MODO_ADMIN: new URLSearchParams(window.location.search).has('admin')
+    };
+    if (!window.APP_CONFIG.MODO_ADMIN) {
+      // Ocultar solo botones de admin en modo solo lectura
+      document.addEventListener('DOMContentLoaded', function() {
+        const botonesAdmin = document.querySelectorAll('.boton-admin');
+        botonesAdmin.forEach(boton => {
+          boton.style.display = 'none';
+        });
+      });
+    }
+  </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/filtros.js" defer></script>
+    <script src="js/cheniles.js" defer></script>
 </body>
 </html>

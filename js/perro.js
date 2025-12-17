@@ -393,9 +393,12 @@ function mostrarDatosPerro() {
 
 // Función para configurar eventos
 function configurarEventos() {
-    const btnEditar = document.getElementById('btnEditar');
-    if (btnEditar) {
-        btnEditar.addEventListener('click', activarModoEdicion);
+    if (window.APP_CONFIG.MODO_ADMIN)
+    {
+        const btnEditar = document.getElementById('btnEditar');
+        if (btnEditar) {
+            btnEditar.addEventListener('click', activarModoEdicion);
+        }
     }
 }
 
@@ -422,7 +425,7 @@ function cancelarEdicion() {
 function restaurarBotonesNormales() {
     document.getElementById('botonesInferiores').innerHTML = `
     <a href="javascript:history.back()" class="boton boton-volver">← Volver a Cheniles</a>
-    <button class="boton boton-editar" id="btnEditar">✏️ Editar</button>
+    <button class="boton boton-editar boton-admin" id="btnEditar">✏️ Editar</button>
     `;
     configurarEventos();
 }

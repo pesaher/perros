@@ -102,7 +102,11 @@ function pintar() {
 
                     marco.addEventListener('click', () => {
                         if (!modoReordenar) {
-                            window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}`;
+                            if (window.CONFIG.MODO_ADMIN) {
+                                window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}&admin`;
+                            } else {
+                                window.location.href = `perro.html?nombre=${encodeURIComponent(nombreOriginal)}`;
+                            }
                         }
                     });
 
@@ -130,6 +134,7 @@ function pintar() {
 
 // Funciones de reordenamiento
 function activarModoReordenar() {
+    if (!window.APP_CONFIG.MODO_ADMIN) return;
     modoReordenar = true;
     copiaDatosCheniles = JSON.parse(JSON.stringify(datosCheniles));
 
@@ -168,9 +173,9 @@ function desactivarModoReordenar() {
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
     <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
-    <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
-    <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
-    <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
+    <button class="boton-flotante boton-reordenar boton-admin" id="btnReordenar">🔃</button>
+    <button class="boton-flotante boton-anadir boton-admin" id="btnAnadirPerro">➕</button>
+    <button class="boton-flotante boton-eliminar boton-admin" id="btnEliminarPerro">🗑️</button>
     `;
 
     agregarEventosBotones();
@@ -195,9 +200,9 @@ function cancelarReordenar() {
     const botonesFlotantes = document.getElementById('botonesFlotantes');
     botonesFlotantes.innerHTML = `
     <button class="boton-flotante boton-filtrar" id="btnFiltrar">🔍</button>
-    <button class="boton-flotante boton-reordenar" id="btnReordenar">🔃</button>
-    <button class="boton-flotante boton-anadir" id="btnAnadirPerro">➕</button>
-    <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
+    <button class="boton-flotante boton-reordenar boton-admin" id="btnReordenar">🔃</button>
+    <button class="boton-flotante boton-anadir boton-admin" id="btnAnadirPerro">➕</button>
+    <button class="boton-flotante boton-eliminar boton-admin" id="btnEliminarPerro">🗑️</button>
     `;
 
     agregarEventosBotones();
@@ -234,9 +239,11 @@ function actualizarDatos() {
 
 function agregarEventosBotones() {
     document.getElementById('btnReordenar').addEventListener('click', activarModoReordenar);
-    document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
-    document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
-    document.getElementById('btnEliminarPerro').addEventListener('click', mostrarModalEliminarPerro);
+    if (window.APP_CONFIG.MODO_ADMIN) {
+        document.getElementById('btnFiltrar').addEventListener('click', mostrarModalFiltros);
+        document.getElementById('btnAnadirPerro').addEventListener('click', mostrarModalAnadirPerro);
+        document.getElementById('btnEliminarPerro').addEventListener('click', mostrarModalEliminarPerro);
+    }
 }
 
 async function guardarOrdenEnSupabase() {
@@ -263,7 +270,7 @@ async function guardarOrdenEnSupabase() {
 
 // Función para mostrar modal de añadir perro
 function mostrarModalAnadirPerro() {
-    if (modalAnadirAbierto) return;
+    if (modalAnadirAbierto || !window.APP_CONFIG.MODO_ADMIN) return;
     modalAnadirAbierto = true;
 
     const modal = document.createElement('div');
@@ -538,7 +545,7 @@ function mostrarError(elemento, mensaje, tipo = 'error') {
 
 // Función para mostrar modal de eliminar perro
 function mostrarModalEliminarPerro() {
-    if (modalEliminarAbierto) return;
+    if (modalEliminarAbierto || !window.APP_CONFIG.MODO_ADMIN) return;
     modalEliminarAbierto = true;
 
     const modal = document.createElement('div');
