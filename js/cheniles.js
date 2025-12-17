@@ -180,7 +180,7 @@ function cancelarReordenar() {
 
     sortableInstances = [];
 
-    pintar();
+    cargar();
 
     document.querySelectorAll('.marco').forEach(marco => {
         marco.classList.add('clickable');
