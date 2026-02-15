@@ -348,7 +348,7 @@
     /* Ajusta el padding para dar espacio al apellido sin agrandar la caja */
     /* El padding superior e inferior se reduce para que el contenido quede centrado,
        pero dejamos un poco más abajo para el apellido */
-    padding: 1em 0.6em 1.5em 0.6em; /* Superior, derecho, inferior, izquierdo */
+    padding: 0.5em 0.6em 1em 0.6em; /* Superior, derecho, inferior, izquierdo */
     /* El padding inferior extra (1.5em) da espacio para el apellido */
     min-height: auto; /* Asegura que la altura la defina el contenido y el padding */
     box-sizing: border-box;
