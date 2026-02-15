@@ -78,7 +78,7 @@ function pintar() {
                     marco.dataset.nombreOriginal = nombreOriginal;
 
                     const datosPerro = datosCompletosPerros[nombreOriginal];
-                    const nombreAMostrar = nombreOriginal.toUpperCase();
+                    const nombreAMostrar = nombreOriginal.toUpperCase().split(' ', 1)[0];
 
                     marco.textContent = nombreAMostrar;
 
