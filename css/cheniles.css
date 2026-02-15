@@ -380,18 +380,3 @@
     text-overflow: ellipsis; /* Si es muy largo, añade "..." */
     pointer-events: none; /* El apellido no debe interferir con el clic en el marco */
 }
-
-/* Ajuste para móviles: quizás un poco más de padding y fuente más pequeña */
-@media (max-width: 768px) {
-    .marco {
-        padding: 0.8em 0.5em 1.3em 0.5em;
-    }
-    .nombre-principal {
-        font-size: 0.95em;
-    }
-    .apellido {
-        font-size: 0.6em;
-        bottom: 3px;
-        right: 4px;
-    }
-}
