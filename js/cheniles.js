@@ -34,7 +34,7 @@ function pintar() {
     const contenedor = document.getElementById('contenedor');
     contenedor.innerHTML = '';
     let seccionAnterior = '';
-    let chenilesEnSeccion = 0;
+    let chenilesEnSeccion = 1;
 
     Object.entries(datosCheniles).forEach(([chenil, perros]) => {
         const seccionActual = obtenerSeccion(chenil);
@@ -42,7 +42,7 @@ function pintar() {
             ++chenilesEnSeccion;
         }
         if (seccionActual && (seccionActual !== seccionAnterior || chenilesEnSeccion > 14)) {
-            chenilesEnSeccion = 0;
+            chenilesEnSeccion = 1;
             if (seccionAnterior !== '') {
                 const separador = document.createElement('div');
                 separador.className = 'separador-seccion';
