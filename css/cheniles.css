@@ -336,3 +336,62 @@
   margin-bottom: 1.5em;
   position: relative;
 }
+
+/* Estilos para el nombre y apellido dentro del marco */
+.marco {
+    position: relative; /* Necesario para posicionar el apellido de forma absoluta */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente el contenido */
+    align-items: center;     /* Centra horizontalmente */
+    text-align: center;
+    /* Ajusta el padding para dar espacio al apellido sin agrandar la caja */
+    /* El padding superior e inferior se reduce para que el contenido quede centrado,
+       pero dejamos un poco más abajo para el apellido */
+    padding: 1em 0.6em 1.5em 0.6em; /* Superior, derecho, inferior, izquierdo */
+    /* El padding inferior extra (1.5em) da espacio para el apellido */
+    min-height: auto; /* Asegura que la altura la defina el contenido y el padding */
+    box-sizing: border-box;
+    overflow: visible; /* Asegura que el apellido no se corte */
+}
+
+.nombre-principal {
+    display: block;
+    font-weight: bold;
+    font-size: 1.1em; /* Tamaño del nombre principal */
+    line-height: 1.2;
+    width: 100%;
+    word-break: break-word; /* Por si el nombre es muy largo */
+}
+
+.apellido {
+    position: absolute;
+    bottom: 4px;        /* Distancia desde el borde inferior */
+    right: 6px;         /* Distancia desde el borde derecho */
+    font-size: 0.65em;  /* Mucho más pequeño */
+    opacity: 0.7;       /* Un poco más sutil, opcional */
+    font-weight: normal;
+    line-height: 1;
+    color: inherit;     /* Hereda el color del marco (importante para contraste) */
+    max-width: 90%;      /* Evita que se salga del marco si es muy largo */
+    text-align: right;
+    white-space: nowrap; /* Evita que el apellido se divida en varias líneas */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Si es muy largo, añade "..." */
+    pointer-events: none; /* El apellido no debe interferir con el clic en el marco */
+}
+
+/* Ajuste para móviles: quizás un poco más de padding y fuente más pequeña */
+@media (max-width: 768px) {
+    .marco {
+        padding: 0.8em 0.5em 1.3em 0.5em;
+    }
+    .nombre-principal {
+        font-size: 1em;
+    }
+    .apellido {
+        font-size: 0.6em;
+        bottom: 3px;
+        right: 4px;
+    }
+}

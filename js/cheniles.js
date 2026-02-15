@@ -78,9 +78,16 @@ function pintar() {
                     marco.dataset.nombreOriginal = nombreOriginal;
 
                     const datosPerro = datosCompletosPerros[nombreOriginal];
-                    const nombreAMostrar = nombreOriginal.toUpperCase().split(' ', 1)[0];
 
-                    marco.textContent = nombreAMostrar;
+                    const nombreAMostrar = nombreOriginal.toUpperCase();
+                    const partesDelNombre = nombreAMostrar.split(' ');
+                    const nombreDelPerro = partesDelNombre[0] || '';
+                    const apellidoDelPerro = partesDelNombre.slice(1).join(' ') || '';
+
+                    marco.innerHTML = `
+                    <span class="nombre-principal">${nombreDelPerro}</span>
+                    <span class="apellido">${apellidoDelPerro}</span>
+                    `;
 
                     if (datosPerro && datosPerro.nivelDeDificultad !== null && datosPerro.nivelDeDificultad !== undefined) {
                         const colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
