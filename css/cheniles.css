@@ -348,7 +348,7 @@
     /* Ajusta el padding para dar espacio al apellido sin agrandar la caja */
     /* El padding superior e inferior se reduce para que el contenido quede centrado,
        pero dejamos un poco más abajo para el apellido */
-    /*padding: 0.5em 0.6em 1em 0.6em; *//* Superior, derecho, inferior, izquierdo */
+    padding: 0.5em 0.6em 0.7em 0.6em; /* Superior, derecho, inferior, izquierdo */
     /* El padding inferior extra (1.5em) da espacio para el apellido */
     min-height: auto; /* Asegura que la altura la defina el contenido y el padding */
     box-sizing: border-box;
@@ -358,10 +358,10 @@
 .nombre-principal {
     display: block;
     font-weight: bold;
-    font-size: 1.1em; /* Tamaño del nombre principal */
+    font-size: 1.05em; /* Tamaño del nombre principal */
     line-height: 1.2;
     width: 100%;
-    /*word-break: break-word;*/ /* Por si el nombre es muy largo */
+    word-break: break-word; /* Por si el nombre es muy largo */
 }
 
 .apellido {
@@ -387,7 +387,7 @@
         padding: 0.8em 0.5em 1.3em 0.5em;
     }
     .nombre-principal {
-        font-size: 1em;
+        font-size: 0.95em;
     }
     .apellido {
         font-size: 0.6em;
