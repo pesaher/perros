@@ -361,7 +361,7 @@
     font-size: 1.1em; /* Tamaño del nombre principal */
     line-height: 1.2;
     width: 100%;
-    word-break: break-word; /* Por si el nombre es muy largo */
+    /*word-break: break-word;*/ /* Por si el nombre es muy largo */
 }
 
 .apellido {
