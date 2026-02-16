@@ -28,11 +28,11 @@
   }
 }
 
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
   .chenil {
     padding: 0.8em;
   }
-}
+}*/
 
 .chenil:hover {
   transform: translateY(-2px);
@@ -115,12 +115,12 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
   .marco {
     padding: 0.4em 0.5em;
     font-size: 0.95em;
   }
-}
+}*/
 
 .marco:active {
   cursor: grabbing;
