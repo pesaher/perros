@@ -109,7 +109,7 @@
   text-align: center;
   user-select: none;
   font-weight: bold;
-  font-size: 1.05em;
+  font-size: 1em;
   text-transform: uppercase;
   color: #000 !important;
   box-sizing: border-box;
@@ -345,11 +345,7 @@
     justify-content: center; /* Centra verticalmente el contenido */
     align-items: center;     /* Centra horizontalmente */
     text-align: center;
-    /* Ajusta el padding para dar espacio al apellido sin agrandar la caja */
-    /* El padding superior e inferior se reduce para que el contenido quede centrado,
-       pero dejamos un poco más abajo para el apellido */
-    padding: 0.5em 0.6em 0.7em 0.6em; /* Superior, derecho, inferior, izquierdo */
-    /* El padding inferior extra (1.5em) da espacio para el apellido */
+    padding: 0.5em 0.6em 0.8em 0.6em; /* Superior, derecho, inferior, izquierdo */
     min-height: auto; /* Asegura que la altura la defina el contenido y el padding */
     box-sizing: border-box;
     overflow: visible; /* Asegura que el apellido no se corte */
