@@ -358,10 +358,9 @@
 .nombre-principal {
     display: block;
     font-weight: bold;
-    font-size: 1.05em; /* Tamaño del nombre principal */
+    font-size: 1em; /* Tamaño del nombre principal */
     line-height: 1.2;
     width: 100%;
-    word-break: break-word; /* Por si el nombre es muy largo */
 }
 
 .apellido {
