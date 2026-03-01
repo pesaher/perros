@@ -79,10 +79,15 @@ function pintar() {
 
                     const datosPerro = datosCompletosPerros[nombreOriginal];
 
-                    const nombreAMostrar = nombreOriginal.toUpperCase();
-                    const partesDelNombre = nombreAMostrar.split(' ');
-                    const nombreDelPerro = partesDelNombre[0] || '';
-                    const apellidoDelPerro = partesDelNombre.slice(1).join(' ') || '';
+                    let nombreDelPerro = nombreOriginal.toUpperCase();
+                    const partesDelNombre = nombreDelPerro.split(' ');
+                    let apellidoDelPerro = '';
+                    
+                    if (partesDelNombre.length > 1) {
+                        // Si hay más de una palabra, la última es el apellido
+                        apellidoDelPerro = partesDelNombre.pop();
+                        nombreDelPerro = partesDelNombre.join(' ');
+                    }
 
                     marco.innerHTML = `
                     <span class="nombre-principal">${nombreDelPerro}</span>
