@@ -26,8 +26,8 @@
     <script>
     const urlParams = new URLSearchParams(window.location.search);
     window.APP_CONFIG = {
-        MODO_ADMIN: urlParams.has('admin');
-        VISTA: urlParams.get('vista');
+        MODO_ADMIN: urlParams.has('admin'),
+        VISTA: urlParams.get('vista')
     };
     if (window.APP_CONFIG.MODO_ADMIN) {
         document.addEventListener('DOMContentLoaded', function() {
