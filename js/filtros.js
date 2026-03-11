@@ -387,7 +387,7 @@ function mostrarModalFiltros() {
         `;
     }
 
-    if (debeMostrarFiltro('informacionIncompleta')) {
+    //if (debeMostrarFiltro('informacionIncompleta')) {
         html += `
             <!-- Información incompleta -->
             <div class="grupo-filtros">
@@ -397,7 +397,7 @@ function mostrarModalFiltros() {
                 </div>
             </div>
         `;
-    }
+    //}
 
     html += `
         </div>
