@@ -150,6 +150,26 @@ function mostrarModalFiltros() {
     const modal = document.createElement('div');
     modal.className = 'modal-filtros';
 
+    const vistaActual = window.APP_CONFIG?.VISTA;
+
+    // Función helper para verificar si un filtro debe mostrarse
+    const debeMostrarFiltro = (filtro) => {
+        if (vistaActual === 'paseos') {
+            const filtrosAMostrar = ['paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos'];
+            return filtrosAMostrar.includes(filtro);
+        }
+        if (vistaActual === 'adopciones') {
+            const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'altura', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'excluirInstintoPredacion', 'excluirProblemasSalud'];
+            return filtrosAMostrar.includes(filtro);
+        }
+        if (vistaActual === 'padrinos') {
+            const filtrosAMostrar = ['estado', 'apadrinado'];
+            return filtrosAMostrar.includes(filtro);
+        }
+        // Por defecto, mostrar todos
+        return true;
+    };
+
     // Función helper para verificar si un valor está activo en los filtros
     const estaActivo = (filtro, valorBuscado) => {
         if (!Array.isArray(filtrosActivos[filtro])) return false;
@@ -159,10 +179,13 @@ function mostrarModalFiltros() {
         return filtrosActivos[filtro].some(v => String(v) === valorBuscadoStr);
     };
 
-    modal.innerHTML = `
+    let html = `
         <div class="contenido-modal">
             <h3>Filtrar Perros</h3>
+    `;
 
+    if (debeMostrarFiltro('estado')) {
+        html += `
             <!-- Estado -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Estado</div>
@@ -173,7 +196,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('estado', 3) ? 'activa' : ''}" data-filtro="estado" data-valor="3">Residencia</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('sexo')) {
+        html += `
             <!-- Sexo -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Sexo</div>
@@ -182,7 +209,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro ${filtrosActivos.macho === false ? 'activa' : ''}" data-filtro="macho" data-valor="false">♀️ Hembra</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('edad')) {
+        html += `
             <!-- Edad -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Edad (años)</div>
@@ -192,7 +223,11 @@ function mostrarModalFiltros() {
                     <input type="number" class="input-rango" id="edadMax" placeholder="Máx" value="${filtrosActivos.edadMax !== undefined ? filtrosActivos.edadMax : ''}" step="1" min="0">
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('peso')) {
+        html += `
             <!-- Peso -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Peso (kg)</div>
@@ -202,7 +237,11 @@ function mostrarModalFiltros() {
                     <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax !== undefined ? filtrosActivos.pesoMax : ''}" step="1" min="0">
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('altura')) {
+        html += `
             <!-- Altura -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Altura (cm)</div>
@@ -212,7 +251,11 @@ function mostrarModalFiltros() {
                     <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax !== undefined ? filtrosActivos.alturaMax : ''}" step="1" min="0">
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('paseo')) {
+        html += `
             <!-- Nivel de Paseo -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Nivel de Paseo</div>
@@ -224,7 +267,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('paseo', 4) ? 'activa' : ''}" data-filtro="paseo" data-valor="4">Tira</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('sociableConPerros')) {
+        html += `
             <!-- Sociable con Perros -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Sociable con Perros</div>
@@ -235,7 +282,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('sociableConPerros', 3) ? 'activa' : ''}" data-filtro="sociableConPerros" data-valor="3">No sabe</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('sociableConPersonas')) {
+        html += `
             <!-- Sociable con Personas -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Sociable con Personas</div>
@@ -246,7 +297,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('sociableConPersonas', 3) ? 'activa' : ''}" data-filtro="sociableConPersonas" data-valor="3">No</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('sociableConGatos')) {
+        html += `
             <!-- Sociable con Gatos -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Sociable con Gatos</div>
@@ -255,7 +310,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro ${filtrosActivos.sociableConGatos === false ? 'activa' : ''}" data-filtro="sociableConGatos" data-valor="false">❌ No</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('proteccionDeRecursos')) {
+        html += `
             <!-- Protección de Recursos -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Protección de Recursos</div>
@@ -266,7 +325,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('proteccionDeRecursos', 3) ? 'activa' : ''}" data-filtro="proteccionDeRecursos" data-valor="3">Con perros y personas</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('ppp')) {
+        html += `
             <!-- PPP -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">PPP</div>
@@ -275,7 +338,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro ${filtrosActivos.ppp === false ? 'activa' : ''}" data-filtro="ppp" data-valor="false">❌ No</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('apadrinado')) {
+        html += `
             <!-- Apadrinado -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Apadrinado</div>
@@ -284,7 +351,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro ${filtrosActivos.apadrinado === false ? 'activa' : ''}" data-filtro="apadrinado" data-valor="false">❌ No</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('excluirInstintoPredacion')) {
+        html += `
             <!-- Excluir Instinto de Predación -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Excluir Instinto de Predación</div>
@@ -294,7 +365,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('excluirInstintoPredacion', 2) ? 'activa' : ''}" data-filtro="excluirInstintoPredacion" data-valor="2">🚫 Gatos</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('excluirProblemasSalud')) {
+        html += `
             <!-- Excluir Problemas de Salud -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Excluir Problemas de Salud</div>
@@ -309,7 +384,11 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 7) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="7">🚫 Anaplasma</div>
                 </div>
             </div>
+        `;
+    }
 
+    if (debeMostrarFiltro('informacionIncompleta')) {
+        html += `
             <!-- Información incompleta -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Información</div>
@@ -317,6 +396,10 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro ${filtrosActivos.informacionIncompleta === true ? 'activa' : ''}" data-filtro="informacionIncompleta" data-valor="true">⚠️ Información Incompleta</div>
                 </div>
             </div>
+        `;
+    }
+
+    html += `
         </div>
 
         <div class="botones-filtros">
@@ -325,6 +408,7 @@ function mostrarModalFiltros() {
         </div>
     `;
 
+    modal.innerHTML = html;
     document.body.appendChild(modal);
 
     // Event listeners para opciones de filtro múltiples
