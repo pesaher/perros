@@ -387,7 +387,7 @@ function mostrarModalFiltros() {
         `;
     }
 
-    //if (debeMostrarFiltro('informacionIncompleta')) {
+    if (debeMostrarFiltro('informacionIncompleta')) {
         html += `
             <!-- Información incompleta -->
             <div class="grupo-filtros">
@@ -397,7 +397,7 @@ function mostrarModalFiltros() {
                 </div>
             </div>
         `;
-    //}
+    }
 
     html += `
         </div>
@@ -481,12 +481,18 @@ function mostrarModalFiltros() {
     // Event listeners para botones
     modal.querySelector('#btnAplicarFiltros').addEventListener('click', () => {
         // Recoger valores de los rangos
-        const pesoMin = modal.querySelector('#pesoMin').value;
-        const pesoMax = modal.querySelector('#pesoMax').value;
-        const alturaMin = modal.querySelector('#alturaMin').value;
-        const alturaMax = modal.querySelector('#alturaMax').value;
-        const edadMin = modal.querySelector('#edadMin').value;
-        const edadMax = modal.querySelector('#edadMax').value;
+        const pesoMinSelector = modal.querySelector('#pesoMin');
+        const pesoMin = pesoMinSelector ? pesoMinSelector.value : '';
+        const pesoMaxSelector = modal.querySelector('#pesoMax');
+        const pesoMax = pesoMaxSelector ? pesoMaxSelector.value : '';
+        const alturaMinSelector = modal.querySelector('#alturaMin');
+        const alturaMin = alturaMinSelector ? alturaMinSelector.value : '';
+        const alturaMaxSelector = modal.querySelector('#alturaMax');
+        const alturaMax = alturaMaxSelector ? alturaMaxSelector.value : '';
+        const edadMinSelector = modal.querySelector('#edadMin');
+        const edadMin = edadMinSelector ? edadMinSelector.value : '';
+        const edadMaxSelector = modal.querySelector('#edadMax');
+        const edadMax = edadMaxSelector ? edadMaxSelector.value : '';
 
         // Actualizar filtros con los valores de los rangos
         if (pesoMin !== '') filtrosActivos.pesoMin = parseFloat(pesoMin);
