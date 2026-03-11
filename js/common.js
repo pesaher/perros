@@ -583,7 +583,7 @@ function crearSelectorInstintoPredacion(valorActual) {
 }
 
 // ==================== FUNCIONES DE COLOR ====================
-function determinarColorEstado(campo, valor, datosCompletos = {}) {
+function determinarColorEstado(campo, valor) {
     if (valor === null || valor === undefined || valor === '') {
         return 'neutral';
     }

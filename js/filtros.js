@@ -158,11 +158,11 @@ function mostrarModalFiltros() {
             const filtrosAMostrar = ['paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos'];
             return filtrosAMostrar.includes(filtro);
         }
-        if (vistaActual === 'adopciones') {
+        else if (vistaActual === 'adopciones') {
             const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'altura', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'excluirInstintoPredacion', 'excluirProblemasSalud'];
             return filtrosAMostrar.includes(filtro);
         }
-        if (vistaActual === 'padrinos') {
+        else if (vistaActual === 'padrinos') {
             const filtrosAMostrar = ['estado', 'apadrinado'];
             return filtrosAMostrar.includes(filtro);
         }

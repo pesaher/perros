@@ -82,7 +82,7 @@ function pintar() {
                     let nombreDelPerro = nombreOriginal.toUpperCase();
                     const partesDelNombre = nombreDelPerro.split(' ');
                     let apellidoDelPerro = '';
-                    
+
                     if (partesDelNombre.length > 1) {
                         // Si hay más de una palabra, la última es el apellido
                         apellidoDelPerro = partesDelNombre.pop();
@@ -94,13 +94,22 @@ function pintar() {
                     <span class="apellido">${apellidoDelPerro}</span>
                     `;
 
-                    if (datosPerro && datosPerro.nivelDeDificultad !== null && datosPerro.nivelDeDificultad !== undefined) {
-                        const colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
-                        if (colorDificultad) {
-                            marco.classList.add(`dificultad-${colorDificultad}`);
+                    let colorDificultad;
+                    if (datosPerro)
+                    {
+                        const vistaActual = window.APP_CONFIG?.VISTA;
+                        if (vistaActual === 'paseos') {
+                            colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
+                        } else if (vistaActual === 'adopciones') {
+                                colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
+                        } else if (vistaActual === 'padrinos') {
+                            colorDificultad = determinarColorEstado('apadrinado', datosPerro.apadrinado)
                         } else {
-                            marco.style.backgroundColor = colorPastel(nombreOriginal);
+                            colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
                         }
+                    }
+                    if (colorDificultad) {
+                        marco.classList.add(`dificultad-${colorDificultad}`);
                     } else {
                         marco.style.backgroundColor = colorPastel(nombreOriginal);
                     }
