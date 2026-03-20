@@ -96,7 +96,7 @@ async function cargarPerrosAgrupados(estructuraCheniles = null) {
 
         const { data: perros, error } = await supabaseClient
         .from('perros')
-        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->altura, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud')
+        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud')
         .order('id', { ascending: true });
 
         if (error) throw error;
@@ -111,7 +111,6 @@ async function cargarPerrosAgrupados(estructuraCheniles = null) {
                 nacimiento: perro.nacimiento,
                 macho: perro.macho,
                 peso: perro.peso,
-                altura: perro.altura,
                 paseo: perro.paseo,
                 sociableConPerros: perro.sociableConPerros,
                 sociableConPersonas: perro.sociableConPersonas,
@@ -642,7 +641,6 @@ function determinarColorEstado(campo, valor) {
         return 'malo';
 
         case 'peso':
-        case 'altura':
         case 'edad':
         return 'bueno';
     }
@@ -669,7 +667,6 @@ function tieneInformacionIncompleta(datosPerro) {
         'macho',
         'nacimiento',
         'peso',
-        'altura',
         'paseo',
         'sociableConPerros',
         'sociableConPersonas',

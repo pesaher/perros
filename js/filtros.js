@@ -115,14 +115,6 @@ function aplicarFiltros(nombrePerro) {
                 if (datosPerro.peso === null || datosPerro.peso === undefined || datosPerro.peso > valor) return false;
                 break;
 
-            case 'alturaMin':
-                if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura < valor) return false;
-                break;
-
-            case 'alturaMax':
-                if (datosPerro.altura === null || datosPerro.altura === undefined || datosPerro.altura > valor) return false;
-                break;
-
             case 'edadMin':
                 if (edadEnAños === null) return false;
                 if (Math.floor(edadEnAños) < valor) return false;
@@ -159,7 +151,7 @@ function mostrarModalFiltros() {
             return filtrosAMostrar.includes(filtro);
         }
         else if (vistaActual === 'adopciones') {
-            const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'altura', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'excluirInstintoPredacion', 'excluirProblemasSalud'];
+            const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'excluirInstintoPredacion', 'excluirProblemasSalud'];
             return filtrosAMostrar.includes(filtro);
         }
         else if (vistaActual === 'padrinos') {
@@ -235,20 +227,6 @@ function mostrarModalFiltros() {
                     <input type="number" class="input-rango" id="pesoMin" placeholder="Mín" value="${filtrosActivos.pesoMin !== undefined ? filtrosActivos.pesoMin : ''}" step="1" min="0">
                     <span class="separador-rango">a</span>
                     <input type="number" class="input-rango" id="pesoMax" placeholder="Máx" value="${filtrosActivos.pesoMax !== undefined ? filtrosActivos.pesoMax : ''}" step="1" min="0">
-                </div>
-            </div>
-        `;
-    }
-
-    if (debeMostrarFiltro('altura')) {
-        html += `
-            <!-- Altura -->
-            <div class="grupo-filtros">
-                <div class="titulo-filtro">Altura (cm)</div>
-                <div class="rango-filtro">
-                    <input type="number" class="input-rango" id="alturaMin" placeholder="Mín" value="${filtrosActivos.alturaMin !== undefined ? filtrosActivos.alturaMin : ''}" step="1" min="0">
-                    <span class="separador-rango">a</span>
-                    <input type="number" class="input-rango" id="alturaMax" placeholder="Máx" value="${filtrosActivos.alturaMax !== undefined ? filtrosActivos.alturaMax : ''}" step="1" min="0">
                 </div>
             </div>
         `;
@@ -485,10 +463,6 @@ function mostrarModalFiltros() {
         const pesoMin = pesoMinSelector ? pesoMinSelector.value : '';
         const pesoMaxSelector = modal.querySelector('#pesoMax');
         const pesoMax = pesoMaxSelector ? pesoMaxSelector.value : '';
-        const alturaMinSelector = modal.querySelector('#alturaMin');
-        const alturaMin = alturaMinSelector ? alturaMinSelector.value : '';
-        const alturaMaxSelector = modal.querySelector('#alturaMax');
-        const alturaMax = alturaMaxSelector ? alturaMaxSelector.value : '';
         const edadMinSelector = modal.querySelector('#edadMin');
         const edadMin = edadMinSelector ? edadMinSelector.value : '';
         const edadMaxSelector = modal.querySelector('#edadMax');
@@ -500,12 +474,6 @@ function mostrarModalFiltros() {
 
         if (pesoMax !== '') filtrosActivos.pesoMax = parseFloat(pesoMax);
         else delete filtrosActivos.pesoMax;
-
-        if (alturaMin !== '') filtrosActivos.alturaMin = parseFloat(alturaMin);
-        else delete filtrosActivos.alturaMin;
-
-        if (alturaMax !== '') filtrosActivos.alturaMax = parseFloat(alturaMax);
-        else delete filtrosActivos.alturaMax;
 
         if (edadMin !== '') filtrosActivos.edadMin = parseFloat(edadMin);
         else delete filtrosActivos.edadMin;

@@ -140,7 +140,6 @@ function mostrarDatosPerro() {
     const nombreMostrar = nombrePerro && nombrePerro.trim() !== '' ? nombrePerro.toUpperCase() : 'JOHN DOGE';
     const edadMostrar = datosOriginales.nacimiento ? calcularEdad(datosOriginales.nacimiento) : '???';
     const pesoMostrar = datosOriginales.peso !== null && datosOriginales.peso !== undefined ? `${datosOriginales.peso} kg` : '???';
-    const alturaMostrar = datosOriginales.altura !== null && datosOriginales.altura !== undefined ? `${datosOriginales.altura} cm` : '???';
 
     // Icono de sexo
     const iconoSexo = datosOriginales.macho === true ? '♂️' : datosOriginales.macho === false ? '♀️' : '';
@@ -204,16 +203,6 @@ function mostrarDatosPerro() {
     ${modoEdicion ?
         `<input type="number" value="${datosOriginales.peso || ''}" placeholder="Peso en kg" step="0.1" min="0">` :
         pesoMostrar
-    }
-    </div>
-    </div>
-
-    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-    <div class="etiqueta">Altura (cm)</div>
-    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('altura', datosOriginales.altura)}` : ''}">
-    ${modoEdicion ?
-        `<input type="number" value="${datosOriginales.altura || ''}" placeholder="Altura en cm" step="1" min="0">` :
-        alturaMostrar
     }
     </div>
     </div>
@@ -441,9 +430,6 @@ async function guardarCambios() {
 
     const pesoInput = document.querySelector('input[placeholder*="Peso"]');
     datosActualizados.peso = pesoInput?.value ? parseFloat(pesoInput.value) : null;
-
-    const alturaInput = document.querySelector('input[placeholder*="Altura"]');
-    datosActualizados.altura = alturaInput?.value ? parseFloat(alturaInput.value) : null;
 
     datosActualizados.protocoloParticular = document.querySelector('textarea[placeholder*="Protocolo particular"]')?.value || '';
     datosActualizados.observacionesExtra = document.querySelector('textarea[placeholder*="Observaciones extra"]')?.value || '';
