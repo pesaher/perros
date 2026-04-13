@@ -185,7 +185,6 @@ function activarModoReordenar() {
 
 function desactivarModoReordenar() {
     modoReordenar = false;
-    copiaDatosCheniles = {};
 
     sortableInstances.forEach(sortable => {
         sortable.option("disabled", true);
@@ -207,6 +206,8 @@ function desactivarModoReordenar() {
     agregarEventosBotones();
 
     guardarOrdenEnSupabase();
+
+    copiaDatosCheniles = {};
 }
 
 function cancelarReordenar() {
@@ -280,7 +281,6 @@ async function guardarOrdenEnSupabase() {
         for (const [chenilId, perrosIds] of Object.entries(datosCheniles)) {
             for (const perroId of perrosIds) {
                 if (perroId && perroId.trim() !== '' && !copiaDatosCheniles[chenilId]?.includes(perroId)) {
-                    console.log('Moviendo a ' + perroId + ', antes: ' + JSON.stringify(copiaDatosCheniles[chenilId]) + ', despues: ' + JSON.stringify(datosCheniles[chenilId]));
                     await moverPerroChenil(perroId, chenilId);
                 }
             }
