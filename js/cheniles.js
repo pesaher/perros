@@ -279,7 +279,7 @@ async function guardarOrdenEnSupabase() {
         // Para cada chenil y sus perros, actualizar en Supabase
         for (const [chenilId, perrosIds] of Object.entries(datosCheniles)) {
             for (const perroId of perrosIds) {
-                if (perroId && perroId.trim() !== '') {
+                if (perroId && perroId.trim() !== '' && !copiaDatosCheniles[chenilId]?.includes(perroId)) {
                     await moverPerroChenil(perroId, chenilId);
                 }
             }
