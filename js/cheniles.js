@@ -206,8 +206,6 @@ function desactivarModoReordenar() {
     agregarEventosBotones();
 
     guardarOrdenEnSupabase();
-
-    copiaDatosCheniles = {};
 }
 
 function cancelarReordenar() {
@@ -292,6 +290,8 @@ async function guardarOrdenEnSupabase() {
     } catch (error) {
         console.error('❌ Error guardando:', error);
         return false;
+    } finally {
+        copiaDatosCheniles = {};
     }
 }
 
