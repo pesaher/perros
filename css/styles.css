@@ -566,11 +566,18 @@ body {
 
 #contenedor {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1em;
   width: 100%;
   padding: 0 0.5em;
   box-sizing: border-box;
+}
+
+/* Cuando hay espacio, que se adapte automáticamente */
+@media (min-width: 400px) {
+  #contenedor {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  }
 }
 
 /* ==================== ESTILOS UNIFICADOS PARA MODALES ==================== */
