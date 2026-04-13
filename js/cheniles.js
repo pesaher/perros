@@ -5,6 +5,7 @@ let sortableInstances = [];
 let modoReordenar = false;
 let modalAnadirAbierto = false;
 let modalEliminarAbierto = false;
+let cambiosSinGuardar = false;
 
 // Función principal de carga
 async function cargar() {
@@ -203,8 +204,6 @@ function desactivarModoReordenar() {
     <button class="boton-flotante boton-eliminar" id="btnEliminarPerro">🗑️</button>
     `;
 
-    agregarEventosBotones();
-
     guardarOrdenEnSupabase();
 }
 
@@ -274,6 +273,7 @@ function agregarEventosBotones() {
 async function guardarOrdenEnSupabase() {
     try {
         console.log('💾 Guardando cambios en Supabase...');
+        cambiosSinGuardar = true;
 
         // Para cada chenil y sus perros, actualizar en Supabase
         for (const [chenilId, perrosIds] of Object.entries(datosCheniles)) {
@@ -292,6 +292,8 @@ async function guardarOrdenEnSupabase() {
         return false;
     } finally {
         copiaDatosCheniles = {};
+        cambiosSinGuardar = false;
+        agregarEventosBotones();
     }
 }
 
@@ -688,5 +690,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Recargar al volver con back/forward
     window.addEventListener('pageshow', function(event) {
         cargar();
+    });
+
+    window.addEventListener('beforeunload', function(e) {
+        if (cambiosSinGuardar === true) {
+            // Mostrar confirmación al recargar
+            e.preventDefault();
+            e.returnValue = 'Hay cambios sin guardar. ¿Seguro que quieres salir?';
+            return 'Hay cambios sin guardar. ¿Seguro que quieres salir?';
+        }
     });
 });
