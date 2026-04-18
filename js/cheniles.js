@@ -39,6 +39,10 @@ function pintar() {
 
     Object.entries(datosCheniles).forEach(([chenil, perros]) => {
         const seccionActual = obtenerSeccion(chenil);
+        if (seccionActual !== 'chenil' && window.APP_CONFIG?.VISTA === 'paseos')
+        {
+            return;
+        }
         if (seccionActual && seccionActual === seccionAnterior) {
             ++chenilesEnSeccion;
         }
