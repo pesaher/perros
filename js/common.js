@@ -109,6 +109,7 @@ async function cargarPerrosAgrupados(estructuraCheniles = null) {
         const { data: perros, error } = await supabaseClient
         .from('perros')
         .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud')
+        .not('chenil_id', 'is', null)
         .order('id', { ascending: true });
 
         if (error) throw error;
