@@ -622,3 +622,36 @@ body {
 .boton-admin {
     display: none !important;
 }
+
+.botones-modo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.boton-modo {
+  background: #f0f0f0;
+  border: 2px solid var(--border-light);
+  border-radius: 20px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .boton-modo {
+    background: #3a3a3a;
+    border-color: var(--border-dark);
+    color: var(--text-dark);
+  }
+}
+
+.boton-modo.activo {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.boton-modo:hover {
+  transform: scale(1.05);
+}

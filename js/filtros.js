@@ -1,5 +1,18 @@
 // Variables de filtrado
 let filtrosActivos = {};
+let contadorClicksModo = 0;
+let timeoutReset = null;
+
+function iniciarContadorAdmin() {
+    contadorClicksModo++;
+    if (timeoutReset) clearTimeout(timeoutReset);
+    timeoutReset = setTimeout(() => { contadorClicksModo = 0; }, 300);
+
+    if (contadorClicksModo >= 10) {
+        localStorage.setItem('modoAdmin', 'true');
+        location.reload();
+    }
+}
 
 // Función para aplicar filtros a un perro
 function aplicarFiltros(nombrePerro) {
@@ -173,6 +186,13 @@ function mostrarModalFiltros() {
 
     let html = `
         <div class="contenido-modal">
+            <h3>Cambiar Modo</h3>
+            <div class="botones-modo">
+                <div class="boton-modo ${window.APP_CONFIG.VISTA === 'completa' ? 'activo' : ''}" data-modo="completa">💯 Completo</div>
+                <div class="boton-modo ${window.APP_CONFIG.VISTA === 'paseos' ? 'activo' : ''}" data-modo="paseos">🦮 Paseos</div>
+                <div class="boton-modo ${window.APP_CONFIG.VISTA === 'adopciones' ? 'activo' : ''}" data-modo="adopciones">🏠 Adopciones</div>
+                <div class="boton-modo ${window.APP_CONFIG.VISTA === 'padrinos' ? 'activo' : ''}" data-modo="padrinos">❤️ Padrinos</div>
+            </div>
             <h3>Filtrar Perros</h3>
     `;
 
@@ -388,6 +408,28 @@ function mostrarModalFiltros() {
 
     modal.innerHTML = html;
     document.body.appendChild(modal);
+
+    // Event listeners para los botones de modo
+    modal.querySelectorAll('.opcion-filtro[data-modo]').forEach(opcion => {
+        const modo = opcion.dataset.modo;
+        const esModoActivo = (modo === window.APP_CONFIG.VISTA);
+
+        if (esModoActivo) {
+            // Modo activo: click para activar admin (solo si no está ya en admin)
+            if (!window.APP_CONFIG.MODO_ADMIN) {
+                opcion.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    iniciarContadorAdmin();
+                });
+            }
+        } else {
+            // Modo inactivo: click para cambiar de vista
+            opcion.addEventListener('click', () => {
+                localStorage.setItem('vista', modo);
+                location.reload();
+            });
+        }
+    });
 
     // Event listeners para opciones de filtro múltiples
     modal.querySelectorAll('.opcion-filtro.multiple').forEach(opcion => {

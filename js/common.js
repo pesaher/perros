@@ -7,6 +7,18 @@ const SUPABASE_CONFIG = {
 let supabaseClient = null;
 let datosCompletosPerros = {};
 
+window.APP_CONFIG = {
+    MODO_ADMIN: localStorage.getItem('modoAdmin') === 'true',
+    VISTA: localStorage.getItem('vista') || 'completa'
+};
+if (window.APP_CONFIG.MODO_ADMIN) {
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.boton-admin').forEach(boton => {
+            boton.classList.remove('boton-admin');
+        });
+    });
+}
+
 // NUEVO: Esperar a que Supabase esté disponible
 function esperarSupabase() {
     return new Promise((resolve) => {
