@@ -410,7 +410,7 @@ function mostrarModalFiltros() {
     document.body.appendChild(modal);
 
     // Event listeners para los botones de modo
-    modal.querySelectorAll('.opcion-filtro[data-modo]').forEach(opcion => {
+    modal.querySelectorAll('.boton-modo[data-modo]').forEach(opcion => {
         const modo = opcion.dataset.modo;
         const esModoActivo = (modo === window.APP_CONFIG.VISTA);
 
