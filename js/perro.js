@@ -504,22 +504,35 @@ async function guardarCambios() {
     datosActualizados.sociableConPersonas = isNaN(parseInt(selectSociableConPersonas)) ? null : parseInt(selectSociableConPersonas);
 
     const selectSociableConGatos = preservarSiNoExiste('select[data-campo="sociableConGatos"]', datosOriginales.sociableConGatos);
-    datosActualizados.sociableConGatos = selectSociableConGatos === 'true' ? true :
-    selectSociableConGatos === 'false' ? false : null;
+    if (typeof selectSociableConGatos === 'boolean') {
+        datosActualizados.sociableConGatos = selectSociableConGatos;
+    } else {
+        datosActualizados.sociableConGatos = selectSociableConGatos === 'true' ? true : selectSociableConGatos === 'false' ? false : null;
+    }
 
     const selectProteccionDeRecursos = preservarSiNoExiste('select[data-campo="proteccionDeRecursos"]', datosOriginales.proteccionDeRecursos);
     datosActualizados.proteccionDeRecursos = isNaN(parseInt(selectProteccionDeRecursos)) ? null : parseInt(selectProteccionDeRecursos);
 
     const selectPPP = preservarSiNoExiste('select[data-campo="ppp"]', datosOriginales.ppp);
-    datosActualizados.ppp = selectPPP === 'true' ? true :
-    selectPPP === 'false' ? false : null;
+    if (typeof selectPPP === 'boolean') {
+        datosActualizados.ppp = selectPPP;
+    } else {
+        datosActualizados.ppp = selectPPP === 'true' ? true : false;
+    }
 
     const selectApadrinado = preservarSiNoExiste('select[data-campo="apadrinado"]', datosOriginales.apadrinado);
-    datosActualizados.apadrinado = selectApadrinado === 'true' ? true : false;
+    if (typeof selectApadrinado === 'boolean') {
+        datosActualizados.apadrinado = selectApadrinado;
+    } else {
+        datosActualizados.apadrinado = selectApadrinado === 'true' ? true : false;
+    }
 
     const selectSexo = preservarSiNoExiste('select[data-campo="macho"]', datosOriginales.macho);
-    datosActualizados.macho = selectSexo === 'true' ? true :
-    selectSexo === 'false' ? false : null;
+    if (typeof selectSexo === 'boolean') {
+        datosActualizados.macho = selectSexo;
+    } else {
+        datosActualizados.macho = selectSexo === 'true' ? true : selectSexo === 'false' ? false : null;
+    }
 
     const selectEstado = preservarSiNoExiste('select[data-campo="estado"]', datosOriginales.estado);
     datosActualizados.estado = isNaN(parseInt(selectEstado)) ? null : parseInt(selectEstado);
