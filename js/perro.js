@@ -75,7 +75,7 @@ function mostrarDatosPerro() {
     // Función helper para verificar si un dato debe mostrarse
     const debeMostrarDato = (dato) => {
         if (vistaActual === 'paseos') {
-            const datosAMostrar = ['paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'observacionesExtra', 'protocoloParticular'];
+            const datosAMostrar = ['dificultad', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'observacionesExtra', 'protocoloParticular'];
             return datosAMostrar.includes(dato);
         }
         else if (vistaActual === 'adopciones') {
@@ -185,13 +185,16 @@ function mostrarDatosPerro() {
 
     <!-- Campos en dos columnas -->
     ${modoEdicion ? `
+    ${debeMostrarDato('dificultad') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Nivel de Dificultad</div>
     <div class="valor">
     ${modoEdicion ? crearSelectorDificultad(datosOriginales.nivelDeDificultad) : ''}
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('sexo') ? `
     <div class="campo campo-editable">
     <div class="etiqueta">Sexo</div>
     <div class="valor">
@@ -199,14 +202,18 @@ function mostrarDatosPerro() {
     </div>
     </div>
     ` : ''}
+    ` : ''}
 
+    ${debeMostrarDato('estado') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Estado</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('estado', datosOriginales.estado)}` : ''}">
     ${modoEdicion ? crearSelectorEstado(datosOriginales.estado) : textoEstado}
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('edad') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('edad', calcularEdadEnAños(datosOriginales.nacimiento))}` : ''}">
@@ -216,7 +223,9 @@ function mostrarDatosPerro() {
     }
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('peso') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Peso (kg)</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('peso', datosOriginales.peso)}` : ''}">
@@ -226,35 +235,45 @@ function mostrarDatosPerro() {
     }
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('paseo') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Nivel de Paseo</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('paseo', datosOriginales.paseo)}` : ''}">
     ${modoEdicion ? crearSelectorPaseo(datosOriginales.paseo) : textoPaseo}
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('sociableConPerros') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Sociable con Perros</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPerros', datosOriginales.sociableConPerros)}` : ''}">
     ${modoEdicion ? crearSelectorSociableConPerros(datosOriginales.sociableConPerros) : textoSociableConPerros}
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('sociableConPersonas') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Sociable con Personas</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPersonas', datosOriginales.sociableConPersonas)}` : ''}">
     ${modoEdicion ? crearSelectorSociableConPersonas(datosOriginales.sociableConPersonas) : textoSociableConPersonas}
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('sociableConGatos') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Sociable con Gatos</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConGatos', datosOriginales.sociableConGatos)}` : ''}">
     ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datosOriginales.sociableConGatos, true) : textoSociableConGatos}
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('proteccionDeRecursos') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Protección de Recursos</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('proteccionDeRecursos', datosOriginales.proteccionDeRecursos)}` : ''}">
@@ -262,23 +281,29 @@ function mostrarDatosPerro() {
     }
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('ppp') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">PPP</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('ppp', datosOriginales.ppp)}` : ''}">
     ${modoEdicion ? crearSelectorBooleano('ppp', datosOriginales.ppp, false) : textoPPP}
     </div>
     </div>
+    ` : ''}
 
+    ${debeMostrarDato('apadrinado') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Apadrinado</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('apadrinado', datosOriginales.apadrinado)}` : ''}">
     ${modoEdicion ? crearSelectorBooleano('apadrinado', datosOriginales.apadrinado, false) : textoApadrinado}
     </div>
     </div>
+    ` : ''}
     </div>
 
     <!-- Instinto de Predación -->
+    ${debeMostrarDato('instintoDePredacion') ? `
     <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Instinto de Predación</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('instintoDePredacion', datosOriginales.instintoDePredacion)}` : ''}">
@@ -288,8 +313,10 @@ function mostrarDatosPerro() {
     }
     </div>
     </div>
+    ` : ''}
 
     <!-- Problemas de Salud -->
+    ${debeMostrarDato('problemasDeSalud') ? `
     <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Problemas de Salud</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('problemasDeSalud', datosOriginales.problemasDeSalud)}` : ''}">
@@ -299,10 +326,11 @@ function mostrarDatosPerro() {
     }
     </div>
     </div>
+    ` : ''}
     `;
 
     // Observaciones Extra
-    if (modoEdicion || (datosOriginales.observacionesExtra && datosOriginales.observacionesExtra.toString().trim() !== '')) {
+    if (debeMostrarDato('observacionesExtra') && (modoEdicion || (datosOriginales.observacionesExtra && datosOriginales.observacionesExtra.toString().trim() !== ''))) {
         html += `
         <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
         <div class="etiqueta">Observaciones Extra</div>
@@ -317,7 +345,7 @@ function mostrarDatosPerro() {
     }
 
     // Protocolo particular
-    if (modoEdicion || (datosOriginales.protocoloParticular && datosOriginales.protocoloParticular.toString().trim() !== '')) {
+    if (debeMostrarDato('protocoloParticular') && (modoEdicion || (datosOriginales.protocoloParticular && datosOriginales.protocoloParticular.toString().trim() !== ''))) {
         html += `
         <div class="campo-completo ${modoEdicion ? 'campo-editable' : ''}">
         <div class="etiqueta">Protocolo Particular</div>
@@ -332,7 +360,7 @@ function mostrarDatosPerro() {
     }
 
     // Verificar si debe mostrar el Protocolo de Reactividad
-    const debeMostrarProtocolo = datosOriginales.paseo === 3; // Reactivo
+    const debeMostrarProtocolo = debeMostrarDato('paseo') && datosOriginales.paseo === 3; // Reactivo
 
     // Protocolo de Reactividad (solo en modo visual)
     if (!modoEdicion && debeMostrarProtocolo) {
@@ -362,7 +390,7 @@ function mostrarDatosPerro() {
     }
 
     // Protocolo de Protección de Recursos (solo en modo visual)
-    if (!modoEdicion && datosOriginales.proteccionDeRecursos !== null && datosOriginales.proteccionDeRecursos !== undefined && datosOriginales.proteccionDeRecursos !== 0) {
+    if (!modoEdicion && debeMostrarDato('proteccionDeRecursos') && datosOriginales.proteccionDeRecursos !== null && datosOriginales.proteccionDeRecursos !== undefined && datosOriginales.proteccionDeRecursos !== 0) {
         html += `
         <div class="campo-completo">
         <div class="etiqueta">Protocolo de Protección de Recursos (PdR)</div>
@@ -381,7 +409,7 @@ function mostrarDatosPerro() {
     }
 
     // Protocolo de Instinto de Predación (solo en modo visual)
-    if (!modoEdicion && Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0) {
+    if (!modoEdicion && debeMostrarDato('instintoDePredacion') && Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0) {
         html += `
         <div class="campo-completo">
         <div class="etiqueta">Protocolo de Instinto de Predación</div>
@@ -504,14 +532,14 @@ async function guardarCambios() {
     document.querySelectorAll('input[data-campo="instintoDePredacion"]:checked').forEach(checkbox => {
         instintoDePredacionSeleccionados.push(parseInt(checkbox.value));
     });
-    datosActualizados.instintoDePredacion = instintoDePredacionSeleccionados;
+    datosActualizados.instintoDePredacion = document.querySelector('input[data-campo="instintoDePredacion"]') ? instintoDePredacionSeleccionados : datosOriginales.instintoDePredacion;
 
     // Procesar problemas de salud (checkboxes múltiples)
     const problemasDeSaludSeleccionados = [];
     document.querySelectorAll('input[data-campo="problemasDeSalud"]:checked').forEach(checkbox => {
         problemasDeSaludSeleccionados.push(parseInt(checkbox.value));
     });
-    datosActualizados.problemasDeSalud = problemasDeSaludSeleccionados;
+    datosActualizados.problemasDeSalud = document.querySelector('input[data-campo="problemasDeSalud"]') ? problemasDeSaludSeleccionados : datosOriginales.problemasDeSalud;
 
     try {
         // Guardar en Supabase
