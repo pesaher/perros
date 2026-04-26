@@ -423,7 +423,7 @@ async function cargarListaCheniles() {
 
 // ==================== FUNCIONES DE SELECTORES ====================
 function crearSelectorGenerico(nombre, opciones, valorActual) {
-    let html = `<select name="${nombre}">`;
+    let html = `<select name="${nombre}" data-campo="${nombre}">`;
 
     for (const [valor, texto] of Object.entries(opciones)) {
         let valorActualStr;
@@ -455,7 +455,7 @@ function crearSelectorPaseo(valorActual) {
     return crearSelectorGenerico('paseo', opciones, valorActual);
 }
 
-function crearSelectorSociablePerros(valorActual) {
+function crearSelectorSociableConPerros(valorActual) {
     const opciones = {
         '0': 'Sí',
         '1': 'Selectivo',
@@ -467,7 +467,7 @@ function crearSelectorSociablePerros(valorActual) {
     return crearSelectorGenerico('sociableConPerros', opciones, valorActual);
 }
 
-function crearSelectorSociablePersonas(valorActual) {
+function crearSelectorSociableConPersonas(valorActual) {
     const opciones = {
         '0': 'Sí',
         '1': 'Selectivo',
@@ -480,7 +480,7 @@ function crearSelectorSociablePersonas(valorActual) {
 }
 
 function crearSelectorBooleano(nombre, valorActual, permitirNull = true) {
-    let html = `<select name="${nombre}">`;
+    let html = `<select name="${nombre}" data-campo="${nombre}">`;
 
     if (permitirNull) {
         html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
@@ -516,7 +516,7 @@ function crearSelectorEstado(valorActual) {
     return crearSelectorGenerico('estado', opciones, valorActual);
 }
 
-function crearSelectorProblemasSalud(valorActual) {
+function crearSelectorProblemasDeSalud(valorActual) {
     let problemasArray = Array.isArray(valorActual) ? valorActual : [];
 
     const problemas = [
@@ -536,7 +536,7 @@ function crearSelectorProblemasSalud(valorActual) {
         const estaSeleccionado = problemasArray.includes(problema.id);
         html += `
         <label class="opcion-multiple">
-        <input type="checkbox" name="problemasSalud" value="${problema.id}" ${estaSeleccionado ? 'checked' : ''}>
+        <input type="checkbox" name="problemasDeSalud" data-campo="problemasDeSalud" value="${problema.id}" ${estaSeleccionado ? 'checked' : ''}>
         ${problema.nombre}
         </label>
         `;
@@ -557,7 +557,7 @@ function crearSelectorDificultad(valorActual) {
     return crearSelectorGenerico('nivelDeDificultad', opciones, valorActual);
 }
 
-function crearSelectorProteccionRecursos(valorActual) {
+function crearSelectorProteccionDeRecursos(valorActual) {
     const opciones = {
         '0': 'No',
         '1': 'Solo con perros',
@@ -569,7 +569,7 @@ function crearSelectorProteccionRecursos(valorActual) {
     return crearSelectorGenerico('proteccionDeRecursos', opciones, valorActual);
 }
 
-function crearSelectorInstintoPredacion(valorActual) {
+function crearSelectorInstintoDePredacion(valorActual) {
     let instintoArray = Array.isArray(valorActual) ? valorActual : [];
 
     const instintos = [
@@ -584,7 +584,7 @@ function crearSelectorInstintoPredacion(valorActual) {
         const estaSeleccionado = instintoArray.includes(instinto.id);
         html += `
         <label class="opcion-multiple">
-        <input type="checkbox" name="instintoDePredacion" value="${instinto.id}" ${estaSeleccionado ? 'checked' : ''}>
+        <input type="checkbox" name="instintoDePredacion" data-campo="instintoDePredacion" value="${instinto.id}" ${estaSeleccionado ? 'checked' : ''}>
         ${instinto.nombre}
         </label>
         `;

@@ -42,7 +42,7 @@ function aplicarFiltros(nombrePerro) {
                 if (datosPerro.macho !== valor) return false;
                 break;
 
-            case 'excluirProblemasSalud':
+            case 'excluirProblemasDeSalud':
                 if (Array.isArray(valor) && Array.isArray(datosPerro.problemasDeSalud)) {
                     // Convertir valores del filtro a números
                     const valoresConvertidos = valor.map(v => parseInt(v));
@@ -52,7 +52,7 @@ function aplicarFiltros(nombrePerro) {
                 }
                 break;
 
-            case 'excluirInstintoPredacion':
+            case 'excluirInstintoDePredacion':
                 if (Array.isArray(valor) && Array.isArray(datosPerro.instintoDePredacion)) {
                     // Convertir valores del filtro a números
                     const valoresConvertidos = valor.map(v => parseInt(v));
@@ -164,7 +164,7 @@ function mostrarModalFiltros() {
             return filtrosAMostrar.includes(filtro);
         }
         else if (vistaActual === 'adopciones') {
-            const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'excluirInstintoPredacion', 'excluirProblemasSalud'];
+            const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'excluirInstintoDePredacion', 'excluirProblemasDeSalud'];
             return filtrosAMostrar.includes(filtro);
         }
         else if (vistaActual === 'padrinos') {
@@ -352,34 +352,34 @@ function mostrarModalFiltros() {
         `;
     }
 
-    if (debeMostrarFiltro('excluirInstintoPredacion')) {
+    if (debeMostrarFiltro('excluirInstintoDePredacion')) {
         html += `
             <!-- Excluir Instinto de Predación -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Excluir Instinto de Predación</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoPredacion', 0) ? 'activa' : ''}" data-filtro="excluirInstintoPredacion" data-valor="0">🚫 Niños</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoPredacion', 1) ? 'activa' : ''}" data-filtro="excluirInstintoPredacion" data-valor="1">🚫 Perros pequeños</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoPredacion', 2) ? 'activa' : ''}" data-filtro="excluirInstintoPredacion" data-valor="2">🚫 Gatos</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoDePredacion', 0) ? 'activa' : ''}" data-filtro="excluirInstintoDePredacion" data-valor="0">🚫 Niños</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoDePredacion', 1) ? 'activa' : ''}" data-filtro="excluirInstintoDePredacion" data-valor="1">🚫 Perros pequeños</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirInstintoDePredacion', 2) ? 'activa' : ''}" data-filtro="excluirInstintoDePredacion" data-valor="2">🚫 Gatos</div>
                 </div>
             </div>
         `;
     }
 
-    if (debeMostrarFiltro('excluirProblemasSalud')) {
+    if (debeMostrarFiltro('excluirProblemasDeSalud')) {
         html += `
             <!-- Excluir Problemas de Salud -->
             <div class="grupo-filtros">
                 <div class="titulo-filtro">Excluir Problemas de Salud</div>
                 <div class="opciones-filtro">
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 0) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="0">🚫 Leishmania</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 1) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="1">🚫 Ehrlichia</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 2) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="2">🚫 Borrelia</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 3) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="3">🚫 Cáncer</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 4) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="4">🚫 Displasia</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 5) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="5">🚫 Tumor benigno</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 6) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="6">🚫 Filaria</div>
-                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasSalud', 7) ? 'activa' : ''}" data-filtro="excluirProblemasSalud" data-valor="7">🚫 Anaplasma</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 0) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="0">🚫 Leishmania</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 1) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="1">🚫 Ehrlichia</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 2) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="2">🚫 Borrelia</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 3) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="3">🚫 Cáncer</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 4) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="4">🚫 Displasia</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 5) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="5">🚫 Tumor benigno</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 6) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="6">🚫 Filaria</div>
+                    <div class="opcion-filtro multiple ${estaActivo('excluirProblemasDeSalud', 7) ? 'activa' : ''}" data-filtro="excluirProblemasDeSalud" data-valor="7">🚫 Anaplasma</div>
                 </div>
             </div>
         `;
@@ -447,7 +447,7 @@ function mostrarModalFiltros() {
 
             // Para problemas de salud, guardar como número
             let valorParaGuardar;
-            if (filtro === 'excluirProblemasSalud') {
+            if (filtro === 'excluirProblemasDeSalud') {
                 valorParaGuardar = parseInt(opcion.dataset.valor);
             } else {
                 valorParaGuardar = opcion.dataset.valor === 'null' ? null :

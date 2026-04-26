@@ -70,6 +70,26 @@ async function cargarDesdePlantilla() {
 function mostrarDatosPerro() {
     const contenedor = document.getElementById('contenido-perro');
 
+    const vistaActual = window.APP_CONFIG?.VISTA;
+
+    // Función helper para verificar si un dato debe mostrarse
+    const debeMostrarDato = (dato) => {
+        if (vistaActual === 'paseos') {
+            const datosAMostrar = ['paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'observacionesExtra', 'protocoloParticular'];
+            return datosAMostrar.includes(dato);
+        }
+        else if (vistaActual === 'adopciones') {
+            const datosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'instintoDePredacion', 'problemasDeSalud', 'observacionesExtra'];
+            return datosAMostrar.includes(dato);
+        }
+        else if (vistaActual === 'padrinos') {
+            const datosAMostrar = ['estado', 'apadrinado'];
+            return datosAMostrar.includes(dato);
+        }
+        // Por defecto, mostrar todos
+        return true;
+    };
+
     // Mapeos de valores
     const estados = {
         0: "Disponible",
@@ -86,21 +106,21 @@ function mostrarDatosPerro() {
         4: "Tira"
     };
 
-    const sociablePerros = {
+    const sociableConPerros = {
         0: "Sí",
         1: "Selectivo",
         2: "No",
         3: "No sabe"
     };
 
-    const sociablePersonas = {
+    const sociableConPersonas = {
         0: "Sí",
         1: "Selectivo",
         2: "Mal con hombres",
         3: "No"
     };
 
-    const proteccionRecursos = {
+    const proteccionDeRecursos = {
         0: "No",
         1: "Solo con perros",
         2: "Solo con personas",
@@ -117,21 +137,21 @@ function mostrarDatosPerro() {
     // Valores formateados para modo visual
     const textoEstado = estados.hasOwnProperty(datosOriginales.estado) ? estados[datosOriginales.estado] : '???';
     const textoPaseo = nivelesPaseo.hasOwnProperty(datosOriginales.paseo) ? nivelesPaseo[datosOriginales.paseo] : '???';
-    const textoSociablePerros = sociablePerros.hasOwnProperty(datosOriginales.sociableConPerros) ? sociablePerros[datosOriginales.sociableConPerros] : '???';
-    const textoSociablePersonas = sociablePersonas.hasOwnProperty(datosOriginales.sociableConPersonas) ? sociablePersonas[datosOriginales.sociableConPersonas] : '???';
-    const textoSociableGatos = getEstadoBooleano(datosOriginales.sociableConGatos, 'Sí', 'No');
-    const textoProteccionRecursos = proteccionRecursos.hasOwnProperty(datosOriginales.proteccionDeRecursos) ? proteccionRecursos[datosOriginales.proteccionDeRecursos] : '???';
+    const textoSociableConPerros = sociableConPerros.hasOwnProperty(datosOriginales.sociableConPerros) ? sociableConPerros[datosOriginales.sociableConPerros] : '???';
+    const textoSociableConPersonas = sociableConPersonas.hasOwnProperty(datosOriginales.sociableConPersonas) ? sociableConPersonas[datosOriginales.sociableConPersonas] : '???';
+    const textoSociableConGatos = getEstadoBooleano(datosOriginales.sociableConGatos, 'Sí', 'No');
+    const textoProteccionDeRecursos = proteccionDeRecursos.hasOwnProperty(datosOriginales.proteccionDeRecursos) ? proteccionDeRecursos[datosOriginales.proteccionDeRecursos] : '???';
     const textoPPP = getEstadoBooleano(datosOriginales.ppp, 'Sí', 'No');
     const textoApadrinado = getEstadoBooleano(datosOriginales.apadrinado, 'Sí', 'No');
 
     // Problemas de salud
-    const textoProblemasSalud = Array.isArray(datosOriginales.problemasDeSalud) && datosOriginales.problemasDeSalud.length > 0 ? datosOriginales.problemasDeSalud.map(id => {
+    const textoProblemasDeSalud = Array.isArray(datosOriginales.problemasDeSalud) && datosOriginales.problemasDeSalud.length > 0 ? datosOriginales.problemasDeSalud.map(id => {
         const problemas = ['Leishmania', 'Ehrlichia', 'Borrelia', 'Cáncer', 'Displasia', 'Tumor benigno', 'Filaria', 'Anaplasma'];
         return problemas[id] || 'Desconocido';
     }).join(', ') : 'Ninguno';
 
     // Mapeo de instinto de predación
-    const textoInstintoPredacion = Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0 ? datosOriginales.instintoDePredacion.map(id => {
+    const textoInstintoDePredacion = Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0 ? datosOriginales.instintoDePredacion.map(id => {
         const instintos = ['Niños', 'Perros pequeños', 'Gatos'];
         return instintos[id] || 'Desconocido';
     }).join(', ') : 'Ninguno';
@@ -155,7 +175,7 @@ function mostrarDatosPerro() {
     <div class="valor nombre-perro ${!modoEdicion ? claseDificultad : ''}">
     <div class="nombre-contenedor">
     ${modoEdicion ?
-        `<input type="text" value="${nombrePerro || ''}" placeholder="Nombre del perro">` :
+        `<input type="text" data-campo="nombre" value="${nombrePerro || ''}" placeholder="Nombre del perro">` :
         nombreMostrar
     }
     ${!modoEdicion && iconoSexo ? `<span class="icono-sexo">${iconoSexo}</span>` : ''}
@@ -191,7 +211,7 @@ function mostrarDatosPerro() {
     <div class="etiqueta">${modoEdicion ? 'Fecha de Nacimiento' : 'Edad'}</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('edad', calcularEdadEnAños(datosOriginales.nacimiento))}` : ''}">
     ${modoEdicion ?
-        `<input type="text" value="${datosOriginales.nacimiento || ''}" placeholder="DD/MM/YYYY, MM/YYYY o YYYY">` :
+        `<input type="text" data-campo="nacimiento" value="${datosOriginales.nacimiento || ''}" placeholder="DD/MM/YYYY, MM/YYYY o YYYY">` :
         edadMostrar
     }
     </div>
@@ -201,7 +221,7 @@ function mostrarDatosPerro() {
     <div class="etiqueta">Peso (kg)</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('peso', datosOriginales.peso)}` : ''}">
     ${modoEdicion ?
-        `<input type="number" value="${datosOriginales.peso || ''}" placeholder="Peso en kg" step="0.1" min="0">` :
+        `<input type="number" data-campo="peso" value="${datosOriginales.peso || ''}" placeholder="Peso en kg" step="0.1" min="0">` :
         pesoMostrar
     }
     </div>
@@ -217,28 +237,28 @@ function mostrarDatosPerro() {
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Sociable con Perros</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPerros', datosOriginales.sociableConPerros)}` : ''}">
-    ${modoEdicion ? crearSelectorSociablePerros(datosOriginales.sociableConPerros) : textoSociablePerros}
+    ${modoEdicion ? crearSelectorSociableConPerros(datosOriginales.sociableConPerros) : textoSociableConPerros}
     </div>
     </div>
 
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Sociable con Personas</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConPersonas', datosOriginales.sociableConPersonas)}` : ''}">
-    ${modoEdicion ? crearSelectorSociablePersonas(datosOriginales.sociableConPersonas) : textoSociablePersonas}
+    ${modoEdicion ? crearSelectorSociableConPersonas(datosOriginales.sociableConPersonas) : textoSociableConPersonas}
     </div>
     </div>
 
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Sociable con Gatos</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('sociableConGatos', datosOriginales.sociableConGatos)}` : ''}">
-    ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datosOriginales.sociableConGatos, true) : textoSociableGatos}
+    ${modoEdicion ? crearSelectorBooleano('sociableConGatos', datosOriginales.sociableConGatos, true) : textoSociableConGatos}
     </div>
     </div>
 
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Protección de Recursos</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('proteccionDeRecursos', datosOriginales.proteccionDeRecursos)}` : ''}">
-    ${modoEdicion ? crearSelectorProteccionRecursos(datosOriginales.proteccionDeRecursos) : textoProteccionRecursos
+    ${modoEdicion ? crearSelectorProteccionDeRecursos(datosOriginales.proteccionDeRecursos) : textoProteccionDeRecursos
     }
     </div>
     </div>
@@ -246,7 +266,7 @@ function mostrarDatosPerro() {
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">PPP</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('ppp', datosOriginales.ppp)}` : ''}">
-    ${modoEdicion ? crearSelectorBooleano('ppp', datosOriginales.ppp, true) : textoPPP}
+    ${modoEdicion ? crearSelectorBooleano('ppp', datosOriginales.ppp, false) : textoPPP}
     </div>
     </div>
 
@@ -263,8 +283,8 @@ function mostrarDatosPerro() {
     <div class="etiqueta">Instinto de Predación</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('instintoDePredacion', datosOriginales.instintoDePredacion)}` : ''}">
     ${modoEdicion ?
-        crearSelectorInstintoPredacion(datosOriginales.instintoDePredacion) :
-        textoInstintoPredacion
+        crearSelectorInstintoDePredacion(datosOriginales.instintoDePredacion) :
+        textoInstintoDePredacion
     }
     </div>
     </div>
@@ -274,8 +294,8 @@ function mostrarDatosPerro() {
     <div class="etiqueta">Problemas de Salud</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('problemasDeSalud', datosOriginales.problemasDeSalud)}` : ''}">
     ${modoEdicion ?
-        crearSelectorProblemasSalud(datosOriginales.problemasDeSalud) :
-        textoProblemasSalud
+        crearSelectorProblemasDeSalud(datosOriginales.problemasDeSalud) :
+        textoProblemasDeSalud
     }
     </div>
     </div>
@@ -288,7 +308,7 @@ function mostrarDatosPerro() {
         <div class="etiqueta">Observaciones Extra</div>
         <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
         ${modoEdicion ?
-            `<textarea placeholder="Observaciones extra...">${datosOriginales.observacionesExtra || ''}</textarea>` :
+            `<textarea data-campo="observacionesExtra" placeholder="Observaciones extra...">${datosOriginales.observacionesExtra || ''}</textarea>` :
             (datosOriginales.observacionesExtra ? datosOriginales.observacionesExtra.replace(/\n/g, '<br>') : '')
         }
         </div>
@@ -303,7 +323,7 @@ function mostrarDatosPerro() {
         <div class="etiqueta">Protocolo Particular</div>
         <div class="valor ${!modoEdicion ? 'protocolo-particular' : ''}">
         ${modoEdicion ?
-            `<textarea placeholder="Protocolo particular...">${datosOriginales.protocoloParticular || ''}</textarea>` :
+            `<textarea data-campo="protocoloParticular" placeholder="Protocolo particular...">${datosOriginales.protocoloParticular || ''}</textarea>` :
             (datosOriginales.protocoloParticular ? datosOriginales.protocoloParticular.replace(/\n/g, '<br>') : '')
         }
         </div>
@@ -420,67 +440,78 @@ function restaurarBotonesNormales() {
     configurarEventos();
 }
 
+function preservarSiNoExiste(selector, valorOriginal) {
+    const elemento = document.querySelector(selector);
+    if (elemento !== null) {
+        // El campo existe
+        return elemento.value;
+    } else {
+        // El campo no está en esta vista, conservar original
+        return valorOriginal;
+    }
+}
+
 async function guardarCambios() {
     const datosActualizados = { ...datosOriginales };
 
     // Procesar campos
     const nombreAntiguo = nombrePerro;
-    nombreNuevo = capitalizarNombre(document.querySelector('.nombre-perro input')?.value) || '';
-    datosActualizados.nacimiento = document.querySelector('input[placeholder*="YYYY"]')?.value || '';
+    const nombreNuevo = capitalizarNombre(preservarSiNoExiste('input[data-campo="nombre"]', nombreAntiguo));
+    datosActualizados.nacimiento = preservarSiNoExiste('input[data-campo="nacimiento"]', datosOriginales.nacimiento);
 
-    const pesoInput = document.querySelector('input[placeholder*="Peso"]');
-    datosActualizados.peso = pesoInput?.value ? parseFloat(pesoInput.value) : null;
+    const pesoInput = preservarSiNoExiste('input[data-campo="peso"]', datosOriginales.peso);
+    datosActualizados.peso = isNaN(parseFloat(pesoInput)) ? null : parseFloat(pesoInput);
 
-    datosActualizados.protocoloParticular = document.querySelector('textarea[placeholder*="Protocolo particular"]')?.value || '';
-    datosActualizados.observacionesExtra = document.querySelector('textarea[placeholder*="Observaciones extra"]')?.value || '';
+    datosActualizados.protocoloParticular = preservarSiNoExiste('textarea[data-campo="protocoloParticular"]', datosOriginales.protocoloParticular);
+    datosActualizados.observacionesExtra = preservarSiNoExiste('textarea[data-campo="observacionesExtra"]', datosOriginales.observacionesExtra);
 
     // Procesar selectores
-    const selectPaseo = document.querySelector('select[name="paseo"]');
-    datosActualizados.paseo = selectPaseo?.value ? parseInt(selectPaseo.value) : null;
+    const selectPaseo = preservarSiNoExiste('select[data-campo="paseo"]', datosOriginales.paseo);
+    datosActualizados.paseo = isNaN(parseInt(selectPaseo)) ? null : parseInt(selectPaseo);
 
-    const selectSociablePerros = document.querySelector('select[name="sociableConPerros"]');
-    datosActualizados.sociableConPerros = selectSociablePerros?.value ? parseInt(selectSociablePerros.value) : null;
+    const selectSociableConPerros = preservarSiNoExiste('select[data-campo="sociableConPerros"]', datosOriginales.sociableConPerros);
+    datosActualizados.sociableConPerros = isNaN(parseInt(selectSociableConPerros)) ? null : parseInt(selectSociableConPerros);
 
-    const selectSociablePersonas = document.querySelector('select[name="sociableConPersonas"]');
-    datosActualizados.sociableConPersonas = selectSociablePersonas?.value ? parseInt(selectSociablePersonas.value) : null;
+    const selectSociableConPersonas = preservarSiNoExiste('select[data-campo="sociableConPersonas"]', datosOriginales.sociableConPersonas);
+    datosActualizados.sociableConPersonas = isNaN(parseInt(selectSociableConPersonas)) ? null : parseInt(selectSociableConPersonas);
 
-    const selectSociableGatos = document.querySelector('select[name="sociableConGatos"]');
-    datosActualizados.sociableConGatos = selectSociableGatos?.value === 'true' ? true :
-    selectSociableGatos?.value === 'false' ? false : null;
+    const selectSociableConGatos = preservarSiNoExiste('select[data-campo="sociableConGatos"]', datosOriginales.sociableConGatos);
+    datosActualizados.sociableConGatos = selectSociableConGatos === 'true' ? true :
+    selectSociableConGatos === 'false' ? false : null;
 
-    const selectProteccion = document.querySelector('select[name="proteccionDeRecursos"]');
-    datosActualizados.proteccionDeRecursos = selectProteccion?.value ? parseInt(selectProteccion.value) : null;
+    const selectProteccionDeRecursos = preservarSiNoExiste('select[data-campo="proteccionDeRecursos"]', datosOriginales.proteccionDeRecursos);
+    datosActualizados.proteccionDeRecursos = isNaN(parseInt(selectProteccionDeRecursos)) ? null : parseInt(selectProteccionDeRecursos);
 
-    const selectPPP = document.querySelector('select[name="ppp"]');
-    datosActualizados.ppp = selectPPP?.value === 'true' ? true :
-    selectPPP?.value === 'false' ? false : null;
+    const selectPPP = preservarSiNoExiste('select[data-campo="ppp"]', datosOriginales.ppp);
+    datosActualizados.ppp = selectPPP === 'true' ? true :
+    selectPPP === 'false' ? false : null;
 
-    const selectApadrinado = document.querySelector('select[name="apadrinado"]');
-    datosActualizados.apadrinado = selectApadrinado?.value === 'true' ? true : false;
+    const selectApadrinado = preservarSiNoExiste('select[data-campo="apadrinado"]', datosOriginales.apadrinado);
+    datosActualizados.apadrinado = selectApadrinado === 'true' ? true : false;
 
-    const selectSexo = document.querySelector('select[name="macho"]');
-    datosActualizados.macho = selectSexo?.value === 'true' ? true :
-    selectSexo?.value === 'false' ? false : null;
+    const selectSexo = preservarSiNoExiste('select[data-campo="macho"]', datosOriginales.macho);
+    datosActualizados.macho = selectSexo === 'true' ? true :
+    selectSexo === 'false' ? false : null;
 
-    const selectEstado = document.querySelector('select[name="estado"]');
-    datosActualizados.estado = selectEstado?.value ? parseInt(selectEstado.value) : null;
+    const selectEstado = preservarSiNoExiste('select[data-campo="estado"]', datosOriginales.estado);
+    datosActualizados.estado = isNaN(parseInt(selectEstado)) ? null : parseInt(selectEstado);
 
-    const selectDificultad = document.querySelector('select[name="nivelDeDificultad"]');
-    datosActualizados.nivelDeDificultad = selectDificultad?.value ? parseInt(selectDificultad.value) : null;
+    const selectDificultad = preservarSiNoExiste('select[data-campo="nivelDeDificultad"]', datosOriginales.nivelDeDificultad);
+    datosActualizados.nivelDeDificultad = isNaN(parseInt(selectDificultad)) ? null : parseInt(selectDificultad);
 
     // Procesar instinto de predación (checkboxes múltiples)
-    const instintoPredacionSeleccionados = [];
-    document.querySelectorAll('input[name="instintoDePredacion"]:checked').forEach(checkbox => {
-        instintoPredacionSeleccionados.push(parseInt(checkbox.value));
+    const instintoDePredacionSeleccionados = [];
+    document.querySelectorAll('input[data-campo="instintoDePredacion"]:checked').forEach(checkbox => {
+        instintoDePredacionSeleccionados.push(parseInt(checkbox.value));
     });
-    datosActualizados.instintoDePredacion = instintoPredacionSeleccionados;
+    datosActualizados.instintoDePredacion = instintoDePredacionSeleccionados;
 
     // Procesar problemas de salud (checkboxes múltiples)
-    const problemasSaludSeleccionados = [];
-    document.querySelectorAll('input[name="problemasSalud"]:checked').forEach(checkbox => {
-        problemasSaludSeleccionados.push(parseInt(checkbox.value));
+    const problemasDeSaludSeleccionados = [];
+    document.querySelectorAll('input[data-campo="problemasDeSalud"]:checked').forEach(checkbox => {
+        problemasDeSaludSeleccionados.push(parseInt(checkbox.value));
     });
-    datosActualizados.problemasDeSalud = problemasSaludSeleccionados;
+    datosActualizados.problemasDeSalud = problemasDeSaludSeleccionados;
 
     try {
         // Guardar en Supabase
