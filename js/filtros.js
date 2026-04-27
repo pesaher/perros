@@ -19,6 +19,10 @@ function aplicarFiltros(nombrePerro) {
     const datosPerro = datosCompletosPerros[nombrePerro];
     if (!datosPerro) return false; // Si no tenemos datos, no mostrar
 
+    console.log('=== APLICANDO FILTROS ===');
+    console.log('Perro:', nombrePerro);
+    console.log('filtrosActivos:', JSON.stringify(filtrosActivos, null, 2));
+
     // Calcular edad si tenemos fecha de nacimiento
     let edadEnAños = null;
     if (datosPerro.nacimiento) {
