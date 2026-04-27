@@ -106,7 +106,7 @@ function aplicarFiltros(nombrePerro) {
                 if (datosPerro.ppp !== valor) return false;
                 break;
 
-            case 'responsable':
+            /*case 'responsable':
                 if (valor === null || valor === 'null') {
                     // Filtrar perros SIN responsable
                     if (datosPerro.responsable && datosPerro.responsable.trim()) return false;
@@ -115,6 +115,34 @@ function aplicarFiltros(nombrePerro) {
                     if (!datosPerro.responsable) return false;
                     const nombres = datosPerro.responsable.split(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]+/).filter(n => n.trim());
                     if (!nombres.includes(valor)) return false;
+                }
+                break;*/
+
+            case 'responsable':
+                console.log('=== FILTRO RESPONSABLE ===');
+                console.log('valor:', valor, 'tipo:', typeof valor);
+                console.log('responsable del perro:', datosPerro.responsable);
+
+                if (valor === null || valor === 'null') {
+                    console.log('Modo: Sin responsable');
+                    if (datosPerro.responsable && datosPerro.responsable.trim()) {
+                        console.log('❌ Perro tiene responsable, FILTRADO');
+                        return false;
+                    }
+                    console.log('✅ Perro sin responsable, PASA');
+                } else {
+                    console.log('Modo: Responsable específico:', valor);
+                    if (!datosPerro.responsable) {
+                        console.log('❌ Perro sin responsable, FILTRADO');
+                        return false;
+                    }
+                    const nombres = datosPerro.responsable.split(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]+/).filter(n => n.trim());
+                    console.log('Nombres del perro:', nombres);
+                    if (!nombres.includes(valor)) {
+                        console.log('❌ No incluye a', valor, 'FILTRADO');
+                        return false;
+                    }
+                    console.log('✅ Incluye a', valor, 'PASA');
                 }
                 break;
 
