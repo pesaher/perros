@@ -72,7 +72,7 @@ function mostrarDatosPerro() {
 
     const vistaActual = window.APP_CONFIG?.VISTA;
 
-    // Función helper para verificar si un dato debe mostrarse
+    // Función auxiliar para verificar si un dato debe mostrarse
     const debeMostrarDato = (dato) => {
         if (vistaActual === 'paseos') {
             const datosAMostrar = ['dificultad', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'instintoDePredacion', 'observacionesExtra', 'protocoloParticular'];

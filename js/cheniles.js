@@ -34,12 +34,33 @@ async function cargar() {
 function pintar() {
     const contenedor = document.getElementById('contenedor');
     contenedor.innerHTML = '';
+
+    const vistaActual = window.APP_CONFIG?.VISTA;
+
+    // Función auxiliar para verificar si una seccion debe mostrarse
+    const debeMostrarSeccion = (seccion) => {
+        if (vistaActual === 'paseos') {
+            const seccionesAMostrar = ['chenil'];
+            return seccionesAMostrar.includes(seccion);
+        }
+        else if (vistaActual === 'adopciones') {
+            const seccionesAMostrar = ['chenil', 'cuarentena', 'cachorrera', 'oficina', 'acogida'];
+            return seccionesAMostrar.includes(seccion);
+        }
+        else if (vistaActual === 'padrinos') {
+            const seccionesAMostrar = ['chenil', 'cuarentena', 'cachorrera', 'oficina', 'acogida'];
+            return seccionesAMostrar.includes(seccion);
+        }
+        // Por defecto, mostrar todas
+        return true;
+    };
+
     let seccionAnterior = '';
     let chenilesEnSeccion = 1;
 
     Object.entries(datosCheniles).forEach(([chenil, perros]) => {
         const seccionActual = obtenerSeccion(chenil);
-        if (seccionActual !== 'chenil' && window.APP_CONFIG?.VISTA === 'paseos')
+        if (!debeMostrarSeccion(seccionActual))
         {
             return;
         }
@@ -102,7 +123,6 @@ function pintar() {
                     let colorDificultad;
                     if (datosPerro)
                     {
-                        const vistaActual = window.APP_CONFIG?.VISTA;
                         if (vistaActual === 'paseos') {
                             colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
                         } else if (vistaActual === 'adopciones') {
