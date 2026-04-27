@@ -108,7 +108,7 @@ async function cargarPerrosAgrupados(estructuraCheniles = null) {
 
         const { data: perros, error } = await supabaseClient
         .from('perros')
-        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud')
+        .select('id, chenil_id, datos->estado, datos->nivelDeDificultad, datos->nacimiento, datos->macho, datos->peso, datos->paseo, datos->sociableConPerros, datos->sociableConPersonas, datos->sociableConGatos, datos->proteccionDeRecursos, datos->ppp, datos->responsable, datos->apadrinado, datos->instintoDePredacion, datos->problemasDeSalud')
         .not('chenil_id', 'is', null)
         .order('id', { ascending: true });
 
@@ -130,6 +130,7 @@ async function cargarPerrosAgrupados(estructuraCheniles = null) {
                 sociableConGatos: perro.sociableConGatos,
                 proteccionDeRecursos: perro.proteccionDeRecursos,
                 ppp: perro.ppp,
+                responsable: perro.responsable,
                 apadrinado: perro.apadrinado,
                 instintoDePredacion: perro.instintoDePredacion || [],
                 problemasDeSalud: perro.problemasDeSalud || []
@@ -655,6 +656,7 @@ function determinarColorEstado(campo, valor) {
 
         case 'peso':
         case 'edad':
+        case 'responsable':
         return 'bueno';
     }
 
@@ -696,4 +698,18 @@ function tieneInformacionIncompleta(datosPerro) {
         if (Array.isArray(valor) && valor.length === 0) return true;
         return false;
     });
+}
+
+function obtenerResponsablesUnicos() {
+    const frecuencia = {};
+    Object.values(datosCompletosPerros).forEach(perro => {
+        if (perro.responsable && perro.responsable.trim()) {
+            const nombre = perro.responsable.trim();
+            frecuencia[nombre] = (frecuencia[nombre] || 0) + 1;
+        }
+    });
+
+    return Object.entries(frecuencia)
+        .sort((a, b) => b[1] - a[1]) // ordenar por frecuencia descendente
+        .map(([nombre]) => nombre);
 }

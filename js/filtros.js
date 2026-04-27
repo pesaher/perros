@@ -106,6 +106,14 @@ function aplicarFiltros(nombrePerro) {
                 if (datosPerro.ppp !== valor) return false;
                 break;
 
+            case 'responsable':
+                if (valor === 'null') {
+                    if (datosPerro.responsable && datosPerro.responsable.trim()) return false;
+                } else {
+                    if (datosPerro.responsable !== valor) return false;
+                }
+                break;
+
             case 'apadrinado':
                 if (datosPerro.apadrinado !== valor) return false;
                 break;
@@ -160,11 +168,11 @@ function mostrarModalFiltros() {
     // Función helper para verificar si un filtro debe mostrarse
     const debeMostrarFiltro = (filtro) => {
         if (vistaActual === 'paseos') {
-            const filtrosAMostrar = ['paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos'];
+            const filtrosAMostrar = ['paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'responsable'];
             return filtrosAMostrar.includes(filtro);
         }
         else if (vistaActual === 'adopciones') {
-            const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'excluirInstintoDePredacion', 'excluirProblemasDeSalud'];
+            const filtrosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'responsable', 'excluirInstintoDePredacion', 'excluirProblemasDeSalud'];
             return filtrosAMostrar.includes(filtro);
         }
         else if (vistaActual === 'padrinos') {
@@ -336,6 +344,22 @@ function mostrarModalFiltros() {
                     <div class="opcion-filtro ${filtrosActivos.ppp === false ? 'activa' : ''}" data-filtro="ppp" data-valor="false">❌ No</div>
                 </div>
             </div>
+        `;
+    }
+
+    if (debeMostrarFiltro('responsable')) {
+        const responsables = obtenerResponsablesUnicos();
+        html += `
+        <!-- Responsable -->
+        <div class="grupo-filtros">
+            <div class="titulo-filtro">Responsable</div>
+            <div class="opciones-filtro">
+                <div class="opcion-filtro ${filtrosActivos.responsable === 'null' ? 'activa' : ''}" data-filtro="responsable" data-valor="null">Sin responsable</div>
+                ${responsables.map(r => `
+                    <div class="opcion-filtro ${filtrosActivos.responsable === r ? 'activa' : ''}" data-filtro="responsable" data-valor="${r}">${r}</div>
+                `).join('')}
+            </div>
+        </div>
         `;
     }
 

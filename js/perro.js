@@ -75,11 +75,11 @@ function mostrarDatosPerro() {
     // Función auxiliar para verificar si un dato debe mostrarse
     const debeMostrarDato = (dato) => {
         if (vistaActual === 'paseos') {
-            const datosAMostrar = ['dificultad', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'instintoDePredacion', 'observacionesExtra', 'protocoloParticular'];
+            const datosAMostrar = ['dificultad', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'responsable', 'instintoDePredacion', 'observacionesExtra', 'protocoloParticular'];
             return datosAMostrar.includes(dato);
         }
         else if (vistaActual === 'adopciones') {
-            const datosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'instintoDePredacion', 'problemasDeSalud', 'observacionesExtra'];
+            const datosAMostrar = ['estado', 'sexo', 'edad', 'peso', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'sociableConGatos', 'ppp', 'responsable', 'instintoDePredacion', 'problemasDeSalud', 'observacionesExtra'];
             return datosAMostrar.includes(dato);
         }
         else if (vistaActual === 'padrinos') {
@@ -288,6 +288,15 @@ function mostrarDatosPerro() {
     <div class="etiqueta">PPP</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('ppp', datosOriginales.ppp)}` : ''}">
     ${modoEdicion ? crearSelectorBooleano('ppp', datosOriginales.ppp, false) : textoPPP}
+    </div>
+    </div>
+    ` : ''}
+
+    ${debeMostrarDato('responsable') && (modoEdicion || datosOriginales.responsable) ? `
+    <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
+    <div class="etiqueta">Responsable</div>
+    <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('responsable', datosOriginales.responsable)}` : ''}">
+    ${modoEdicion ? `<input type="text" data-campo="responsable" value="${datosOriginales.responsable}" placeholder="Responsable...">` : datosOriginales.responsable}
     </div>
     </div>
     ` : ''}
@@ -519,6 +528,8 @@ async function guardarCambios() {
     } else {
         datosActualizados.ppp = selectPPP === 'true' ? true : false;
     }
+
+    datosActualizados.responsable = preservarSiNoExiste('input[data-campo="responsable"]', datosOriginales.responsable);
 
     const selectApadrinado = preservarSiNoExiste('select[data-campo="apadrinado"]', datosOriginales.apadrinado);
     if (typeof selectApadrinado === 'boolean') {
