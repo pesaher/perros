@@ -679,8 +679,7 @@ async function eliminarPerroDeCheniles() {
             const { error } = await supabaseClient
             .from('perros')
             .update({
-                chenil_id: null,
-                datos: supabaseClient.raw(`jsonb_set(datos, '{apadrinado}', 'false')`)
+                chenil_id: null
             })
             .eq('id', nombrePerro);
 
