@@ -541,11 +541,11 @@ async function crearNuevoPerro() {
 
         // Si llegamos aquí, el perro no existe o no hay conexión a Supabase
         // Guardar en Supabase
-        const exito = await guardarPerroEnSupabase(nombreCapitalizado, {}, chenil);
+        const exito = await guardarPerroEnSupabase(nombreCapitalizado, {apadrinado: false}, chenil);
 
         if (exito) {
             // Actualizar datos locales
-            datosCompletosPerros[nombreCapitalizado] = {};
+            datosCompletosPerros[nombreCapitalizado] = {apadrinado: false};
 
             // Añadir al chenil en la vista
             if (!datosCheniles[chenil]) datosCheniles[chenil] = [];
@@ -655,6 +655,8 @@ async function eliminarPerroDeCheniles() {
         return;
     }
 
+    const perroApadrinado = datosCompletosPerros[nombrePerro]?.apadrinado === true;
+
     // Buscar y eliminar el perro de todos los cheniles
     let perroEncontrado = false;
 
@@ -672,12 +674,13 @@ async function eliminarPerroDeCheniles() {
     }
 
     try {
-        // Actualizar en Supabase (poner chenil_id a null)
+        // Actualizar en Supabase (poner chenil_id a null y apadrinado a false)
         if (supabaseClient) {
             const { error } = await supabaseClient
             .from('perros')
             .update({
-                chenil_id: null
+                chenil_id: null,
+                datos: supabaseClient.raw(`jsonb_set(datos, '{apadrinado}', 'false')`)
             })
             .eq('id', nombrePerro);
 
@@ -696,6 +699,11 @@ async function eliminarPerroDeCheniles() {
 
         const datosPerro = datosCompletosPerros[nombrePerro];
         console.log(`✅ Perro "${nombrePerro}" eliminado de los cheniles`);
+
+        if (perroApadrinado)
+        {
+            alert(`⚠️ ${nombrePerro} estaba apadrinado, avisa a las encargadas de Padrinos`);
+        }
 
     } catch (error) {
         console.error('❌ Error al eliminar perro:', error);
