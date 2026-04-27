@@ -126,9 +126,9 @@ function pintar() {
                         if (vistaActual === 'paseos') {
                             colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
                         } else if (vistaActual === 'adopciones') {
-                                colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
+                            colorDificultad = determinarColorEstado('estado', datosPerro.estado);
                         } else if (vistaActual === 'padrinos') {
-                            colorDificultad = determinarColorEstado('apadrinado', datosPerro.apadrinado)
+                            colorDificultad = determinarColorEstado('apadrinado', datosPerro.apadrinado);
                         } else {
                             colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
                         }
