@@ -702,14 +702,20 @@ function tieneInformacionIncompleta(datosPerro) {
 
 function obtenerResponsablesUnicos() {
     const frecuencia = {};
+
     Object.values(datosCompletosPerros).forEach(perro => {
         if (perro.responsable && perro.responsable.trim()) {
-            const nombre = perro.responsable.trim();
-            frecuencia[nombre] = (frecuencia[nombre] || 0) + 1;
+            // Dividir por cualquier carácter que no sea letra (a-z, A-Z, y letras con acento)
+            const nombres = perro.responsable.split(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]+/).filter(n => n.trim());
+            nombres.forEach(nombre => {
+                if (nombre) {
+                    frecuencia[nombre] = (frecuencia[nombre] || 0) + 1;
+                }
+            });
         }
     });
 
     return Object.entries(frecuencia)
-        .sort((a, b) => b[1] - a[1]) // ordenar por frecuencia descendente
+        .sort((a, b) => b[1] - a[1])
         .map(([nombre]) => nombre);
 }

@@ -107,10 +107,14 @@ function aplicarFiltros(nombrePerro) {
                 break;
 
             case 'responsable':
-                if (valor === null) {
+                if (valor === null || valor === 'null') {
+                    // Filtrar perros SIN responsable
                     if (datosPerro.responsable && datosPerro.responsable.trim()) return false;
                 } else {
-                    if (datosPerro.responsable !== valor) return false;
+                    // Filtrar perros que tengan este responsable en su lista
+                    if (!datosPerro.responsable) return false;
+                    const nombres = datosPerro.responsable.split(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]+/).filter(n => n.trim());
+                    if (!nombres.includes(valor)) return false;
                 }
                 break;
 
