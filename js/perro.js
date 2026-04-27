@@ -296,7 +296,7 @@ function mostrarDatosPerro() {
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
     <div class="etiqueta">Responsable</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('responsable', datosOriginales.responsable)}` : ''}">
-    ${modoEdicion ? `<input type="text" data-campo="responsable" value="${datosOriginales.responsable}" placeholder="Responsable...">` : datosOriginales.responsable}
+    ${modoEdicion ? `<input type="text" data-campo="responsable" value="${datosOriginales.responsable || ''}" placeholder="Responsable...">` : datosOriginales.responsable}
     </div>
     </div>
     ` : ''}
