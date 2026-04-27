@@ -107,7 +107,7 @@ function aplicarFiltros(nombrePerro) {
                 break;
 
             case 'responsable':
-                if (valor === null || valor === 'null') {
+                if (valor === 'SIN_RESPONSABLE') {
                     // Filtrar perros SIN responsable
                     if (datosPerro.responsable && datosPerro.responsable.trim()) return false;
                 } else {
@@ -358,7 +358,7 @@ function mostrarModalFiltros() {
         <div class="grupo-filtros">
             <div class="titulo-filtro">Responsable</div>
             <div class="opciones-filtro">
-                <div class="opcion-filtro ${filtrosActivos.responsable === null ? 'activa' : ''}" data-filtro="responsable" data-valor="null">Sin responsable</div>
+                <div class="opcion-filtro ${filtrosActivos.responsable === 'SIN_RESPONSABLE' ? 'activa' : ''}" data-filtro="responsable" data-valor="SIN_RESPONSABLE">Sin responsable</div>
                 ${responsables.map(r => `
                     <div class="opcion-filtro ${filtrosActivos.responsable === r ? 'activa' : ''}" data-filtro="responsable" data-valor="${r}">${r}</div>
                 `).join('')}
