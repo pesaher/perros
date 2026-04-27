@@ -133,7 +133,7 @@ function pintar() {
                             colorDificultad = determinarColorDificultad(datosPerro.nivelDeDificultad);
                         }
                     }
-                    if (colorDificultad) {
+                    if (colorDificultad && colorDificultad !== 'neutral') {
                         marco.classList.add(`dificultad-${colorDificultad}`);
                     } else {
                         marco.style.backgroundColor = colorPastel(nombreOriginal);
