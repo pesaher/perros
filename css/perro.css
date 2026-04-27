@@ -23,16 +23,9 @@
 
 .campos-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1em;
   margin-bottom: 1.5em;
-}
-
-@media (max-width: 360px) {
-  .campos-grid {
-    grid-template-columns: 1fr;
-    gap: 1em;
-  }
 }
 
 .campo {
