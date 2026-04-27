@@ -75,7 +75,7 @@ function mostrarDatosPerro() {
     // Función helper para verificar si un dato debe mostrarse
     const debeMostrarDato = (dato) => {
         if (vistaActual === 'paseos') {
-            const datosAMostrar = ['dificultad', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'observacionesExtra', 'protocoloParticular'];
+            const datosAMostrar = ['dificultad', 'paseo', 'sociableConPerros', 'sociableConPersonas', 'proteccionDeRecursos', 'instintoDePredacion', 'observacionesExtra', 'protocoloParticular'];
             return datosAMostrar.includes(dato);
         }
         else if (vistaActual === 'adopciones') {
@@ -360,7 +360,7 @@ function mostrarDatosPerro() {
     }
 
     // Verificar si debe mostrar el Protocolo de Reactividad
-    const debeMostrarProtocolo = debeMostrarDato('paseo') && datosOriginales.paseo === 3; // Reactivo
+    const debeMostrarProtocolo = debeMostrarDato('paseo') && debeMostrarDato('protocoloParticular') && datosOriginales.paseo === 3; // Reactivo
 
     // Protocolo de Reactividad (solo en modo visual)
     if (!modoEdicion && debeMostrarProtocolo) {
@@ -390,7 +390,7 @@ function mostrarDatosPerro() {
     }
 
     // Protocolo de Protección de Recursos (solo en modo visual)
-    if (!modoEdicion && debeMostrarDato('proteccionDeRecursos') && datosOriginales.proteccionDeRecursos !== null && datosOriginales.proteccionDeRecursos !== undefined && datosOriginales.proteccionDeRecursos !== 0) {
+    if (!modoEdicion && debeMostrarDato('proteccionDeRecursos') && debeMostrarDato('protocoloParticular') && datosOriginales.proteccionDeRecursos !== null && datosOriginales.proteccionDeRecursos !== undefined && datosOriginales.proteccionDeRecursos !== 0) {
         html += `
         <div class="campo-completo">
         <div class="etiqueta">Protocolo de Protección de Recursos (PdR)</div>
@@ -409,7 +409,7 @@ function mostrarDatosPerro() {
     }
 
     // Protocolo de Instinto de Predación (solo en modo visual)
-    if (!modoEdicion && debeMostrarDato('instintoDePredacion') && Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0) {
+    if (!modoEdicion && debeMostrarDato('instintoDePredacion') && debeMostrarDato('protocoloParticular') && Array.isArray(datosOriginales.instintoDePredacion) && datosOriginales.instintoDePredacion.length > 0) {
         html += `
         <div class="campo-completo">
         <div class="etiqueta">Protocolo de Instinto de Predación</div>
