@@ -448,6 +448,18 @@ function configurarEventos() {
     }
 }
 
+function formatearResponsable(texto) {
+    if (!texto || typeof texto !== 'string') return null;
+
+    // Dividir por cualquier carácter que no sea letra
+    const nombres = texto.split(/[^a-zA-ZáéíóúñÁÉÍÓÚÑ]+/).filter(n => n.trim());
+
+    if (nombres.length === 0) return null;
+
+    // Unir con comas
+    return nombres.join(', ');
+}
+
 // Funciones de edición
 function activarModoEdicion() {
     if (!window.APP_CONFIG.MODO_ADMIN) return;
@@ -529,7 +541,7 @@ async function guardarCambios() {
         datosActualizados.ppp = selectPPP === 'true' ? true : false;
     }
 
-    datosActualizados.responsable = preservarSiNoExiste('input[data-campo="responsable"]', datosOriginales.responsable);
+    datosActualizados.responsable = formatearResponsable(preservarSiNoExiste('input[data-campo="responsable"]', datosOriginales.responsable));
 
     const selectApadrinado = preservarSiNoExiste('select[data-campo="apadrinado"]', datosOriginales.apadrinado);
     if (typeof selectApadrinado === 'boolean') {
