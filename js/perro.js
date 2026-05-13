@@ -315,7 +315,7 @@ function mostrarDatosPerro() {
 
     ${debeMostrarDato('apadrinado') ? `
     <div class="campo ${modoEdicion ? 'campo-editable' : ''}">
-    <div class="etiqueta">Apadrinado</div>
+    <div class="etiqueta">${cambiarGeneroTexto("Apadrinad@")}</div>
     <div class="valor ${!modoEdicion ? `estado-${determinarColorEstado('apadrinado', datosOriginales.apadrinado)}` : ''}">
     ${modoEdicion ? crearSelectorBooleano('apadrinado', datosOriginales.apadrinado, false) : textoApadrinado}
     </div>
