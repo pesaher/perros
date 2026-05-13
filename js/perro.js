@@ -90,11 +90,23 @@ function mostrarDatosPerro() {
         return true;
     };
 
+    // Función auxiliar para cambiar el genero de palabras
+    const cambiarGeneroTexto = (texto) => {
+        if (datosOriginales.macho === true) {
+            return texto.replace("@", "o");
+        }
+        else if (datosOriginales.macho === false) {
+            return texto.replace("@", "a");
+        }
+        // Por defecto, devolver el mismo texto
+        return texto;
+    };
+
     // Mapeos de valores
     const estados = {
         0: "Disponible",
         1: "Chip (preguntar)",
-        2: "Reservado",
+        2: "Reservad@",
         3: "Residencia"
     };
 
@@ -102,20 +114,20 @@ function mostrarDatosPerro() {
         0: "Pasea bien",
         1: "Miedo (gestionable)",
         2: "Miedo (bloqueo)",
-        3: "Reactivo",
+        3: "Reactiv@",
         4: "Tira"
     };
 
     const sociableConPerros = {
         0: "Sí",
-        1: "Selectivo",
+        1: "Selectiv@",
         2: "No",
         3: "No sabe"
     };
 
     const sociableConPersonas = {
         0: "Sí",
-        1: "Selectivo",
+        1: "Selectiv@",
         2: "Mal con hombres",
         3: "No"
     };
@@ -135,10 +147,10 @@ function mostrarDatosPerro() {
     };
 
     // Valores formateados para modo visual
-    const textoEstado = estados.hasOwnProperty(datosOriginales.estado) ? estados[datosOriginales.estado] : '???';
-    const textoPaseo = nivelesPaseo.hasOwnProperty(datosOriginales.paseo) ? nivelesPaseo[datosOriginales.paseo] : '???';
-    const textoSociableConPerros = sociableConPerros.hasOwnProperty(datosOriginales.sociableConPerros) ? sociableConPerros[datosOriginales.sociableConPerros] : '???';
-    const textoSociableConPersonas = sociableConPersonas.hasOwnProperty(datosOriginales.sociableConPersonas) ? sociableConPersonas[datosOriginales.sociableConPersonas] : '???';
+    const textoEstado = estados.hasOwnProperty(datosOriginales.estado) ? cambiarGeneroTexto(estados[datosOriginales.estado]) : '???';
+    const textoPaseo = nivelesPaseo.hasOwnProperty(datosOriginales.paseo) ? cambiarGeneroTexto(nivelesPaseo[datosOriginales.paseo]) : '???';
+    const textoSociableConPerros = sociableConPerros.hasOwnProperty(datosOriginales.sociableConPerros) ? cambiarGeneroTexto(sociableConPerros[datosOriginales.sociableConPerros]) : '???';
+    const textoSociableConPersonas = sociableConPersonas.hasOwnProperty(datosOriginales.sociableConPersonas) ? cambiarGeneroTexto(sociableConPersonas[datosOriginales.sociableConPersonas]) : '???';
     const textoSociableConGatos = getEstadoBooleano(datosOriginales.sociableConGatos, 'Sí', 'No');
     const textoProteccionDeRecursos = proteccionDeRecursos.hasOwnProperty(datosOriginales.proteccionDeRecursos) ? proteccionDeRecursos[datosOriginales.proteccionDeRecursos] : '???';
     const textoPPP = getEstadoBooleano(datosOriginales.ppp, 'Sí', 'No');
