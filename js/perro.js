@@ -66,6 +66,193 @@ async function cargarDesdePlantilla() {
     }
 }
 
+// ==================== FUNCIONES DE SELECTORES ====================
+
+// Función auxiliar para cambiar el genero de palabras
+function cambiarGeneroTexto(texto) {
+    if (datosOriginales.macho === true) {
+        return texto.replace("@", "o");
+    }
+    else if (datosOriginales.macho === false) {
+        return texto.replace("@", "a");
+    }
+    // Por defecto, devolver el mismo texto
+    return texto;
+}
+
+function crearSelectorGenerico(nombre, opciones, valorActual) {
+    let html = `<select name="${nombre}" data-campo="${nombre}">`;
+
+    for (const [valor, texto] of Object.entries(opciones)) {
+        let valorActualStr;
+        const textoConGenero = cambiarGeneroTexto(texto);
+
+        if (valorActual === null || valorActual === undefined) {
+            valorActualStr = '';
+        } else {
+            valorActualStr = String(valorActual);
+        }
+
+        const seleccionado = valor === valorActualStr ? 'selected' : '';
+        html += `<option value="${valor}" ${seleccionado}>${textoConGenero}</option>`;
+    }
+
+    html += '</select>';
+    return html;
+}
+
+function crearSelectorPaseo(valorActual) {
+    const opciones = {
+        '0': 'Pasea bien',
+        '1': 'Miedo (gestionable)',
+        '2': 'Miedo (bloqueo)',
+        '3': 'Reactiv@',
+        '4': 'Tira',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('paseo', opciones, valorActual);
+}
+
+function crearSelectorSociableConPerros(valorActual) {
+    const opciones = {
+        '0': 'Sí',
+        '1': 'Selectiv@',
+        '2': 'No',
+        '3': 'No sabe',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('sociableConPerros', opciones, valorActual);
+}
+
+function crearSelectorSociableConPersonas(valorActual) {
+    const opciones = {
+        '0': 'Sí',
+        '1': 'Selectiv@',
+        '2': 'Mal con hombres',
+        '3': 'No',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('sociableConPersonas', opciones, valorActual);
+}
+
+function crearSelectorBooleano(nombre, valorActual, permitirNull = true) {
+    let html = `<select name="${nombre}" data-campo="${nombre}">`;
+
+    if (permitirNull) {
+        html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
+        html += `<option value="false" ${valorActual === false ? 'selected' : ''}>❌ No</option>`;
+        html += `<option value="" ${(valorActual === null || valorActual === undefined) ? 'selected' : ''}>???</option>`;
+    } else {
+        html += `<option value="true" ${valorActual === true ? 'selected' : ''}>✅ Sí</option>`;
+        html += `<option value="false" ${valorActual === false || valorActual === null || valorActual === undefined ? 'selected' : ''}>❌ No</option>`;
+    }
+
+    html += '</select>';
+    return html;
+}
+
+function crearSelectorSexo(valorActual) {
+    const opciones = {
+        'true': 'Macho',
+        'false': 'Hembra'
+    };
+
+    return crearSelectorGenerico('macho', opciones, valorActual === null || valorActual === undefined ? true : valorActual);
+}
+
+function crearSelectorEstado(valorActual) {
+    const opciones = {
+        '0': 'Disponible',
+        '1': 'Chip (preguntar)',
+        '2': 'Reservad@',
+        '3': 'Residencia',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('estado', opciones, valorActual);
+}
+
+function crearSelectorProblemasDeSalud(valorActual) {
+    let problemasArray = Array.isArray(valorActual) ? valorActual : [];
+
+    const problemas = [
+        {id: 0, nombre: 'Leishmania'},
+        {id: 1, nombre: 'Ehrlichia'},
+        {id: 2, nombre: 'Borrelia'},
+        {id: 3, nombre: 'Cáncer'},
+        {id: 4, nombre: 'Displasia'},
+        {id: 5, nombre: 'Tumor benigno'},
+        {id: 6, nombre: 'Filaria'},
+        {id: 7, nombre: 'Anaplasma'}
+    ];
+
+    let html = `<div class="selector-multiple">`;
+
+    problemas.forEach(problema => {
+        const estaSeleccionado = problemasArray.includes(problema.id);
+        html += `
+        <label class="opcion-multiple">
+        <input type="checkbox" name="problemasDeSalud" data-campo="problemasDeSalud" value="${problema.id}" ${estaSeleccionado ? 'checked' : ''}>
+        ${problema.nombre}
+        </label>
+        `;
+    });
+
+    html += `</div>`;
+    return html;
+}
+
+function crearSelectorDificultad(valorActual) {
+    const opciones = {
+        '0': '🟢 Fácil',
+        '1': '🟡 Medio',
+        '2': '🔴 Difícil',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('nivelDeDificultad', opciones, valorActual);
+}
+
+function crearSelectorProteccionDeRecursos(valorActual) {
+    const opciones = {
+        '0': 'No',
+        '1': 'Solo con perros',
+        '2': 'Solo con personas',
+        '3': 'Con perros y personas',
+        '': '???'
+    };
+
+    return crearSelectorGenerico('proteccionDeRecursos', opciones, valorActual);
+}
+
+function crearSelectorInstintoDePredacion(valorActual) {
+    let instintoArray = Array.isArray(valorActual) ? valorActual : [];
+
+    const instintos = [
+        {id: 0, nombre: 'Niños'},
+        {id: 1, nombre: 'Perros pequeños'},
+        {id: 2, nombre: 'Gatos'}
+    ];
+
+    let html = `<div class="selector-multiple">`;
+
+    instintos.forEach(instinto => {
+        const estaSeleccionado = instintoArray.includes(instinto.id);
+        html += `
+        <label class="opcion-multiple">
+        <input type="checkbox" name="instintoDePredacion" data-campo="instintoDePredacion" value="${instinto.id}" ${estaSeleccionado ? 'checked' : ''}>
+        ${instinto.nombre}
+        </label>
+        `;
+    });
+
+    html += `</div>`;
+    return html;
+}
+
 // Función para mostrar datos del perro
 function mostrarDatosPerro() {
     const contenedor = document.getElementById('contenido-perro');
@@ -88,18 +275,6 @@ function mostrarDatosPerro() {
         }
         // Por defecto, mostrar todos
         return true;
-    };
-
-    // Función auxiliar para cambiar el genero de palabras
-    const cambiarGeneroTexto = (texto) => {
-        if (datosOriginales.macho === true) {
-            return texto.replace("@", "o");
-        }
-        else if (datosOriginales.macho === false) {
-            return texto.replace("@", "a");
-        }
-        // Por defecto, devolver el mismo texto
-        return texto;
     };
 
     // Mapeos de valores
